@@ -2,8 +2,9 @@
 
 # Francois Therien
 # Nicolas Paquette
-# Caroline Cass Emond
+# Caroline Emond
 # Antoine Auger
+# Mikael Korvat
 
 #TEST
 
@@ -27,4 +28,6 @@ class Controleur():
         self.vue = Vue(self,self.modele)
 
 if __name__ == '__main__':
-    c = Controleur()        
+    c = Controleur()  
+
+     
