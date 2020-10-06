@@ -11,7 +11,7 @@ import random
 
 
 class Vue():  
-    def __init__(self, modele, parent):
+    def __init__(self, parent, modele):
         self.modele = modele
         self.parent = parent
         self.root = Tk()
@@ -19,7 +19,7 @@ class Vue():
         self.root.resizable(width = False, height = False)
         self.windowMenu()
         self.gameCanvas = None
-
+        self.gameInProg = False
   
     def windowMenu(self):
       
@@ -29,7 +29,7 @@ class Vue():
 
         welcomeLabel.pack()
 
-        buttonNewGame = Button(self.menuFrame, text="Nouvelle Partie", command = self.newGame)
+        buttonNewGame = Button(self.menuFrame, text="Nouvelle Partie", command = self.gameMenu)
         buttonOptions = Button(self.menuFrame,text="Options", command  = self.options)
         buttonQuit = Button(self.menuFrame, text="Quitter", command = self.quit)
 
@@ -39,12 +39,23 @@ class Vue():
 
         self.menuFrame.pack()
 
-    def newGame(self):
-        self.game = Toplevel()
-        self.game.resizable(width = False, height = False)
-        self.root.withdraw()
+    def showGame(self):
+     
+        self.gameCanvas.delete(ALL)
 
-        self.gameFrame = Frame(self.game , width  = 1400, height = 800)
+        self.img = PhotoImage(file = "assets/Map #1/grass/map1.1.png")
+        self.gameCanvas.create_image(0,0, image = self.img, anchor = NW)
+
+        for i in self.modele.creepList:
+            self.gameCanvas.create_oval(i.posX-5,i.posY-5,i.posX+5,i.posY+5, fill = "yellow")
+
+    def gameMenu(self):
+        self.menuFrame.pack_forget()
+        self.game = Frame(self.root)
+        self.game.resizable(width = False, height = False)
+       
+
+        self.gameFrame = Frame(game , width  = 1600, height = 800)
         self.gameCanvas = Canvas(self.gameFrame, width = 1300, height = 800)
         self.frameHUD = Frame(self.gameFrame, width = 300, height = 800) 
         
@@ -61,28 +72,69 @@ class Vue():
 
 
         self.gameFrame.pack(expand = YES, fill = BOTH)
+        self.game.pack()
 
-        self.img = PhotoImage(file = "assets/Map #1/grass/map1.1.png")
-        self.gameCanvas.create_image(0,0, image = self.img, anchor = NW)
-    
+        self.gameInProg = True
+
 
     def options(self):
         pass
 
     def quit(self):
-        pass    
+        pass             
+
+class Creep():
+    def __init__(self,posX,posY,cibleX,cibleY,vitesse):
+        self.posX = posX
+        self.posY = posY
+        self.cibleX = cibleX
+        self.cibleY = cibleY
+        self.vitesse = vitesse
+
+    def move(self):
+        if self.posY == self.cibleY and self.posX <= self.cibleX:
+            self.posX += self.vitesse   
 
 
 class Modele():  
     def __init__(self, parent):
         self.parent = parent
+        self.creepList = []
+
+    def createCreep(self):
+        self.creepList.append(Creep(10,637,350,637,0.2))  
+
+    def creepMouvment(self):
+        for i in self.creepList:
+            i.move()    
+
+
+
+
+    
 
 
 class Controleur():  
     def __init__(self):
         self.modele = Modele(self)
         self.vue = Vue(self,self.modele)
+        self.creepWave()
+        self.vue.root.after(10,self.animate)
         self.vue.root.mainloop()
+
+    def creepWave(self):
+        if len(self.modele.creepList) == 0:
+            self.modele.createCreep()
+
+                
+    def animate(self):
+        if self.vue.gameInProg == True:
+            self.creepWave()
+            self.modele.creepMouvment()
+            self.vue.showGame()
+            self.vue.root.after(10,self.animate)
+             
+               
 
 if __name__ == '__main__':
     c = Controleur()  
