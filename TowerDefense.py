@@ -44,7 +44,7 @@ class Vue():
         self.game.resizable(width = False, height = False)
         self.root.withdraw()
 
-        self.gameFrame = Frame(self.game , width  = 1400, height = 1200)
+        self.gameFrame = Frame(self.game , width  = 1600, height = 1200)
         self.gameCanvas=Canvas(self.gameFrame, width = 1400, height = 1200)
         self.frameHUD = Frame(self.gameFrame, width = 400, height = 1200) 
         
