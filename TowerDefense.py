@@ -44,13 +44,13 @@ class Vue():
         self.game.resizable(width = False, height = False)
         self.root.withdraw()
 
-        self.gameFrame = Frame(self.game , width  = 1600, height = 1200)
-        self.gameCanvas=Canvas(self.gameFrame, width = 1400, height = 1200)
-        self.frameHUD = Frame(self.gameFrame, width = 400, height = 1200) 
+        self.gameFrame = Frame(self.game , width  = 1600, height = 800)
+        self.gameCanvas = Canvas(self.gameFrame, width = 1300, height = 800)
+        self.frameHUD = Frame(self.gameFrame, width = 300, height = 800) 
         
-        self.ressourceFrame=Frame(self.frameHUD, bg = "blue", width = 400, height = 400)
-        self.towerFrame=Frame(self.frameHUD, bg = "red", width = 400, height = 400)
-        self.upgradeFrame=Frame(self.frameHUD, bg = "black", width = 400, height = 400)
+        self.ressourceFrame = Frame(self.frameHUD, bg = "blue", width = 300, height = 100)
+        self.towerFrame = Frame(self.frameHUD, bg = "red", width = 300, height = 600)
+        self.upgradeFrame = Frame(self.frameHUD, bg = "black", width = 300, height = 100)
 
         self.gameCanvas.grid(column = 0, row = 0)
         self.frameHUD.grid(column = 1, row = 0)
@@ -62,7 +62,7 @@ class Vue():
 
         self.gameFrame.pack(expand = YES, fill = BOTH)
 
-        self.img  = PhotoImage(file = "assets/Map #1/grass/map1.1.png")
+        self.img = PhotoImage(file = "assets/Map #1/grass/map1.1.png")
         self.gameCanvas.create_image(0,0, image = self.img, anchor = NW)
     
 
@@ -71,10 +71,6 @@ class Vue():
 
     def quit(self):
         pass    
-
-
-
-
 
 
 class Modele():  
