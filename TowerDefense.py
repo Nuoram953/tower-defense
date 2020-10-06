@@ -40,11 +40,11 @@ class Vue():
         self.menuFrame.pack()
 
     def newGame(self):
-        self.game = Tk()
+        self.game = Toplevel()
         self.game.resizable(width = False, height = False)
-        self.root.destroy()
+        self.root.withdraw()
 
-        self.gameFrame = Frame(self.game , width  = 1800, height = 1200)
+        self.gameFrame = Frame(self.game , width  = 1400, height = 1200)
         self.gameCanvas=Canvas(self.gameFrame, width = 1400, height = 1200)
         self.frameHUD = Frame(self.gameFrame, width = 400, height = 1200) 
         
@@ -62,8 +62,8 @@ class Vue():
 
         self.gameFrame.pack(expand = YES, fill = BOTH)
 
-        self.img  = PhotoImage(file = "background.jpg")
-        self.gameCanvas.create_image(1400,1200, image = self.img, anchor = NW)
+        self.img  = PhotoImage(file = "assets/Map #1/grass/map1.1.png")
+        self.gameCanvas.create_image(0,0, image = self.img, anchor = NW)
     
 
     def options(self):
