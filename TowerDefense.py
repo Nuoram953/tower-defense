@@ -62,7 +62,7 @@ class Vue():
 
         self.gameFrame.pack(expand = YES, fill = BOTH)
 
-        self.img = PhotoImage(file = "assets/Map #1/grass/map1.1.png")
+        self.img = PhotoImage(file = "assets/Map #1/grass/map1.png")
         self.gameCanvas.create_image(0,0, image = self.img, anchor = NW)
     
 
