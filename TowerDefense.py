@@ -9,6 +9,7 @@
 
 from tkinter import *
 import random
+import MapCheckpoints
 
 #test
 
@@ -181,7 +182,8 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.creepList = []
-        self.checkpointList = [Checkpoint(350,630), Checkpoint(350,380), Checkpoint(1150,380), Checkpoint(1150,655), Checkpoint(1400,655)]
+        self.checkpointList = MapCheckpoints.map[1]
+        print(self.checkpointList)
 
 
     def createCreep(self):
