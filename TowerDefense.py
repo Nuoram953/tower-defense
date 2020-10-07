@@ -86,6 +86,7 @@ class Vue():
     def quit(self):
         pass
 
+    
 
 class Creep1():
     def __init__(self, parent, posX, posY, currentCheckpoint):
@@ -99,7 +100,8 @@ class Creep1():
         self.buffer = 5
         self.height = 100
         self.width = 90
-        self.zombie = PhotoImage(file="assets/zombies/zombie1.png")
+        self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png"]
+        self.zombie = PhotoImage(file=random.choice(self.listImage)
         self.reachedEnd = False
 
         if round(self.posX,-1) != round(self.cibleX,-1):
@@ -112,9 +114,7 @@ class Creep1():
             self.moveUp = False
 
     def move(self):
-        if self.reachedEnd:
-            self.vitesse = 0
-        elif self.moveHorizontal:
+        if self.moveHorizontal:
             if self.posX < self.cibleX:
                 self.posX += self.vitesse
             else:
@@ -130,11 +130,13 @@ class Creep1():
                     self.posY += self.vitesse
                 else:
                     self.updateTargetPosition()
+                  
 
     def updateTargetPosition(self):
         if (self.posX >= 1400 and self.posY >= 655):
             print("REACHED THE END!")
             self.reachedEnd = True
+
         else:
             self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
             self.cibleX = self.currentCheckpoint.x
@@ -256,6 +258,16 @@ class Modele():
         else:
             pass
 
+    def deathCheck(self):
+        print(len(self.creepList))
+        for i in self.creepList:
+            if i.reachedEnd:
+                self.creepList.remove(i)
+                del i
+                
+            #if shot  
+    
+
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
@@ -272,8 +284,12 @@ class Controleur():
         if self.vue.gameInProg == True:
             self.creepWave()
             self.modele.creepMovement()
+            self.modele.deathCheck()
             self.vue.showGame()
             self.vue.root.after(10, self.animate)
+
+   
+        
 
 
 if __name__ == '__main__':
