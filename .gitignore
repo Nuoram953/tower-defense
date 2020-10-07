@@ -1,9 +1,2 @@
-# Ignore everything
-*
-
-# But not these files...
-!.gitignore
-!*.py
-!assets/
-!*.png
-
+__pycache__/
+.idea/
