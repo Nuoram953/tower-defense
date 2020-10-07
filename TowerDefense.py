@@ -100,8 +100,8 @@ class Creep1():
         self.buffer = 5
         self.height = 100
         self.width = 90
-        self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png"]
-        self.zombie = PhotoImage(file=random.choice(self.listImage)
+        self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
+        self.zombie = PhotoImage(file=random.choice(self.listImage))
         self.reachedEnd = False
 
         if round(self.posX,-1) != round(self.cibleX,-1):
@@ -259,7 +259,6 @@ class Modele():
             pass
 
     def deathCheck(self):
-        print(len(self.creepList))
         for i in self.creepList:
             if i.reachedEnd:
                 self.creepList.remove(i)
