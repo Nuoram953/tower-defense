@@ -9,7 +9,9 @@
 
 from tkinter import *
 import random
+import MapCheckpoints
 
+#test
 
 class Vue():
     def __init__(self, parent, modele):
@@ -85,6 +87,7 @@ class Vue():
     def quit(self):
         pass
 
+    
 
 class Creep1():
     def __init__(self, parent, posX, posY, currentCheckpoint):
@@ -94,42 +97,40 @@ class Creep1():
         self.currentCheckpoint = currentCheckpoint
         self.cibleX = self.currentCheckpoint.x
         self.cibleY = self.currentCheckpoint.y
-        self.vitesse = random.randrange(2,10)
+        self.vitesse = random.randint(3,10)
         self.buffer = 5
-        self.height = 105
-        self.width = 67
+        self.height = 100
+        self.width = 90
         self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
         self.zombie = PhotoImage(file=random.choice(self.listImage))
         self.reachedEnd = False
 
-        if round(self.posX,-1) != round(self.cibleX,-1):
-            self.moveHorizontal = True
-        elif self.posY > self.cibleY:
-            self.moveHorizontal = False
-            self.moveUp = True
-        else:
-            self.moveHorizontal = False
-            self.moveUp = False
+        self.moveHorizontal = True
+        self.moveUp = False
+        self.moveDown = False
+        self.nextMoveHorizontal = False
+
 
     def move(self):
-        if self.reachedEnd:
-            self.vitesse = 0
-        elif self.moveHorizontal:
-            if self.posX < self.cibleX:
+        if self.moveHorizontal:
+            if self.posX <= self.cibleX:
                 self.posX += self.vitesse
             else:
                 self.updateTargetPosition()
         else:
             if self.moveUp:
-                if self.posY > self.cibleY:
+                if self.posY >= self.cibleY:
                     self.posY -= self.vitesse
                 else:
                     self.updateTargetPosition()
-            else:
-                if self.posY < self.cibleY:
+            if self.moveDown:
+                if self.posY <= self.cibleY:
                     self.posY += self.vitesse
                 else:
                     self.updateTargetPosition()
+        print(self.posX, self.posY)
+        print(self.cibleX, self.cibleY)
+                  
 
     def updateTargetPosition(self):
         if (self.posX >= 1400 and self.posY >= 655):
@@ -140,17 +141,29 @@ class Creep1():
             self.cibleX = self.currentCheckpoint.x
             self.cibleY = self.currentCheckpoint.y
 
-            if round(self.posX, -1) != round(self.cibleX, -1):
-                print("MoveHorizontal")
-                self.moveHorizontal = True
-            elif self.posY > self.cibleY:
-                print("MoveVertical UP")
+            if self.posX >= self.cibleX:
+                print("STOP")
                 self.moveHorizontal = False
-                self.moveUp = True
-            else:
-                print("MoveVertical DOWN")
-                self.moveHorizontal = False
-                self.moveUp = False
+            
+            if self.moveHorizontal == False and self.nextMoveHorizontal == False:
+                if self.posY >= self.cibleY:
+                    print("UP")
+                    self.moveHorizontal = False
+                    self.moveUp = True
+                    self.moveDown = False
+                    self.nextMoveHorizontal = True
+                elif self.posY <= self.cibleY:
+                    print("DOWN")
+                    self.moveHorizontal = False
+                    self.moveUp = False
+                    self.moveDown = True
+                    self.nextMoveHorizontal = True
+            elif self.moveUp == False and self.moveDown == True or self.moveUp == True and self.moveDown == False and self.nextMoveHorizontal == True:
+                    print("HORIZONTAL")
+                    self.moveHorizontal = True
+                    self.moveUp = False
+                    self.moveDown = False
+                    self.nextMoveHorizontal = False
 
 
 class Checkpoint():
@@ -169,12 +182,15 @@ class Modele():
         self.parent = parent
         self.creepList = []
         self.checkpointList = MapCheckpoints.map[1]
-        self.nbCreep = 5
+        print(self.checkpointList)
 
 
     def createCreep(self):
-        for i in range(self.nbCreep):
-            self.creepList.append(Creep1(self, 10, 630, self.checkpointList[0]))
+        nbCreep = random.randint(5,10)
+        for i in range(nbCreep):
+            distanceX = random.randint(-100, 0)
+            self.creepList.append(Creep1(self, distanceX, 630, self.checkpointList[0]))
+        
 
     def creepMovement(self):
         for i in self.creepList:
@@ -182,13 +198,20 @@ class Modele():
 
     def getNextCheckpoint(self, currentCheckpoint):
         currentIndex = self.checkpointList.index(currentCheckpoint)
-        print(currentIndex)
         checkpointList_len = len(self.checkpointList) - 1
-        print(checkpointList_len)
         if currentIndex < checkpointList_len:
             return self.checkpointList[currentIndex+1]
         else:
             pass
+
+    def deathCheck(self):
+        for i in self.creepList:
+            if i.reachedEnd:
+                self.creepList.remove(i)
+                del i
+                
+            #if shot  
+    
 
 class Controleur():
     def __init__(self):
@@ -205,11 +228,14 @@ class Controleur():
     def animate(self):
         if self.vue.gameInProg == True:
             self.creepWave()
+            self.modele.deathCheck()
             self.modele.creepMovement()
             self.vue.showGame()
             self.vue.root.after(10, self.animate)
 
    
+        
+
 
 if __name__ == '__main__':
     c = Controleur()
