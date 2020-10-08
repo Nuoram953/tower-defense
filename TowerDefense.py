@@ -99,8 +99,8 @@ class Creep1():
         self.cibleY = self.currentCheckpoint.y
         self.vitesse = random.randint(3,10)
         self.buffer = 5
-        self.height = 100
-        self.width = 90
+        self.height = 105
+        self.width = 67
         self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
         self.zombie = PhotoImage(file=random.choice(self.listImage))
         self.reachedEnd = False
