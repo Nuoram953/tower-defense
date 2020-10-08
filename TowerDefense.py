@@ -26,15 +26,15 @@ class Vue():
         self.gameInProg = False
 
     def windowMenu(self):
-        self.menuFrame = Frame(self.root, bg="white")
+        self.menuFrame = Frame(self.root, bg="spring green3")
 
-        self.welcomeLabel = Label(self.root, text="WELCOME TO BOTANIK PANIK", pady=20)
+        self.welcomeLabel = Label(self.root, text="* WELCOME TO BOTANIK PANIK *",bg="spring green4", fg="dark goldenrod1", font=("system", 20),pady=20)
 
-        self.welcomeLabel.pack()
+        self.welcomeLabel.pack(expand=True,fill=BOTH)
 
-        buttonNewGame = Button(self.menuFrame, text="Nouvelle Partie", command=self.gameWindow)
-        buttonOptions = Button(self.menuFrame, text="Options", command=self.options)
-        buttonQuit = Button(self.menuFrame, text="Quitter", command=self.quit)
+        buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
+        buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
+        buttonQuit = Button(self.menuFrame, text="QUITTER", command=self.quit, bg="DodgerBlue4", fg="DeepSkyBlue",font=("system", 12),relief="raised")
 
         buttonNewGame.grid(column=0, row=0, padx=200, pady=20)
         buttonOptions.grid(column=0, row=1, padx=200, pady=20)
@@ -94,11 +94,12 @@ class Creep1():
         self.currentCheckpoint = currentCheckpoint
         self.cibleX = self.currentCheckpoint.x
         self.cibleY = self.currentCheckpoint.y
-        self.vitesse = 10
+        self.vitesse = random.randrange(2,10)
         self.buffer = 5
-        self.height = 100
-        self.width = 90
-        self.zombie = PhotoImage(file="assets/zombies/zombie1.png")
+        self.height = 105
+        self.width = 67
+        self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
+        self.zombie = PhotoImage(file=random.choice(self.listImage))
         self.reachedEnd = False
 
         if round(self.posX,-1) != round(self.cibleX,-1):
@@ -152,73 +153,6 @@ class Creep1():
                 self.moveUp = False
 
 
-class Creep2():
-    def __init__(self, parent, posX, posY, currentCheckpoint):
-        self.posX = posX
-        self.posY = posY
-        self.parent = parent
-        self.currentCheckpoint = currentCheckpoint
-        self.cibleX = self.currentCheckpoint.x
-        self.cibleY = self.currentCheckpoint.y
-        self.vitesse = 5
-        self.buffer = 5
-        self.height = 100
-        self.width = 63
-        self.zombie = PhotoImage(file="assets/zombies/zombie2.png")
-        self.reachedEnd = False
-
-        if round(self.posX, -1) != round(self.cibleX, -1):
-            self.moveHorizontal = True
-        elif self.posY > self.cibleY:
-            self.moveHorizontal = False
-            self.moveUp = True
-        else:
-            self.moveHorizontal = False
-            self.moveUp = False
-
-    def move(self):
-        if self.reachedEnd:
-            self.vitesse = 0
-        elif self.moveHorizontal:
-            if self.posX < self.cibleX:
-                self.posX += self.vitesse
-            else:
-                self.updateTargetPosition()
-        else:
-            if self.moveUp:
-                if self.posY > self.cibleY:
-                    self.posY -= self.vitesse
-                else:
-                    self.updateTargetPosition()
-            else:
-                if self.posY < self.cibleY:
-                    self.posY += self.vitesse
-                else:
-                    self.updateTargetPosition()
-
-    def updateTargetPosition(self):
-        if (self.posX >= 1400 and self.posY >= 655):
-            print("REACHED THE END!")
-            self.reachedEnd = True
-        else:
-            self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
-            self.cibleX = self.currentCheckpoint.x
-            self.cibleY = self.currentCheckpoint.y
-
-            if round(self.posX, -1) != round(self.cibleX, -1):
-                print("MoveHorizontal")
-                self.moveHorizontal = True
-            elif self.posY > self.cibleY:
-                print("MoveVertical UP")
-                self.moveHorizontal = False
-                self.moveUp = True
-            else:
-                print("MoveVertical DOWN")
-                self.moveHorizontal = False
-                self.moveUp = False
-
-
-
 class Checkpoint():
     def __init__(self, x, y):
         self.x = x
@@ -234,12 +168,13 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.creepList = []
-        self.checkpointList = [Checkpoint(350,630), Checkpoint(350,380), Checkpoint(1150,380), Checkpoint(1150,655), Checkpoint(1400,655)]
+        self.checkpointList = MapCheckpoints.map[1]
+        self.nbCreep = 5
 
 
     def createCreep(self):
-        self.creepList.append(Creep1(self, 10, 630, self.checkpointList[0]))
-        self.creepList.append(Creep2(self, 10, 630, self.checkpointList[0]))
+        for i in range(self.nbCreep):
+            self.creepList.append(Creep1(self, 10, 630, self.checkpointList[0]))
 
     def creepMovement(self):
         for i in self.creepList:
@@ -274,6 +209,7 @@ class Controleur():
             self.vue.showGame()
             self.vue.root.after(10, self.animate)
 
+   
 
 if __name__ == '__main__':
     c = Controleur()
