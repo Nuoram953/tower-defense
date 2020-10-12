@@ -28,15 +28,15 @@ class Vue():
         self.gameInProg = False
 
     def windowMenu(self):
-        self.menuFrame = Frame(self.root, bg="white")
+        self.menuFrame = Frame(self.root, bg="spring green3")
 
-        self.welcomeLabel = Label(self.root, text="WELCOME TO BOTANIK PANIK", pady=20)
+        self.welcomeLabel = Label(self.root, text="* WELCOME TO BOTANIK PANIK *",bg="spring green4", fg="dark goldenrod1", font=("system", 20),pady=20)
 
-        self.welcomeLabel.pack()
+        self.welcomeLabel.pack(expand=True,fill=BOTH)
 
-        buttonNewGame = Button(self.menuFrame, text="Nouvelle Partie", command=self.gameWindow)
-        buttonOptions = Button(self.menuFrame, text="Options", command=self.options)
-        buttonQuit = Button(self.menuFrame, text="Quitter", command=self.quit)
+        buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
+        buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
+        buttonQuit = Button(self.menuFrame, text="QUITTER", command=self.quit, bg="DodgerBlue4", fg="DeepSkyBlue",font=("system", 12),relief="raised")
 
         buttonNewGame.grid(column=0, row=0, padx=200, pady=20)
         buttonOptions.grid(column=0, row=1, padx=200, pady=20)
@@ -99,8 +99,8 @@ class Creep1():
         self.cibleY = self.currentCheckpoint.y
         self.vitesse = random.randint(3,10)
         self.buffer = 5
-        self.height = 100
-        self.width = 90
+        self.height = 105
+        self.width = 67
         self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
         self.zombie = PhotoImage(file=random.choice(self.listImage))
         self.reachedEnd = False
@@ -136,7 +136,6 @@ class Creep1():
         if (self.posX >= 1400 and self.posY >= 655):
             print("REACHED THE END!")
             self.reachedEnd = True
-
         else:
             self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
             self.cibleX = self.currentCheckpoint.x
