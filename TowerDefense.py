@@ -191,7 +191,7 @@ class Modele():
     def createCreep(self):
         nbCreep = random.randint(5,10)
         for i in range(nbCreep):
-            distanceX = random.randint(-100, 0)
+            distanceX = random.randint(-500, 0)
             self.creepList.append(Creep1(self, distanceX, 630, self.checkpointList[0]))
         
 
