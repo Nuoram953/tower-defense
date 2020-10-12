@@ -249,8 +249,6 @@ class Modele():
         file.close()
 
     
-                
-            
 
     
 
