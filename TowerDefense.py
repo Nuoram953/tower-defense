@@ -72,6 +72,9 @@ class Vue():
         self.nutimg = PhotoImage(file="assets/towers/sunFlower.png")
         self.potatoMineimg = PhotoImage(file="assets/towers/sunFlower.png")
         self.icePeaShooterimg = PhotoImage(file="assets/towers/icePeaShooter.png")
+        self.towerBg = PhotoImage(file = "assets/HUD/dirt.png")
+        self.ressourceBg = PhotoImage(file = "assets/HUD/grass.png")
+        self.upgradeBg = PhotoImage(file = "assets/HUD/bedrock.png")
         towerSize = 65
         relx = 0.40
         
@@ -81,16 +84,16 @@ class Vue():
         self.gameCanvas = Canvas(self.gameFrame, width=1300, height=800)
         self.frameHUD = Frame(self.gameFrame, width=300, height=800)
 
-        self.ressourceFrame = Frame(self.frameHUD, bg="blue", width=300, height=100)
-        self.towerFrame = Frame(self.frameHUD, bg="red", width=300, height=600)
-        self.upgradeFrame = Frame(self.frameHUD, bg="black", width=300, height=100)
+        self.ressourceFrame = Canvas(self.frameHUD, width=300, height=100)
+        self.towerFrame = Canvas(self.frameHUD, width=300, height=600)
+        self.upgradeFrame = Canvas(self.frameHUD, width=300, height=100)
 
-        self.peaShooter = Canvas(self.towerFrame, bg="pink", width=towerSize, height=towerSize)
-        self.sunFlower = Canvas(self.towerFrame,bg="pink", width=towerSize, height = towerSize)
-        self.catapult = Canvas(self.towerFrame, bg="pink", width=towerSize, height = towerSize)
-        self.nut = Canvas(self.towerFrame,bg="pink", width=towerSize, height = towerSize)
-        self.potatoMine = Canvas(self.towerFrame, bg="pink", width=towerSize, height = towerSize)
-        self.icePeaShooter = Canvas(self.towerFrame,bg="pink", width=towerSize, height = towerSize)
+        self.peaShooter = Canvas(self.towerFrame, bg="sandy brown", width=towerSize, height=towerSize)
+        self.sunFlower = Canvas(self.towerFrame,bg="sandy brown", width=towerSize, height = towerSize)
+        self.catapult = Canvas(self.towerFrame, bg="sandy brown", width=towerSize, height = towerSize)
+        self.nut = Canvas(self.towerFrame,bg="sandy brown", width=towerSize, height = towerSize)
+        self.potatoMine = Canvas(self.towerFrame, bg="sandy brown", width=towerSize, height = towerSize)
+        self.icePeaShooter = Canvas(self.towerFrame,bg="sandy brown", width=towerSize, height = towerSize)
 
         self.gameCanvas.grid(column=0, row=0)
         self.frameHUD.grid(column=1, row=0)
@@ -99,9 +102,15 @@ class Vue():
         self.towerFrame.grid(column=1, row=1)
         self.upgradeFrame.grid(column=1, row=2)
 
+        self.ressourceFrame.create_image(0,0, image=self.ressourceBg, anchor=NW)
+        self.towerFrame.create_image(0,0, image=self.towerBg, anchor=NW)
+        self.upgradeFrame.create_image(0,0, image=self.upgradeBg, anchor=NW)
+
         self.peaShooter.create_image(67, 0, image=self.peaShooterimg, anchor=NE,tags = "peaShooter")
         self.sunFlower.create_image(67,0, image=self.sunFlowerimg, anchor=NE,tags = "sunFlower")
         self.icePeaShooter.create_image(67,0, image=self.icePeaShooterimg, anchor=NE,tags = "icePeaShooter")
+
+        
 
         self.peaShooter.place(relx=0.40, rely=0.1, x=0, y=0,anchor="ne")
         self.sunFlower.place(relx=0.65, rely=0.1, x=50, y=0,anchor="ne")
