@@ -1,4 +1,4 @@
-from TowerDefense import Checkpoint
+from Checkpoint import *
 
 mapCreeps = {
     1: [Checkpoint(350,610), Checkpoint(350,360), Checkpoint(1150,360), Checkpoint(1150,635), Checkpoint(1400,635)],
