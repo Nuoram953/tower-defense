@@ -27,6 +27,7 @@ class Vue():
         self.img = None
         self.gameInProg = False
 
+
     def windowMenu(self):
         self.menuFrame = Frame(self.root, bg="spring green3")
 
@@ -77,9 +78,13 @@ class Vue():
         self.upgradeFrame.grid(column=1, row=2)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
+        self.gameCanvas.bind("<Button>", self.getXY)
         self.game.pack()
         self.gameInProg = True
         self.parent.animate()
+
+    def getXY(self,evt):
+        print(evt.x, evt.y)
 
     def options(self):
         pass
@@ -128,13 +133,11 @@ class Creep1():
                     self.posY += self.vitesse
                 else:
                     self.updateTargetPosition()
-        print(self.posX, self.posY)
-        print(self.cibleX, self.cibleY)
-                  
+
 
     def updateTargetPosition(self):
         if (self.posX >= 1400 and self.posY >= 655):
-            print("REACHED THE END!")
+
             self.reachedEnd = True
         else:
             self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
@@ -142,24 +145,24 @@ class Creep1():
             self.cibleY = self.currentCheckpoint.y
 
             if self.posX >= self.cibleX:
-                print("STOP")
+
                 self.moveHorizontal = False
             
             if self.moveHorizontal == False and self.nextMoveHorizontal == False:
                 if self.posY >= self.cibleY:
-                    print("UP")
+
                     self.moveHorizontal = False
                     self.moveUp = True
                     self.moveDown = False
                     self.nextMoveHorizontal = True
                 elif self.posY <= self.cibleY:
-                    print("DOWN")
+
                     self.moveHorizontal = False
                     self.moveUp = False
                     self.moveDown = True
                     self.nextMoveHorizontal = True
             elif self.moveUp == False and self.moveDown == True or self.moveUp == True and self.moveDown == False and self.nextMoveHorizontal == True:
-                    print("HORIZONTAL")
+
                     self.moveHorizontal = True
                     self.moveUp = False
                     self.moveDown = False
@@ -182,7 +185,6 @@ class Modele():
         self.parent = parent
         self.creepList = []
         self.checkpointList = MapCheckpoints.map[1]
-        print(self.checkpointList)
 
 
     def createCreep(self):

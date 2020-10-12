@@ -7,3 +7,9 @@ map = {
     4: [],
     5: []
 }
+
+towers = {
+    1: [[Checkpoint(350, 630),False], Checkpoint(350, 380), Checkpoint(1150, 380), Checkpoint(1150, 655), Checkpoint(1400, 655)],
+    2: [],
+    3: []
+}
