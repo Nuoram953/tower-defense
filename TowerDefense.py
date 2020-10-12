@@ -5,7 +5,6 @@
 # Nicolas Paquette
 # Caroline Emond
 # Antoine Auger
-# Mikael Korvat
 
 from tkinter import *
 import random
@@ -44,6 +43,10 @@ class Vue():
 
         self.menuFrame.pack()
 
+    def getXY(self,evt):
+        print(evt.x, evt.y)
+
+
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
@@ -51,6 +54,10 @@ class Vue():
         self.img = PhotoImage(file="assets/Map #1/grass/map1.1.png")
 
         self.gameCanvas.create_image(0, 0, image=self.img, anchor=NW)
+
+        if self.modele.ShowSpots == True:
+            for spot in self.modele.CheckpointTowers:
+                self.gameCanvas.create_rectangle(spot.x, spot.y, spot.x + self.modele.SquareSize, spot.y + self.modele.SquareSize, fill = self.modele.SquareColor, tags = (""))
 
         for i in self.modele.creepList:
             self.gameCanvas.create_image(i.posX-(i.width/2),i.posY-(i.height/2),image=i.zombie, anchor=NW)
@@ -77,6 +84,7 @@ class Vue():
         self.upgradeFrame.grid(column=1, row=2)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
+        self.gameCanvas.bind("<Button>", self.getXY)
         self.game.pack()
         self.gameInProg = True
         self.parent.animate()
@@ -87,7 +95,6 @@ class Vue():
     def quit(self):
         pass
 
-    
 
 class Creep1():
     def __init__(self, parent, posX, posY, currentCheckpoint):
@@ -97,7 +104,7 @@ class Creep1():
         self.currentCheckpoint = currentCheckpoint
         self.cibleX = self.currentCheckpoint.x
         self.cibleY = self.currentCheckpoint.y
-        self.vitesse = random.randint(3,10)
+        self.vitesse = random.randint(5,10)
         self.buffer = 5
         self.height = 105
         self.width = 67
@@ -128,12 +135,10 @@ class Creep1():
                     self.posY += self.vitesse
                 else:
                     self.updateTargetPosition()
-        print(self.posX, self.posY)
-        print(self.cibleX, self.cibleY)
                   
 
     def updateTargetPosition(self):
-        if (self.posX >= 1400 and self.posY >= 655):
+        if (self.posX >= 1400 and self.posY >= 635):
             print("REACHED THE END!")
             self.reachedEnd = True
         else:
@@ -181,15 +186,19 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.creepList = []
-        self.checkpointList = MapCheckpoints.map[1]
-        print(self.checkpointList)
+        self.checkpointList = MapCheckpoints.mapCreeps[1]
+
+        self.ShowSpots = True
+        self.CheckpointTowers = MapCheckpoints.mapTowers[1]
+        self.SquareSize = 60
+        self.SquareColor = "lightgreen"
 
 
     def createCreep(self):
         nbCreep = random.randint(5,10)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep1(self, distanceX, 630, self.checkpointList[0]))
+            self.creepList.append(Creep1(self, distanceX, 610, self.checkpointList[0]))
         
 
     def creepMovement(self):
