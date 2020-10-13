@@ -14,7 +14,7 @@ class Creep1():
         self.buffer = 5
         self.boss = boss
 
-        if boss:
+        if self.boss:
             self.listImage = ["assets/zombies/boss/boss1.png"]
             self.height = 228
             self.width = 175
@@ -52,12 +52,17 @@ class Creep1():
                   
 
     def updateTargetPosition(self):
-        if (self.posX >= 1400 and self.posY >= 635):
+        if self.boss:
+            height = 60
+        else:
+            height = 0
+
+        if (self.posX >= 1400 and self.posY >= 635 - height):
             self.reachedEnd = True
         else:
             self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
             self.cibleX = self.currentCheckpoint.x
-            self.cibleY = self.currentCheckpoint.y
+            self.cibleY = self.currentCheckpoint.y - height
 
             if self.posX >= self.cibleX:
                 self.moveHorizontal = False
