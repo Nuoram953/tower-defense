@@ -76,6 +76,18 @@ class IcePeaShooter():
         self.posY = posY
         self.creepList = creepList
         self.image = PhotoImage(file="assets/towers/icePeaShooter.png")
+        
+
+    def Shoot(self):
+        print("I C E")
+
+class Catapult():
+    def __init__(self, parent, posX, posY):
+        self.parent = parent
+        self.posX = posX
+        self.posY = posY
+        self.image = PhotoImage(file="assets/towers/catapult.png")
+
 
     def tick(self):
         print("I C E")
