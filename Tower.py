@@ -11,7 +11,7 @@ class PeaShooter():
         self.target = None
         self.projectileList = []
         self.totalAmmo = 10
-        self.speed = 30
+        self.speed = 20
         self.radius = 150
         self.creepList = creepList
         self.currentDelay = 0
@@ -24,10 +24,10 @@ class PeaShooter():
         if self.target:
             checkDist = helper.Helper.calcDistance(self.posX, self.posY, self.target.posX, self.target.posY)
 
-            if checkDist > self.radius:
-                self.target = None
+            #if checkDist > self.radius:
+                #self.target = None
 
-        if self.target == None:
+        if self.target == None or checkDist > self.radius:
             targetPos = []
             for creep in self.creepList:
                 dist = helper.Helper.calcDistance(self.posX, self.posY, creep.posX, creep.posY)
@@ -47,16 +47,11 @@ class PeaShooter():
                         #self.parent.points["Pointage"] += 1
                         self.target = None
                     else:
-                        nextBullet = Bullet(self, self.posX, self.posY, bullet.target, bullet.targetX, bullet.targetY, 1,"green", 10, self.speed)
+                        nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1,"green", 10, self.speed)
                         self.projectileList.append(nextBullet)
 
                     self.projectileList.remove(bullet)
                     del bullet
-
-
-
-
-
 
     def updateTarget(self, target):
         for creep in self.creepList:
