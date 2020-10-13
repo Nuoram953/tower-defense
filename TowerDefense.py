@@ -5,16 +5,15 @@
 # Nicolas Paquette
 # Caroline Emond
 # Antoine Auger
-# Mikael Korvat
 
 from tkinter import *
 import random
 
-from _datetime import date
+
 import MapCheckpoints
-
-
-#test
+import Tower
+import Creep
+import Checkpoint
 
 class Vue():
     def __init__(self, parent, modele):
@@ -22,13 +21,13 @@ class Vue():
         self.parent = parent
         self.root = Tk()
         self.root.title("towerDefense")
-        #self.root.resizable(width=False, height=False)
         self.windowMenu()
         self.game = None
         self.gameCanvas = None
         self.gameFrame = None
         self.img = None
         self.gameInProg = False
+        self.towerArray = []
 
     def windowMenu(self):
         self.menuFrame = Frame(self.root, bg="spring green3")
@@ -47,6 +46,11 @@ class Vue():
 
         self.menuFrame.pack()
 
+    def getXY(self,evt):
+        pass
+        #print(evt.x, evt.y)
+
+
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
@@ -55,6 +59,15 @@ class Vue():
 
         self.gameCanvas.create_image(0, 0, image=self.img, anchor=NW)
 
+        for tower in self.modele.TowerList:
+            self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
+
+        if self.modele.ShowSpots == True:
+            for spot in self.modele.CheckpointTowers:
+                self.gameCanvas.create_rectangle(spot.x, spot.y, spot.x + self.modele.SquareSize, spot.y + self.modele.SquareSize, fill = self.modele.SquareColor, tags = ("square"))
+
+            self.gameCanvas.tag_bind("square", "<Button>", self.modele.SelectSquare)
+
         for i in self.modele.creepList:
             self.gameCanvas.create_image(i.posX-(i.width/2),i.posY-(i.height/2),image=i.zombie, anchor=NW)
 
@@ -62,15 +75,23 @@ class Vue():
         self.menuFrame.pack_forget()
         self.welcomeLabel.pack_forget()
         self.game = Frame(self.root)
-        #self.game.resizable(width=False, height=False)
-
+        self.peaShooterimg = PhotoImage(file="assets/towers/peaShooter.png")
+        self.sunFlowerimg = PhotoImage(file="assets/towers/sunFlower.png")
+        self.catapultimg = PhotoImage(file="assets/towers/sunFlower.png")
+        self.nutimg = PhotoImage(file="assets/towers/sunFlower.png")
+        self.potatoMineimg = PhotoImage(file="assets/towers/sunFlower.png")
+        self.icePeaShooterimg = PhotoImage(file="assets/towers/icePeaShooter.png")
+        self.towerBg = PhotoImage(file = "assets/HUD/dirt.png")
+        self.ressourceBg = PhotoImage(file = "assets/HUD/grass.png")
+        self.upgradeBg = PhotoImage(file = "assets/HUD/bedrock.png")
+        
         self.gameFrame = Frame(self.game, width=1600, height=800)
         self.gameCanvas = Canvas(self.gameFrame, width=1300, height=800)
         self.frameHUD = Frame(self.gameFrame, width=300, height=800)
 
-        self.ressourceFrame = Frame(self.frameHUD, bg="blue", width=300, height=100)
-        self.towerFrame = Frame(self.frameHUD, bg="red", width=300, height=600)
-        self.upgradeFrame = Frame(self.frameHUD, bg="black", width=300, height=100)
+        self.ressourceFrame = Canvas(self.frameHUD, width=300, height=100)
+        self.towerFrame = Canvas(self.frameHUD, width=300, height=600)
+        self.upgradeFrame = Canvas(self.frameHUD, width=300, height=100)
 
         self.gameCanvas.grid(column=0, row=0)
         self.frameHUD.grid(column=1, row=0)
@@ -79,122 +100,86 @@ class Vue():
         self.towerFrame.grid(column=1, row=1)
         self.upgradeFrame.grid(column=1, row=2)
 
+        self.ressourceFrame.create_image(0,0, image=self.ressourceBg, anchor=NW)
+        self.towerFrame.create_image(0,0, image=self.towerBg, anchor=NW)
+        self.upgradeFrame.create_image(0,0, image=self.upgradeBg, anchor=NW)
+
+        self.towerFrame.create_image(100, 100, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
+        self.towerFrame.create_image(200, 100, image=self.sunFlowerimg, anchor=NE,tags = ("sunFlower", "tower"))
+        self.towerFrame.create_image(100, 200, image=self.icePeaShooterimg, anchor=NE,tags = ("icePeaShooter", "tower"))
+
+        self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
+
         self.gameFrame.pack(expand=YES, fill=BOTH)
+        self.gameCanvas.bind("<Button>", self.getXY)
         self.game.pack()
+        
         self.gameInProg = True
         self.parent.animate()
+
 
     def options(self):
         pass
 
     def quit(self):
         pass
-
     
-
-class Creep1():
-    def __init__(self, parent, posX, posY, currentCheckpoint):
-        self.posX = posX
-        self.posY = posY
-        self.parent = parent
-        self.currentCheckpoint = currentCheckpoint
-        self.cibleX = self.currentCheckpoint.x
-        self.cibleY = self.currentCheckpoint.y
-        self.vitesse = random.randint(3,10)
-        self.buffer = 5
-        self.height = 105
-        self.width = 67
-        self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
-        self.zombie = PhotoImage(file=random.choice(self.listImage))
-        self.reachedEnd = False
-
-        self.moveHorizontal = True
-        self.moveUp = False
-        self.moveDown = False
-        self.nextMoveHorizontal = False
-
-
-    def move(self):
-        if self.moveHorizontal:
-            if self.posX <= self.cibleX:
-                self.posX += self.vitesse
-            else:
-                self.updateTargetPosition()
-        else:
-            if self.moveUp:
-                if self.posY >= self.cibleY:
-                    self.posY -= self.vitesse
-                else:
-                    self.updateTargetPosition()
-            if self.moveDown:
-                if self.posY <= self.cibleY:
-                    self.posY += self.vitesse
-                else:
-                    self.updateTargetPosition()
-        print(self.posX, self.posY)
-        print(self.cibleX, self.cibleY)
-                  
-
-    def updateTargetPosition(self):
-        if (self.posX >= 1400 and self.posY >= 655):
-            print("REACHED THE END!")
-            self.reachedEnd = True
-        else:
-            self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
-            self.cibleX = self.currentCheckpoint.x
-            self.cibleY = self.currentCheckpoint.y
-
-            if self.posX >= self.cibleX:
-                print("STOP")
-                self.moveHorizontal = False
-            
-            if self.moveHorizontal == False and self.nextMoveHorizontal == False:
-                if self.posY >= self.cibleY:
-                    print("UP")
-                    self.moveHorizontal = False
-                    self.moveUp = True
-                    self.moveDown = False
-                    self.nextMoveHorizontal = True
-                elif self.posY <= self.cibleY:
-                    print("DOWN")
-                    self.moveHorizontal = False
-                    self.moveUp = False
-                    self.moveDown = True
-                    self.nextMoveHorizontal = True
-            elif self.moveUp == False and self.moveDown == True or self.moveUp == True and self.moveDown == False and self.nextMoveHorizontal == True:
-                    print("HORIZONTAL")
-                    self.moveHorizontal = True
-                    self.moveUp = False
-                    self.moveDown = False
-                    self.nextMoveHorizontal = False
-
-
-class Checkpoint():
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __eq__(self, other):
-        if isinstance(other, Checkpoint):
-            return self.x == other.x and self.y == other.y
-        return False
-
-
 class Modele():
     def __init__(self, parent):
         self.parent = parent
         self.creepList = []
-        self.checkpointList = MapCheckpoints.map[1]
-        print(self.checkpointList)
+        self.checkpointList = MapCheckpoints.mapCreeps[1]
+
+        self.ShowSpots = False
+        self.CheckpointTowers = MapCheckpoints.mapTowers[1]
+        self.SquareSize = 60
+        self.SquareColor = "lightgreen"
+
+        self.towerChoice = ""
+
+        self.TowerList = []
+
+    def ShowSquares(self, event):
+        self.ShowSpots = not(self.ShowSpots)
+
+        element = event.widget.gettags("current")
+
+        if element:
+            if "peaShooter" in element:
+                self.towerChoice = "peaShooter"
+            elif "sunFlower" in element:
+                self.towerChoice = "sunFlower"
+            elif "icePeaShooter" in element:
+                self.towerChoice = "icePeaShooter"
 
 
+    def SelectSquare(self, event):
+        for square in self.CheckpointTowers:
+            if event.x >= square.x and event.x <= square.x + self.SquareSize and event.y >= square.y and event.y <= square.y + self.SquareSize:
+                self.createTower(square.x, square.y)
+                self.CheckpointTowers.remove(square)
+                self.ShowSpots = not(self.ShowSpots)
+
+    def createTower(self, posX, posY):
+        if self.towerChoice == "peaShooter":
+            tour = Tower.PeaShooter(self, posX, posY)
+            self.TowerList.append(tour)
+           
+        elif self.towerChoice == "sunFlower":
+            tour = Tower.SunFlower(self, posX, posY)
+            self.TowerList.append(tour)
+           
+        elif self.towerChoice == "icePeaShooter":
+            tour = Tower.IcePeaShooter(self, posX, posY)
+            self.TowerList.append(tour)
+           
+        
     def createCreep(self):
         nbCreep = random.randint(5,10)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep1(self, distanceX, 630, self.checkpointList[0]))
+            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0]))
         
-
     def creepMovement(self):
         for i in self.creepList:
             i.move()
@@ -213,44 +198,7 @@ class Modele():
                 self.creepList.remove(i)
                 del i
                 
-            #if shot  
-
-
-    #Vérification si le joueur existe dans le fichier score.csv
-    #TODO: Changer le nom des variables et mettre en argument le nom du joueur
-    #TODO: Offrir au joueur la possibilité de refuser de continuer avec son profil si il veux recommencer?
-    def getProfil(self, namePlayer):
-        playerFound = False
-        file = open("score.csv", "r")
-        line=file.readlines()
-        print(line)
-        for player in line:
-            currentPlayer = player.split(",")
-            if currentPlayer[0].lower() == namePlayer.lower() and not playerFound:
-                playerFound = True
-                print("YEAH")
-                self.nom = currentPlayer[0]
-                self.niveau = currentPlayer[3]
-                self.sagesse = currentPlayer[4]
-        
-        if not playerFound:
-            self.nom = 0
-            self.niveau = 0
-            self.sagesse = 0
-
-        file.close()
-
-
-    #TODO: Changer le nom des variables
-    def score(self):
-        file = open("score.csv", "a")
-        file.write(f"{self.nom},{str(date.today())},{str(self.point)},{str(self.level)},{str(self.sagesse)}")
-        file.close()
-
     
-
-    
-
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
@@ -270,10 +218,6 @@ class Controleur():
             self.modele.creepMovement()
             self.vue.showGame()
             self.vue.root.after(10, self.animate)
-
-   
-        
-
 
 if __name__ == '__main__':
     c = Controleur()
