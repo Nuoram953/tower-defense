@@ -82,7 +82,7 @@ class IcePeaShooter():
         print("I C E")
 
 class Catapult():
-    def __init__(self, parent, posX, posY):
+    def __init__(self, parent, posX, posY, creepList):
         self.parent = parent
         self.posX = posX
         self.posY = posY

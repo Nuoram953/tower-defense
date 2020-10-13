@@ -232,7 +232,7 @@ class Modele():
             self.points["Engrais"] -= self.towers["peaShooter"]
             
         elif self.towerChoice == "sunFlower" and self.costCheck("sunFlower"):
-            tour = Tower.SunFlower(self, posX, posY, creepList)
+            tour = Tower.SunFlower(self, posX, posY)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["sunFlower"]
            
