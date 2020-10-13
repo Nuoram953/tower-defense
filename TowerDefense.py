@@ -59,6 +59,12 @@ class Vue():
 
         for tower in self.modele.TowerList:
             self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
+            tower.tick()
+            for bullet in tower.projectileList:
+                bullet.move()
+                self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
+
+
 
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
@@ -154,13 +160,13 @@ class Modele():
     def SelectSquare(self, event):
         for square in self.CheckpointTowers:
             if event.x >= square.x and event.x <= square.x + self.SquareSize and event.y >= square.y and event.y <= square.y + self.SquareSize:
-                self.createTower(square.x, square.y)
+                self.createTower(square.x, square.y, self.creepList)
                 self.CheckpointTowers.remove(square)
                 self.ShowSpots = not(self.ShowSpots)
 
-    def createTower(self, posX, posY):
+    def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter":
-            tour = Tower.PeaShooter(self, posX, posY)
+            tour = Tower.PeaShooter(self, posX, posY, creepList)
             self.TowerList.append(tour)
            
         elif self.towerChoice == "sunFlower":
@@ -168,8 +174,12 @@ class Modele():
             self.TowerList.append(tour)
            
         elif self.towerChoice == "icePeaShooter":
-            tour = Tower.IcePeaShooter(self, posX, posY)
+            tour = Tower.IcePeaShooter(self, posX, posY, creepList)
             self.TowerList.append(tour)
+
+    def activateTower(self):
+        for tower in self.TowerList:
+            tower.tick()
            
         
     def createCreep(self):
@@ -177,6 +187,10 @@ class Modele():
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
             self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0]))
+
+    def updateCreepList(self):
+        return self.creepList
+
         
     def creepMovement(self):
         for i in self.creepList:
@@ -212,6 +226,7 @@ class Controleur():
     def animate(self):
         if self.vue.gameInProg == True:
             self.creepWave()
+            self.modele.activateTower()
             self.modele.deathCheck()
             self.modele.creepMovement()
             self.vue.showGame()

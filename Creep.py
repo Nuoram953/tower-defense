@@ -7,6 +7,7 @@ class Creep1():
         self.posX = posX
         self.posY = posY
         self.parent = parent
+        self.health = 500
         self.currentCheckpoint = currentCheckpoint
         self.cibleX = self.currentCheckpoint.x
         self.cibleY = self.currentCheckpoint.y
