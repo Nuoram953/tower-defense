@@ -65,7 +65,6 @@ class Vue():
                 self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
 
 
-
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
                 self.gameCanvas.create_rectangle(spot.x, spot.y, spot.x + self.modele.SquareSize, spot.y + self.modele.SquareSize, fill = self.modele.SquareColor, tags = ("square"))
@@ -156,7 +155,6 @@ class Vue():
         self.gameInProg = True
         self.parent.animate()
     
-
     def update(self):
         self.ressourceFrame.itemconfigure(self.vie, text = self.modele.points["Vie"])
         self.ressourceFrame.itemconfigure(self.wave, text = self.modele.points["Wave"])
@@ -165,8 +163,6 @@ class Vue():
         self.ressourceFrame.itemconfigure(self.level, text = self.modele.points["Niveau"])
         self.ressourceFrame.itemconfigure(self.pointage, text = self.modele.points["Pointage"])
         
-
-
     def options(self):
         pass
 
@@ -222,7 +218,6 @@ class Modele():
             elif "catapult" in element:
                 self.towerChoice = "catapult"    
 
-
     def SelectSquare(self, event):
         for square in self.CheckpointTowers:
             if event.x >= square.x and event.x <= square.x + self.SquareSize and event.y >= square.y and event.y <= square.y + self.SquareSize:
@@ -260,16 +255,14 @@ class Modele():
         nbCreep = random.randint(5,10)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0]))
+            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0], False))
 
     def updateCreepList(self):
         return self.creepList
 
-            #self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],False))
-
     def createBoss(self):
         distanceX = random.randint(-500, 0)
-        self.creepList.append(Creep.Creep1(self,distanceX,550,self.checkpointList[0],True))
+        self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], True))
         
     def creepMovement(self):
         for i in self.creepList:
@@ -300,8 +293,6 @@ class Modele():
                 self.points["RayonUV"] += 5
                 
                 
-                
-    
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
@@ -311,8 +302,6 @@ class Controleur():
         self.vue.root.after(10000, self.addUV)
         self.vue.root.mainloop()
         
-        
-
     def creepWave(self):
         if len(self.modele.creepList) == 0:
             self.modele.createCreep()
@@ -335,7 +324,5 @@ class Controleur():
             self.vue.update()
             self.vue.root.after(10, self.animate)
             
-            
-
 if __name__ == '__main__':
     c = Controleur()
