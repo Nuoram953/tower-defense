@@ -59,6 +59,12 @@ class Vue():
 
         for tower in self.modele.TowerList:
             self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
+            tower.tick()
+            for bullet in tower.projectileList:
+                bullet.move()
+                self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
+
+
 
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
@@ -220,37 +226,46 @@ class Modele():
     def SelectSquare(self, event):
         for square in self.CheckpointTowers:
             if event.x >= square.x and event.x <= square.x + self.SquareSize and event.y >= square.y and event.y <= square.y + self.SquareSize:
-                self.createTower(square.x, square.y)
+                self.createTower(square.x, square.y, self.creepList)
                 self.CheckpointTowers.remove(square)
                 self.ShowSpots = not(self.ShowSpots)
 
-    def createTower(self, posX, posY):
+    def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter" and self.costCheck("peaShooter"):
-            tour = Tower.PeaShooter(self, posX, posY)
+            tour = Tower.PeaShooter(self, posX, posY, creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["peaShooter"]
             
         elif self.towerChoice == "sunFlower" and self.costCheck("sunFlower"):
-            tour = Tower.SunFlower(self, posX, posY)
+            tour = Tower.SunFlower(self, posX, posY, creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["sunFlower"]
            
         elif self.towerChoice == "icePeaShooter" and self.costCheck("icePeaShooter"):
-            tour = Tower.IcePeaShooter(self, posX, posY)
+            tour = Tower.IcePeaShooter(self, posX, posY, creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["icePeaShooter"]
 
         elif self.towerChoice == "catapult" and self.costCheck("catapult"):
-            tour = Tower.Catapult(self,posX,posY) 
+            tour = Tower.Catapult(self,posX,posY, creepList) 
             self.TowerList.append(tour)  
             self.points["Engrais"] -= self.towers["catapult"]
+
+    def activateTower(self):
+        for tower in self.TowerList:
+            tower.tick()
            
         
     def createCreep(self):
         nbCreep = random.randint(5,10)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],False))
+            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0]))
+
+    def updateCreepList(self):
+        return self.creepList
+
+            #self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],False))
 
     def createBoss(self):
         distanceX = random.randint(-500, 0)
@@ -313,6 +328,7 @@ class Controleur():
     def animate(self):
         if self.vue.gameInProg == True:
             self.creepWave()
+            self.modele.activateTower()
             self.modele.deathCheck()
             self.modele.creepMovement()
             self.vue.showGame()
