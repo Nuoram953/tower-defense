@@ -3,7 +3,7 @@ from tkinter import *
 import random
 
 class Creep1():
-    def __init__(self, parent, posX, posY, currentCheckpoint):
+    def __init__(self, parent, posX, posY, currentCheckpoint, boss):
         self.posX = posX
         self.posY = posY
         self.parent = parent
@@ -12,11 +12,19 @@ class Creep1():
         self.cibleY = self.currentCheckpoint.y
         self.vitesse = random.randint(5,10)
         self.buffer = 5
-        self.height = 105
-        self.width = 67
-        self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
-        self.zombie = PhotoImage(file=random.choice(self.listImage))
+        self.boss = boss
+
+        if boss:
+            self.listImage = ["assets/zombies/boss/boss1.png"]
+            self.height = 228
+            self.width = 175
+            self.vitesse = 7
+        else:
+            self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
+            self.height = 105
+            self.width = 67
         self.reachedEnd = False
+        self.zombie = PhotoImage(file = random.choice(self.listImage))
 
         self.moveHorizontal = True
         self.moveUp = False
@@ -70,5 +78,3 @@ class Creep1():
                     self.moveUp = False
                     self.moveDown = False
                     self.nextMoveHorizontal = False
-
-    
