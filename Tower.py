@@ -23,7 +23,7 @@ class PeaShooter():
         self.bulletSize = 10
 
     def tick(self):
-
+        print(self.target)
         self.rateOfFireCounter += 1
         if self.rateOfFireCounter >= self.rateOfFire:
             self.readyToFire = True
@@ -56,7 +56,10 @@ class PeaShooter():
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
                     bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "lightgreen", self.bulletSize, self.projectileSpeed, self.radius)
-                    self.projectileList.append(bullet)         
+                    self.projectileList.append(bullet)  
+
+            if len(targetPos) == 0:
+                self.projectileList = []       
         else:
             if self.checkDist < self.radius:
                 if self.readyToFire:
@@ -82,7 +85,7 @@ class PeaShooter():
                         else:
                             for autreBullet in self.projectileList:
                                 if autreBullet != bullet:
-                                    if autreBullet.bulletTarget == self.target:
+                                    if autreBullet.bulletTarget == bullet.bulletTarget:
                                         self.projectileList.remove(autreBullet)
 
                             self.parent.creepList.remove(self.target)
@@ -167,7 +170,10 @@ class IcePeaShooter():
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
                     bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "blue", self.bulletSize, self.projectileSpeed, self.radius)
-                    self.projectileList.append(bullet)         
+                    self.projectileList.append(bullet) 
+
+            if len(targetPos) == 0:
+                self.projectileList = []           
         else:
 
             if self.checkDist < self.radius:
@@ -203,7 +209,7 @@ class IcePeaShooter():
                             self.parent.creepList.remove(self.target)
                             self.parent.points["Pointage"] += 1
                             self.target = None
-                            
+
                     else:
                         self.target = None
 
@@ -270,7 +276,10 @@ class Catapult():
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
                     bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", self.bulletSize, self.projectileSpeed, self.radius)
-                    self.projectileList.append(bullet)         
+                    self.projectileList.append(bullet)
+
+            if len(targetPos) == 0:
+                self.projectileList = []            
         else:
 
             if self.checkDist < self.radius:
