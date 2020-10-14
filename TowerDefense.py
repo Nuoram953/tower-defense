@@ -60,10 +60,11 @@ class Vue():
         for tower in self.modele.TowerList:
             self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
             tower.tick()
-            for bullet in tower.projectileList:
-                bullet.move()
-                self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
 
+            if tower.projectileList:
+                for bullet in tower.projectileList:
+                    bullet.move()
+                    self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
 
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
