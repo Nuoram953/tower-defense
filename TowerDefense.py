@@ -184,6 +184,8 @@ class Modele():
         self.towerChoice = ""
 
         self.TowerList = []
+        
+        self.validPurchase = False
 
         self.points = {
             "Pointage":0,
@@ -223,7 +225,8 @@ class Modele():
         for square in self.CheckpointTowers:
             if event.x >= square.x and event.x <= square.x + self.SquareSize and event.y >= square.y and event.y <= square.y + self.SquareSize:
                 self.createTower(square.x, square.y, self.creepList)
-                self.CheckpointTowers.remove(square)
+                if self.validPurchase:
+                    self.CheckpointTowers.remove(square)
                 self.ShowSpots = not(self.ShowSpots)
 
     def createTower(self, posX, posY, creepList):
@@ -231,21 +234,28 @@ class Modele():
             tour = Tower.PeaShooter(self, posX, posY, creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["peaShooter"]
+            self.validPurchase = True
             
         elif self.towerChoice == "sunFlower" and self.costCheck("sunFlower"):
             tour = Tower.SunFlower(self, posX, posY)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["sunFlower"]
+            self.validPurchase = True
            
         elif self.towerChoice == "icePeaShooter" and self.costCheck("icePeaShooter"):
             tour = Tower.IcePeaShooter(self, posX, posY, creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["icePeaShooter"]
+            self.validPurchase = True
 
         elif self.towerChoice == "catapult" and self.costCheck("catapult"):
             tour = Tower.Catapult(self,posX,posY, creepList) 
             self.TowerList.append(tour)  
             self.points["Engrais"] -= self.towers["catapult"]
+            self.validPurchase = True
+        
+        else:
+            self.validPurchase = False
            
         
     def createCreep(self):
@@ -303,7 +313,7 @@ class Controleur():
         if len(self.modele.creepList) == 0:
             self.modele.createCreep()
             self.modele.points["Wave"] +=1
-            self.modele.points["Engrais"] += 25
+            self.modele.points["Engrais"] += 50
             if self.modele.points["Wave"] == 5:
                 self.modele.createBoss()
 
