@@ -63,9 +63,9 @@ class Vue():
 
             if tower.projectileList:
                 for bullet in tower.projectileList:
-                    if bullet.bulletTarget != None:
+                    if bullet.bulletTarget.posX != None and bullet.bulletTarget.posY != None and bullet.bulletTarget != None:
                         bullet.move()
-                        self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
+                        self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - bullet.size, bullet.bulletX + bullet.size, bullet.bulletY + bullet.size, fill=bullet.color)
 
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
