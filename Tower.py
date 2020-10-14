@@ -14,21 +14,13 @@ class PeaShooter():
         self.speed = 20
         self.radius = 250
         self.creepList = creepList
-        self.currentDelay = 0
-        self.rateOfFire = 5
-        self.rateOfFireCounter = 0
-        self.readyToFire = True
-        self.projectileSpeed = 25
-        self.shootDelay = 5
+        self.projectileSpeed = 20
         self.image = PhotoImage(file="assets/towers/peaShooter.png")
         self.checkDist = None
+        self.time = 5000
 
     def tick(self):
-        if not self.readyToFire:
-            self.rateOfFireCounter += 1
-            if self.rateOfFireCounter >= self.rateOfFire:
-                self.readyToFire = True
-
+       
         self.creepList = self.parent.updateCreepList()
 
         if self.target:
@@ -36,52 +28,45 @@ class PeaShooter():
             if self.checkDist > self.radius:
                 self.target = None
 
-        if self.target == None or self.checkDist > self.radius:
+        if self.target == None:
             targetPos = []
             for creep in self.creepList:
                 dist = helper.Helper.calcDistance(self.posX, self.posY, creep.posX, creep.posY)
                 if dist < self.radius:
                     targetPos.append(creep)
+
             if targetPos:
                 self.target = random.choice(targetPos)
-                bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", 10, self.projectileSpeed, self.radius)
-                self.projectileList.append(bullet)
-                self.readyToFire = False
+
+                bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "lightgreen", 10, self.projectileSpeed, self.radius)
+                self.projectileList.append(bullet)         
         else:
             for bullet in self.projectileList:
 
                 if bullet.bulletTarget == None:
                     self.projectileList.remove(bullet)
-                    del bullet
-                    pass
-                elif bullet.bulletX >= bullet.bulletTargetX - 29 and bullet.bulletX <= bullet.bulletTargetX + 29 and bullet.bulletY >= bullet.bulletTargetY - 29 and bullet.bulletY <= bullet.bulletTargetY + 29:
 
-                    if bullet.bulletTarget.health != 0:
+                elif bullet.bulletX >= bullet.bulletTargetX - 50 and bullet.bulletX <= bullet.bulletTargetX + 50 and bullet.bulletY >= bullet.bulletTargetY - 50 and bullet.bulletY <= bullet.bulletTargetY + 50:
+
+                    if bullet.bulletTarget.health > 0:
                         bullet.bulletTarget.health -= 1
-
-                        if self.checkDist < self.radius and self.readyToFire:
-                            nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX,
-                                                self.target.posY, 1, "green", 10, self.projectileSpeed, self.radius)
+                        if self.checkDist < self.radius:
+                            nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "lightgreen", 10, self.projectileSpeed, self.radius)
                             self.projectileList.append(nextBullet)
-                            self.rateOfFireCounter = 0
-                            self.readyToFire = False
+
                     elif bullet.bulletTarget.health == 0 and self.target != None:
                         self.parent.creepList.remove(self.target)
-                        del self.target
                         self.parent.points["Pointage"] += 1
                         self.target = None
-                        self.rateOfFireCounter = 0
-                        self.readyToFire = False
                     else:
                         pass
 
+                if len(self.projectileList) > 1:
                     self.projectileList.remove(bullet)
-                    del bullet
+                
 
     def updateTarget(self, target):
-
         for creep in self.creepList:
-            dist = helper.Helper.calcDistance(self.posX, self.posY, creep.posX, creep.posY)
             if creep == target:
                 return creep
 
@@ -94,30 +79,140 @@ class SunFlower():
         self.image = PhotoImage(file="assets/towers/sunFlower.png")
 
     def tick(self):
-        print("S U N")
+        print("sun")
 
 class IcePeaShooter():
     def __init__(self, parent, posX, posY, creepList):
         self.parent = parent
         self.posX = posX
         self.posY = posY
+        self.target = None
+        self.projectileList = []
+        self.totalAmmo = 10
+        self.speed = 20
+        self.radius = 250
         self.creepList = creepList
+        self.projectileSpeed = 20
         self.image = PhotoImage(file="assets/towers/icePeaShooter.png")
-        
+       
+    def tick(self):
+       
+        self.creepList = self.parent.updateCreepList()
 
-    def Shoot(self):
-        print("I C E")
+        if self.target:
+            self.checkDist = helper.Helper.calcDistance(self.posX, self.posY, self.target.posX, self.target.posY)
+            if self.checkDist > self.radius:
+                self.target = None
+
+        if self.target == None:
+            targetPos = []
+            for creep in self.creepList:
+                dist = helper.Helper.calcDistance(self.posX, self.posY, creep.posX, creep.posY)
+                if dist < self.radius:
+                    targetPos.append(creep)
+
+            if targetPos:
+                self.target = random.choice(targetPos)
+
+                bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "blue", 10, self.projectileSpeed, self.radius)
+                self.projectileList.append(bullet)         
+        else:
+            for bullet in self.projectileList:
+
+                if bullet.bulletTarget == None:
+                    self.projectileList.remove(bullet)
+
+                elif bullet.bulletX >= bullet.bulletTargetX - 50 and bullet.bulletX <= bullet.bulletTargetX + 50 and bullet.bulletY >= bullet.bulletTargetY - 50 and bullet.bulletY <= bullet.bulletTargetY + 50:
+
+                    if bullet.bulletTarget.health > 0:
+                        bullet.bulletTarget.health -= 1
+                        if self.checkDist < self.radius:
+                            nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "blue", 10, self.projectileSpeed, self.radius)
+                            self.projectileList.append(nextBullet)
+
+                    elif bullet.bulletTarget.health == 0 and self.target != None:
+                        self.parent.creepList.remove(self.target)
+                        self.parent.points["Pointage"] += 1
+                        self.target = None
+                    else:
+                        pass
+
+                if len(self.projectileList) > 1:
+                    self.projectileList.remove(bullet)
+                
+
+    def updateTarget(self, target):
+        for creep in self.creepList:
+            if creep == target:
+                return creep
 
 class Catapult():
     def __init__(self, parent, posX, posY, creepList):
         self.parent = parent
         self.posX = posX
         self.posY = posY
+        self.target = None
+        self.projectileList = []
+        self.totalAmmo = 10
+        self.speed = 20
+        self.radius = 250
+        self.creepList = creepList
+        self.projectileSpeed = 20
         self.image = PhotoImage(file="assets/towers/catapult.png")
-
-
+       
     def tick(self):
-        print("I C E")
+       
+        self.creepList = self.parent.updateCreepList()
+
+        if self.target:
+            self.checkDist = helper.Helper.calcDistance(self.posX, self.posY, self.target.posX, self.target.posY)
+            if self.checkDist > self.radius:
+                self.target = None
+
+        if self.target == None:
+            targetPos = []
+            for creep in self.creepList:
+                dist = helper.Helper.calcDistance(self.posX, self.posY, creep.posX, creep.posY)
+                if dist < self.radius:
+                    targetPos.append(creep)
+
+            if targetPos:
+                self.target = random.choice(targetPos)
+
+                bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", 10, self.projectileSpeed, self.radius)
+                self.projectileList.append(bullet)         
+        else:
+            for bullet in self.projectileList:
+
+                if bullet.bulletTarget == None:
+                    self.projectileList.remove(bullet)
+
+                elif bullet.bulletX >= bullet.bulletTargetX - 30 and bullet.bulletX <= bullet.bulletTargetX + 30 and bullet.bulletY >= bullet.bulletTargetY - 30 and bullet.bulletY <= bullet.bulletTargetY + 30:
+
+                    if bullet.bulletTarget.health > 0:
+                        bullet.bulletTarget.health -= 1
+                        if self.checkDist < self.radius:
+                            nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", 10, self.projectileSpeed, self.radius)
+                            self.projectileList.append(nextBullet)
+
+                    elif bullet.bulletTarget.health == 0 and self.target != None:
+                        if creep not in self.parent.creepList:
+                            pass
+                        else:
+                            self.parent.creepList.remove(self.target)
+                        self.parent.points["Pointage"] += 1
+                        self.target = None
+                    else:
+                        pass
+
+                if len(self.projectileList) > 1:
+                    self.projectileList.remove(bullet)
+                
+
+    def updateTarget(self, target):
+        for creep in self.creepList:
+            if creep == target:
+                return creep
 
 class Bullet():
     def __init__(self, parent, towerX, towerY, target, targetX, targetY, damage, color, size, speed, radius):
@@ -157,5 +252,3 @@ class Bullet():
 
         if self.speed > dist and dist <= self.towerRadius:
             return self
-        else:
-            pass

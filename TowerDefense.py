@@ -26,6 +26,7 @@ class Vue():
         self.img = None
         self.gameInProg = False
         self.towerArray = []
+        self.tick = False
 
     def windowMenu(self):
         self.menuFrame = Frame(self.root, bg="spring green3")
@@ -47,8 +48,7 @@ class Vue():
     def getXY(self,evt):
         pass
         #print(evt.x, evt.y)
-
-
+    
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
@@ -63,8 +63,9 @@ class Vue():
 
             if tower.projectileList:
                 for bullet in tower.projectileList:
-                    bullet.move()
-                    self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
+                    if bullet.bulletTarget != None:
+                        bullet.move()
+                        self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - 10, bullet.bulletX + 10, bullet.bulletY + 10,fill=bullet.color)
 
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
@@ -246,10 +247,6 @@ class Modele():
             tour = Tower.Catapult(self,posX,posY, creepList) 
             self.TowerList.append(tour)  
             self.points["Engrais"] -= self.towers["catapult"]
-
-    def activateTower(self):
-        for tower in self.TowerList:
-            tower.tick()
            
         
     def createCreep(self):
@@ -318,12 +315,11 @@ class Controleur():
     def animate(self):
         if self.vue.gameInProg == True:
             self.creepWave()
-            self.modele.activateTower()
             self.modele.deathCheck()
             self.modele.creepMovement()
             self.vue.showGame()
             self.vue.update()
-            self.vue.root.after(10, self.animate)
+            self.vue.root.after(25, self.animate)
             
 if __name__ == '__main__':
     c = Controleur()
