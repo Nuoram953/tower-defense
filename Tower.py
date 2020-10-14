@@ -21,13 +21,20 @@ class PeaShooter():
         self.time = 5000
 
     def tick(self):
+
+        print("PEASHOOTER TARGET:", self.target)
        
         self.creepList = self.parent.updateCreepList()
+        if self.target != None:
+            if self.target not in self.creepList:
+                self.target = None
 
-        if self.target:
+        if self.target != None:
             self.checkDist = helper.Helper.calcDistance(self.posX, self.posY, self.target.posX, self.target.posY)
             if self.checkDist > self.radius:
                 self.target = None
+            else:
+                pass
 
         if self.target == None:
             targetPos = []
@@ -47,19 +54,22 @@ class PeaShooter():
                 if bullet.bulletTarget == None:
                     self.projectileList.remove(bullet)
 
-                elif bullet.bulletX >= bullet.bulletTargetX - 50 and bullet.bulletX <= bullet.bulletTargetX + 50 and bullet.bulletY >= bullet.bulletTargetY - 50 and bullet.bulletY <= bullet.bulletTargetY + 50:
+                elif bullet.bulletX >= bullet.bulletTargetX - 30 and bullet.bulletX <= bullet.bulletTargetX + 30 and bullet.bulletY >= bullet.bulletTargetY - 30 and bullet.bulletY <= bullet.bulletTargetY + 30:
 
-                    if bullet.bulletTarget.health > 0:
+                    if bullet.bulletTarget.health > self.damage:
                         bullet.bulletTarget.health -= self.damage
+
                         if self.checkDist < self.radius:
                             nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "lightgreen", 10, self.projectileSpeed, self.radius)
                             self.projectileList.append(nextBullet)
 
-                    elif bullet.bulletTarget.health <= 0 and self.target != None:
+                    elif bullet.bulletTarget.health <= self.damage and self.target != None:
                         if self.target not in self.parent.creepList:
                             self.target = None
-                        self.parent.points["Pointage"] += 1
-                        self.target = None
+                        else:
+                            self.parent.creepList.remove(self.target)
+                            self.parent.points["Pointage"] += 1
+                            self.target = None
                     else:
                         self.target = None
 
@@ -81,7 +91,7 @@ class SunFlower():
         self.image = PhotoImage(file="assets/towers/sunFlower.png")
 
     def tick(self):
-        print("sun")
+        pass
 
 class IcePeaShooter():
     def __init__(self, parent, posX, posY, creepList):
@@ -96,16 +106,24 @@ class IcePeaShooter():
         self.damage = 3
         self.creepList = creepList
         self.projectileSpeed = 20
+        self.slow = 0.2
         self.image = PhotoImage(file="assets/towers/icePeaShooter.png")
        
     def tick(self):
+
+        print("ICESHOOTER TARGET:", self.target)
        
         self.creepList = self.parent.updateCreepList()
+        if self.target != None:
+            if self.target not in self.creepList:
+                self.target = None
 
-        if self.target:
+        if self.target != None:
             self.checkDist = helper.Helper.calcDistance(self.posX, self.posY, self.target.posX, self.target.posY)
             if self.checkDist > self.radius:
                 self.target = None
+            else:
+                pass
 
         if self.target == None:
             targetPos = []
@@ -125,19 +143,25 @@ class IcePeaShooter():
                 if bullet.bulletTarget == None:
                     self.projectileList.remove(bullet)
 
-                elif bullet.bulletX >= bullet.bulletTargetX - 50 and bullet.bulletX <= bullet.bulletTargetX + 50 and bullet.bulletY >= bullet.bulletTargetY - 50 and bullet.bulletY <= bullet.bulletTargetY + 50:
+                elif bullet.bulletX >= bullet.bulletTargetX - 30 and bullet.bulletX <= bullet.bulletTargetX + 30 and bullet.bulletY >= bullet.bulletTargetY - 30 and bullet.bulletY <= bullet.bulletTargetY + 30:
 
-                    if bullet.bulletTarget.health > 0:
+                    if bullet.bulletTarget.health > self.damage:
                         bullet.bulletTarget.health -= self.damage
+
+                        if bullet.bulletTarget.vitesse > 2:
+                            bullet.bulletTarget.vitesse -= self.slow
+
                         if self.checkDist < self.radius:
                             nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "blue", 10, self.projectileSpeed, self.radius)
                             self.projectileList.append(nextBullet)
 
-                    elif bullet.bulletTarget.health <= 0 and self.target != None:
+                    elif bullet.bulletTarget.health <= self.damage and self.target != None:
                         if self.target not in self.parent.creepList:
                             self.target = None
-                        self.parent.points["Pointage"] += 1
-                        self.target = None
+                        else:
+                            self.parent.creepList.remove(self.target)
+                            self.parent.points["Pointage"] += 1
+                            self.target = None
                     else:
                         self.target = None
 
@@ -167,14 +191,19 @@ class Catapult():
        
     def tick(self):
 
-        print(self.target)
+        print("CATAPULT TARGET:", self.target)
        
         self.creepList = self.parent.updateCreepList()
+        if self.target != None:
+            if self.target not in self.creepList:
+                self.target = None
 
-        if self.target:
+        if self.target != None:
             self.checkDist = helper.Helper.calcDistance(self.posX, self.posY, self.target.posX, self.target.posY)
             if self.checkDist > self.radius:
                 self.target = None
+            else:
+                pass
 
         if self.target == None:
             targetPos = []
@@ -196,20 +225,35 @@ class Catapult():
 
                 elif bullet.bulletX >= bullet.bulletTargetX - 30 and bullet.bulletX <= bullet.bulletTargetX + 30 and bullet.bulletY >= bullet.bulletTargetY - 30 and bullet.bulletY <= bullet.bulletTargetY + 30:
 
-                    if bullet.bulletTarget.health > 0:
+                    if bullet.bulletTarget.health > self.damage:
                         bullet.bulletTarget.health -= self.damage
+
+                        for creep in self.creepList:
+                            if creep.posX >= bullet.bulletTargetX - self.damageRadius and creep.posX <= bullet.bulletTargetX + self.damageRadius and creep.posY >= bullet.bulletTargetY - self.damageRadius and creep.posY <= bullet.bulletTargetY + self.damageRadius:
+                                creep.health -= self.damage
+
+                                if creep.health <= 0:
+                                    self.parent.creepList.remove(creep)
+
                         if self.checkDist < self.radius:
                             nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", 10, self.projectileSpeed, self.radius)
                             self.projectileList.append(nextBullet)
 
-                    elif bullet.bulletTarget.health <= 0 and self.target != None:
+                    elif bullet.bulletTarget.health <= self.damage and self.target != None:
                         if self.target not in self.parent.creepList:
                             self.target = None
                         else:
                             self.parent.creepList.remove(self.target)
+                            self.parent.points["Pointage"] += 1
 
-                        self.parent.points["Pointage"] += 1
-                        self.target = None
+                            for creep in self.creepList:
+                                if creep != self.target:
+                                    if creep.posX >= bullet.bulletTargetX - self.damageRadius and creep.posX <= bullet.bulletTargetX + self.damageRadius and creep.posY >= bullet.bulletTargetY - self.damageRadius and creep.posY <= bullet.bulletTargetY + self.damageRadius:
+                                        creep.health -= self.damage
+
+                                    if creep.health <= 0:
+                                        self.parent.creepList.remove(creep)
+                            self.target = None
                     else:
                         self.target = None
 
