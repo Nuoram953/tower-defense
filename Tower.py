@@ -21,6 +21,7 @@ class PeaShooter():
         self.rateOfFire = 10
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
+        self.bulletColor = "lightgreen"
 
     def tick(self):
         print(self.target)
@@ -55,7 +56,7 @@ class PeaShooter():
                 if self.readyToFire:
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
-                    bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "lightgreen", self.bulletSize, self.projectileSpeed, self.radius)
+                    bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, self.bulletColor, self.bulletSize, self.projectileSpeed, self.radius)
                     self.projectileList.append(bullet)  
 
             if len(targetPos) == 0:
@@ -65,7 +66,7 @@ class PeaShooter():
                 if self.readyToFire:
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
-                    nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "lightgreen", self.bulletSize, self.projectileSpeed, self.radius)
+                    nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, self.bulletColor, self.bulletSize, self.projectileSpeed, self.radius)
                     self.projectileList.append(nextBullet)
 
             for bullet in self.projectileList:
@@ -134,6 +135,7 @@ class IcePeaShooter():
         self.rateOfFire = 20
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
+        self.bulletColor = "lightblue"
        
     def tick(self):
 
@@ -169,7 +171,7 @@ class IcePeaShooter():
                 if self.readyToFire:
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
-                    bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "blue", self.bulletSize, self.projectileSpeed, self.radius)
+                    bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, self.bulletColor, self.bulletSize, self.projectileSpeed, self.radius)
                     self.projectileList.append(bullet) 
 
             if len(targetPos) == 0:
@@ -180,7 +182,7 @@ class IcePeaShooter():
                 if self.readyToFire:
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
-                    nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "blue", self.bulletSize, self.projectileSpeed, self.radius)
+                    nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, self.bulletColor, self.bulletSize, self.projectileSpeed, self.radius)
                     self.projectileList.append(nextBullet)
 
             for bullet in self.projectileList:
@@ -241,6 +243,8 @@ class Catapult():
         self.rateOfFire = 40
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 20
+        self.bulletColor = "green"
+        self.impact = False
        
     def tick(self):
 
@@ -275,7 +279,7 @@ class Catapult():
                 if self.readyToFire:
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
-                    bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", self.bulletSize, self.projectileSpeed, self.radius)
+                    bullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, self.bulletColor, self.bulletSize, self.projectileSpeed, self.radius)
                     self.projectileList.append(bullet)
 
             if len(targetPos) == 0:
@@ -286,7 +290,7 @@ class Catapult():
                 if self.readyToFire:
                     self.readyToFire = False
                     self.rateOfFireCounter = 0
-                    nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, "green", self.bulletSize, self.projectileSpeed, self.radius)
+                    nextBullet = Bullet(self, self.posX, self.posY, self.target, self.target.posX, self.target.posY, 1, self.bulletColor, self.bulletSize, self.projectileSpeed, self.radius)
                     self.projectileList.append(nextBullet)
 
             for bullet in self.projectileList:
