@@ -233,7 +233,7 @@ class Catapult():
         self.target = None
         self.projectileList = []
         self.speed = 20
-        self.radius = 500
+        self.radius = 400
         self.damage = 5
         self.damageRadius = 100
         self.epicenter = self.damageRadius / 2

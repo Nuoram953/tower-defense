@@ -114,6 +114,8 @@ class Vue():
         if len(self.modele.trapList) != 0:
             for trap in self.modele.trapList:
 
+                self.modele.trapDamage(trap)
+
                 if trap.outOfFrame() == True:
                     self.modele.trapList.remove(trap)
                     del trap
@@ -253,7 +255,7 @@ class Modele():
             "Vie":10,
             "Engrais":75,
             "RayonUV":0,
-            "Wave":4,
+            "Wave":0,
             "Niveau":1
         }
 
@@ -324,6 +326,7 @@ class Modele():
         
     def createCreep(self):
         nbCreep = random.randint(5,10)
+        nbCreep += (self.points["Wave"] * 3)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
             self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0], False))
@@ -386,7 +389,6 @@ class Modele():
             self.trapSelected = not(self.trapSelected)
 
     def getMowerPosition(self,evt):
-
         if self.trapChoice == "mower" and self.trapSelected:
             x = evt.x
             y = evt.y
@@ -394,8 +396,20 @@ class Modele():
             self.trapSelected = not(self.trapSelected)
 
     def createMower(self,x,y):
-
         self.trapList.append(Mower.Mower(self, x, y, self.mowerSpeed))
+
+    def trapDamage(self, trap):
+        for creep in self.creepList:
+            if trap.posX >= creep.posX - 50 and trap.posX <= creep.posX + 50 and trap.posY >= creep.posY - 50 and trap.posY <= creep.posY + 50:
+                creep.hitByTrap = True
+
+                if creep.hitByTrap and creep.hittable:
+                    creep.hittable = False
+                    creep.health -= trap.damage
+
+                    if creep.health <= 0:
+                        self.creepList.remove(creep)
+                    
 
 class Controleur():
     def __init__(self):
@@ -416,7 +430,7 @@ class Controleur():
 
     def addUV(self):
         self.modele.sunflowerUV()
-        self.vue.root.after(10000, self.addUV)
+        self.vue.root.after(20000, self.addUV)
 
 
     def animate(self):
