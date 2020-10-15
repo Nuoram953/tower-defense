@@ -11,6 +11,7 @@ import random
 import MapCheckpoints
 import Tower
 import Creep
+import Mower
 import Checkpoint
 
 class Vue():
@@ -27,6 +28,9 @@ class Vue():
         self.gameInProg = False
         self.towerArray = []
         self.tick = False
+        self.mushroomCounter = self.modele.mushroomDuration
+        self.mowerPositionSelected = False
+
 
     def windowMenu(self):
         self.menuFrame = Frame(self.root, bg="spring green3")
@@ -46,12 +50,15 @@ class Vue():
         self.menuFrame.pack()
 
     def getXY(self,evt):
-        pass
+        return evt.x,evt.y
         #print(evt.x, evt.y)
     
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
+
+        if self.modele.mushroomInUse:
+            self.mushroomCounter -= 1
 
         self.img = PhotoImage(file="assets/Map #1/grass/map1.1.png")
 
@@ -61,11 +68,37 @@ class Vue():
             self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
             tower.tick()
 
-            if tower.projectileList:
+            if isinstance(tower, Tower.Catapult) and tower.impact:
+
+                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius/8), tower.impactY - (tower.damageRadius/8),tower.impactX + (tower.damageRadius/8), tower.impactY + (tower.damageRadius/8),outline="red", width=4, tags="circle1")
+                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 4),
+                                            tower.impactY - (tower.damageRadius / 4),
+                                            tower.impactX + (tower.damageRadius / 4),
+                                            tower.impactY + (tower.damageRadius / 4), outline="red3", width=3,
+                                            tags="circle2")
+                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 2),
+                                            tower.impactY - (tower.damageRadius / 2),
+                                            tower.impactX + (tower.damageRadius / 2),
+                                            tower.impactY + (tower.damageRadius / 2), outline="DarkOrange1", width=3,
+                                            tags="circle3")
+                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 1.25),
+                                            tower.impactY - (tower.damageRadius / 1.25),
+                                            tower.impactX + (tower.damageRadius / 1.25),
+                                            tower.impactY + (tower.damageRadius / 1.25), outline="orange", dash=4,
+                                            tags="circle4")
+                self.gameCanvas.create_oval(tower.impactX - tower.damageRadius,
+                                            tower.impactY - tower.damageRadius,
+                                            tower.impactX + tower.damageRadius,
+                                            tower.impactY + tower.damageRadius, outline="yellow", dash=3,
+                                            tags="circle5")
+
+            if tower.projectileList != None:
+
                 for bullet in tower.projectileList:
                     if bullet.bulletTarget.posX != None and bullet.bulletTarget.posY != None and bullet.bulletTarget != None:
                         bullet.move()
                         self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - bullet.size, bullet.bulletX + bullet.size, bullet.bulletY + bullet.size, fill=bullet.color)
+
 
         if self.modele.ShowSpots == True:
             for spot in self.modele.CheckpointTowers:
@@ -73,8 +106,26 @@ class Vue():
 
             self.gameCanvas.tag_bind("square", "<Button>", self.modele.SelectSquare)
 
+
         for i in self.modele.creepList:
+
             self.gameCanvas.create_image(i.posX-(i.width/2),i.posY-(i.height/2),image=i.zombie, anchor=NW)
+
+        if len(self.modele.trapList) != 0:
+            for trap in self.modele.trapList:
+
+                if trap.outOfFrame() == True:
+                    self.modele.trapList.remove(trap)
+                    del trap
+                else:
+                    self.gameCanvas.create_image(trap.posX-(trap.width/2), trap.posY-(trap.height/2), image=trap.image, anchor=NW)
+                    trap.move()
+
+        if self.mushroomCounter <= 0:
+            self.mushroomCounter = self.modele.mushroomDuration
+            self.modele.mushroomInUse = False
+
+
 
     def gameWindow(self):
         self.menuFrame.pack_forget()
@@ -148,9 +199,11 @@ class Vue():
         self.towerFrame.create_text(220,320, text = "Tondeuse: 100 (UV)" , font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
+        self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
         self.gameCanvas.bind("<Button>", self.getXY)
+        self.gameCanvas.bind("<Button>",self.modele.getMowerPosition)
         self.game.pack()
         
         self.gameInProg = True
@@ -163,6 +216,7 @@ class Vue():
         self.ressourceFrame.itemconfigure(self.uv, text = self.modele.points["RayonUV"])
         self.ressourceFrame.itemconfigure(self.level, text = self.modele.points["Niveau"])
         self.ressourceFrame.itemconfigure(self.pointage, text = self.modele.points["Pointage"])
+
         
     def options(self):
         pass
@@ -182,10 +236,17 @@ class Modele():
         self.SquareColor = "lightgreen"
 
         self.towerChoice = ""
+        self.trapChoice = ""
+        self.trapSelected = False
 
         self.TowerList = []
         
         self.validPurchase = False
+        self.mushroomInUse = False
+        self.mushroomDuration = 50
+
+        self.trapList = []
+        self.mowerSpeed = 30
 
         self.points = {
             "Pointage":0,
@@ -205,6 +266,9 @@ class Modele():
     
     def costCheck (self, tower):
         return self.points["Engrais"] >= self.towers[tower]
+
+    #self.traps dictionary
+    #def UVCheck function
 
     def ShowSquares(self, event):
         self.ShowSpots = not(self.ShowSpots)
@@ -270,10 +334,14 @@ class Modele():
     def createBoss(self):
         distanceX = random.randint(-500, 0)
         self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], True))
-        
+
     def creepMovement(self):
         for i in self.creepList:
-            i.move()
+
+            if not self.mushroomInUse:
+                i.move()
+            else:
+                i.wait()
 
     def getNextCheckpoint(self, currentCheckpoint):
         currentIndex = self.checkpointList.index(currentCheckpoint)
@@ -298,8 +366,37 @@ class Modele():
         for tower in self.TowerList:
             if isinstance(tower, Tower.SunFlower):
                 self.points["RayonUV"] += 5
-                
-                
+
+    def getTrapSelected(self, event):
+
+        self.trapSelected = not(self.trapSelected)
+
+        element = event.widget.gettags("current")
+
+        if "mushroom" in element:
+
+            self.trapChoice = "mushroom"
+            self.activateMushroom()
+        elif "mower" in element:
+            self.trapChoice = "mower"
+
+    def activateMushroom(self):
+        if self.trapChoice == "mushroom" and self.trapSelected:
+            self.mushroomInUse = True
+            self.trapSelected = not(self.trapSelected)
+
+    def getMowerPosition(self,evt):
+
+        if self.trapChoice == "mower" and self.trapSelected:
+            x = evt.x
+            y = evt.y
+            self.createMower(x,y)
+            self.trapSelected = not(self.trapSelected)
+
+    def createMower(self,x,y):
+
+        self.trapList.append(Mower.Mower(self, x, y, self.mowerSpeed))
+
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
@@ -320,6 +417,7 @@ class Controleur():
     def addUV(self):
         self.modele.sunflowerUV()
         self.vue.root.after(10000, self.addUV)
+
 
     def animate(self):
         if self.vue.gameInProg == True:
