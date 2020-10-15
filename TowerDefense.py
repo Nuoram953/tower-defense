@@ -8,6 +8,8 @@
 
 from tkinter import *
 import random
+
+
 import MapCheckpoints
 import Tower
 import Creep
