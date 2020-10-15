@@ -62,7 +62,7 @@ class Vue():
         if self.modele.mushroomInUse:
             self.mushroomCounter -= 1
 
-        self.img = PhotoImage(file="assets/Map #1/grass/map1.1.png")
+        self.img = PhotoImage(file="assets/Map #1/grass/map1.1.png")                ################## if self.modele.currentMap = 1(2,3...), self.img = ..... todo
 
         self.gameCanvas.create_image(0, 0, image=self.img, anchor=NW)
 
@@ -165,10 +165,10 @@ class Vue():
         self.upgradeFrame.create_image(0,0, image=self.upgradeBg, anchor=NW)
 
         self.ressourceFrame.create_text(65,85,text = "Pointage: ", font = ("Times","18","bold"), fill = "white")
-        self.pointage = self.ressourceFrame.create_text(140,85, text = self.modele.points["Pointage"], font = ("Times", "18", "bold"), fill ="white")
+        self.pointage = self.ressourceFrame.create_text(140,85, text = self.modele.points["Pointage"], font = ("Times", "18", "bold"), fill ="white")   # faire en sorte que point s'update selon niveau avec self.modele.currentPoints todo
 
         self.ressourceFrame.create_text(210,85,text = "Vie: ", font = ("Times","18","bold"), fill = "white")
-        self.vie = self.ressourceFrame.create_text(255,85, text = self.modele.points["Vie"], font = ("Times", "18", "bold"), fill ="white")
+        self.vie = self.ressourceFrame.create_text(255,85, text = self.modele.points["Vie"], font = ("Times", "18", "bold"), fill ="white") # faire en sorte que vie s'update selon niveau todo
 
         self.ressourceFrame.create_text(60,120,text = "Engrais: ", font = ("Times","18","bold"), fill = "white")
         self.engrais = self.ressourceFrame.create_text(140,120, text = self.modele.points["Engrais"], font = ("Times", "18", "bold"), fill ="white")
@@ -185,22 +185,22 @@ class Vue():
         self.ressourceFrame.create_text(150, 220, text = "NOM DU JOUEUR", font = ("Times", "24", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 50, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
-        self.towerFrame.create_text(90,120, text = "PeaShooter: 25" , font = ("Times", "12", "bold"), fill = "white")
+        self.towerFrame.create_text(90,120, text = "PeaShooter: 25" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 45, image=self.sunFlowerimg, anchor=NE,tags = ("sunFlower", "tower"))
-        self.towerFrame.create_text(220,120, text = "Sunflower: 20" , font = ("Times", "12", "bold"), fill = "white")
+        self.towerFrame.create_text(220,120, text = "Sunflower: 20" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(120, 150, image=self.icePeaShooterimg, anchor=NE,tags = ("icePeaShooter", "tower"))
-        self.towerFrame.create_text(90,220, text = "IcePeaShooter: 35" , font = ("Times", "12", "bold"), fill = "white")
+        self.towerFrame.create_text(90,220, text = "IcePeaShooter: 35" , font = ("Times", "12", "bold"), fill = "white")    # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 150, image = self.catapultimg, anchor = NE,tags = ("catapult", "tower"))
-        self.towerFrame.create_text(220,220, text = "Catapulte: 40" , font = ("Times", "12", "bold"), fill = "white")
+        self.towerFrame.create_text(220,220, text = "Catapulte: 40" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(120, 250, image = self.mushimg, anchor = NE,tags = ("mushroom", "hability"))
-        self.towerFrame.create_text(90,320, text = "Mush: 50 (UV)" , font = ("Times", "12", "bold"), fill = "white")
+        self.towerFrame.create_text(90,320, text = "Mush: 50 (UV)" , font = ("Times", "12", "bold"), fill = "white")        # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 250, image = self.mowerimg, anchor = NE, tags = ("mower", "hability"))
-        self.towerFrame.create_text(220,320, text = "Tondeuse: 100 (UV)" , font = ("Times", "12", "bold"), fill = "white")
+        self.towerFrame.create_text(220,320, text = "Tondeuse: 100 (UV)" , font = ("Times", "12", "bold"), fill = "white")  # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
@@ -231,26 +231,60 @@ class Vue():
 class Modele():
     def __init__(self, parent):
         self.parent = parent
+        # MAP / LEVEL
+        self.currentMap = 1             # si on passe au prochain niveau, self.currentMap++ todo
+
+
+
+
+        # CREEP / BOSS
         self.creepList = []
-        self.checkpointList = MapCheckpoints.mapCreeps[1]
+        self.creepHealth = 40                               # à la création des creeps: self.creepHealth * self.currentMap todo
+        self.bossHealth = 120                               # à la création des boss: self.bossHealth * self.currentMap todo
+        self.checkpointList = MapCheckpoints.mapCreeps[1]   #self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] pour aller chercher map et checkpoints automatiquement todo
 
         self.ShowSpots = False
-        self.CheckpointTowers = MapCheckpoints.mapTowers[1]
+        self.CheckpointTowers = MapCheckpoints.mapTowers[1] #self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] todo
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
 
+        # TOWERS
         self.towerChoice = ""
-        self.trapChoice = ""
-        self.trapSelected = False
-
         self.TowerList = []
+
+        #PEASHOOTER
+        self.peaTowerDamage = 2
+        self.peaTowerCost = 25
+
+        #ICESHOOTER
+        self.iceTowerDamage = 3
+        self.iceTowerCost = 35
+
+        #CATAPULT
+        self.catapultDamage = 5
+        self.catapultCost = 40
+
+        #SUNFLOWER
+        self.perSunflowerUV = 5
+        self.sunflowerCost = 20
         
         self.validPurchase = False
+
+        # TRAPS
+        self.trapList = []
+        self.trapChoice = ""
+        self.trapSelected = False
         self.mushroomInUse = False
         self.mushroomDuration = 50
-
-        self.trapList = []
+        self.mushUVCost = 50
+        self.mowerUV = 100
         self.mowerSpeed = 30
+
+        # USER
+        self.currentPoints = 0                 # si on passe au prochain niveau, on save nos points courants pour continuer notre high score todo
+        self.userVie = 10
+        self.startFertilizer = 75
+
 
         self.points = {
             "Pointage":0,
@@ -272,7 +306,7 @@ class Modele():
         return self.points["Engrais"] >= self.towers[tower]
 
     #self.traps dictionary
-    #def UVCheck function
+    #def UVCheck function todo
 
     def ShowSquares(self, event):
         self.ShowSpots = not(self.ShowSpots)
@@ -299,7 +333,7 @@ class Modele():
 
     def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter" and self.costCheck("peaShooter"):
-            tour = Tower.PeaShooter(self, posX, posY, creepList)
+            tour = Tower.PeaShooter(self, posX, posY, creepList)                # tour = Tower.PeaShooter(self, posX, posY, creepList, (self.peaTowerDamage * self.currentMap)) todo
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["peaShooter"]
             self.validPurchase = True
@@ -311,13 +345,13 @@ class Modele():
             self.validPurchase = True
            
         elif self.towerChoice == "icePeaShooter" and self.costCheck("icePeaShooter"):
-            tour = Tower.IcePeaShooter(self, posX, posY, creepList)
+            tour = Tower.IcePeaShooter(self, posX, posY, creepList)             # tour = Tower.IcePeaShooter(self, posX, posY, creepList, (self.iceTowerDamage * self.currentMap)) todo
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["icePeaShooter"]
             self.validPurchase = True
 
         elif self.towerChoice == "catapult" and self.costCheck("catapult"):
-            tour = Tower.Catapult(self,posX,posY, creepList) 
+            tour = Tower.Catapult(self,posX,posY, creepList)                    # tour = Tower.Catapult(self,posX,posY, creepList, (self.catapultDamage * self.currentMap)) todo
             self.TowerList.append(tour)  
             self.points["Engrais"] -= self.towers["catapult"]
             self.validPurchase = True
@@ -364,13 +398,15 @@ class Modele():
                 if self.points["Vie"] > 0:
                     self.points["Vie"] -= 1
                 else:
-                    #methode game over
-                    pass    
+                    #methode game over todo
+                    pass
+
+    # fonction nextLevelCheck si toujours en vie et no more creep waves, newgame, self.currentMap++ todo
     
     def sunflowerUV (self):
         for tower in self.TowerList:
             if isinstance(tower, Tower.SunFlower):
-                self.points["RayonUV"] += 5
+                self.points["RayonUV"] += 5             ########################### self.perSunflowerUV todo
 
     def getTrapSelected(self, event):
 
