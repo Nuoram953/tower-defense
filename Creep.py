@@ -51,7 +51,10 @@ class Creep1():
                     self.posY += self.vitesse
                 else:
                     self.updateTargetPosition()
-                  
+
+    def wait(self):
+        self.posX = self.posX
+        self.posY = self.posY
 
     def updateTargetPosition(self):
         if self.boss:
