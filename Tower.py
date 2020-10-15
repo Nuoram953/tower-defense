@@ -4,7 +4,7 @@ import helper
 import random
 
 class PeaShooter():
-    def __init__(self, parent, posX, posY, creepList):
+    def __init__(self, parent, posX, posY, creepList):  # doit devenir def createTower(self, posX, posY, creepList, damage) todo
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -12,7 +12,7 @@ class PeaShooter():
         self.projectileList = []
         self.speed = 20
         self.radius = 250
-        self.damage = 2
+        self.damage = 2                             # doit devenir self.damage = damage todo
         self.creepList = creepList
         self.projectileSpeed = 20
         self.image = PhotoImage(file="assets/towers/peaShooter.png")
@@ -118,7 +118,7 @@ class SunFlower():
         pass
 
 class IcePeaShooter():
-    def __init__(self, parent, posX, posY, creepList):
+    def __init__(self, parent, posX, posY, creepList):  # doit devenir def createTower(self, posX, posY, creepList, damage) todo
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -126,7 +126,7 @@ class IcePeaShooter():
         self.projectileList = []
         self.speed = 20
         self.radius = 250
-        self.damage = 3
+        self.damage = 3                         # doit devenir self.damage = damage todo
         self.creepList = creepList
         self.projectileSpeed = 15
         self.slow = 2
@@ -226,7 +226,7 @@ class IcePeaShooter():
             pass
 
 class Catapult():
-    def __init__(self, parent, posX, posY, creepList):
+    def __init__(self, parent, posX, posY, creepList):  # doit devenir def createTower(self, posX, posY, creepList, damage) todo
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -234,7 +234,7 @@ class Catapult():
         self.projectileList = []
         self.speed = 20
         self.radius = 400
-        self.damage = 5
+        self.damage = 5                             # doit devenir self.damage = damage todo
         self.damageRadius = 100
         self.epicenter = self.damageRadius / 2
         self.creepList = creepList
