@@ -23,6 +23,7 @@ class PeaShooter():
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
         self.upgraded = False
+        self.upgradeCost = 20
 
     def tick(self):
         self.rateOfFireCounter += 1
@@ -110,10 +111,11 @@ class SunFlower():
     def __init__(self, parent, posX, posY):
         self.parent = parent
         self.projectileList = []
-
+        self.upgraded = False
         self.posX = posX
         self.posY = posY
         self.image = PhotoImage(file="assets/towers/sunFlower.png")
+        self.upgradeCost = 15
 
     def tick(self):
         pass
@@ -138,6 +140,7 @@ class IcePeaShooter():
         self.bulletSize = 10
         self.bulletColor = "lightblue"
         self.upgraded = False
+        self.upgradeCost = 25
        
     def tick(self):
 
@@ -237,7 +240,7 @@ class Catapult():
         self.speed = 20
         self.radius = 400
         self.damage = 5                             # doit devenir self.damage = damage todo
-        self.damageRadius = 100
+        self.damageRadius = 50
         self.epicenter = self.damageRadius / 2
         self.creepList = creepList
         self.projectileSpeed = 15
@@ -252,6 +255,7 @@ class Catapult():
         self.impactY = None
         self.count = 0
         self.upgraded = False
+        self.upgradeCost = 30
        
     def tick(self):
 
