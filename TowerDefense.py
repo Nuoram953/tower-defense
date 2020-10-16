@@ -32,6 +32,7 @@ class Vue():
         self.tick = False
         self.mushroomCounter = self.modele.mushroomDuration
         self.mowerPositionSelected = False
+        self.towerUpgradeChoice = ""
 
 
     def windowMenu(self):
@@ -205,6 +206,8 @@ class Vue():
         self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
 
+
+
         self.gameFrame.pack(expand=YES, fill=BOTH)
         #self.gameCanvas.bind("<Button>", self.getXY)
 
@@ -224,6 +227,80 @@ class Vue():
         self.ressourceFrame.itemconfigure(self.uv, text = self.modele.points["RayonUV"])
         self.ressourceFrame.itemconfigure(self.level, text = self.modele.points["Niveau"])
         self.ressourceFrame.itemconfigure(self.pointage, text = self.modele.points["Pointage"])
+
+    def upgradeStats(self,tower):
+        self.upgradeFrame.delete(ALL)
+        self.upgradeFrame.create_image(0,0, image=self.upgradeBg, anchor=NW)
+    
+        towerName = tower.__class__.__name__
+        self.towerUpgradeChoice = tower
+        self.upgradeFrame.create_text(150,30, text = towerName , font = ("Times", "18", "bold"), fill = "white")
+
+        
+        if towerName != "SunFlower":      
+            self.upgradeFrame.create_text(65,100, text = "Cadence: " + str(tower.rateOfFire) , font = ("Times", "14", "bold"), fill = "white")
+            self.upgradeFrame.create_text(215,100, text = "Vitesse: " + str(tower.projectileSpeed) , font = ("Times", "14", "bold"), fill = "white")
+
+            if towerName == "PeaShooter":
+                self.upgradeFrame.create_text(65,65, text = "Radius: " + str(tower.radius), font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(220,65, text = "Dommage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
+                if self.towerUpgradeChoice.upgraded == False:
+                    self.upgradeFrame.create_text(127,100, text = "+5" , font = ("Times", "14", "bold"), fill = "green2")
+                    self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 20 engrais", font = ("Times", "14", "bold"), fill = "white")
+
+            elif towerName == "IcePeaShooter":
+                self.upgradeFrame.create_text(65,65, text = "Radius: " + str(tower.radius), font = ("Times", "14", "bold"), fill = "white") 
+                self.upgradeFrame.create_text(220,65, text = "Dommage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
+                if self.towerUpgradeChoice.upgraded == False:
+                    self.upgradeFrame.create_text(280,65, text = "+2" , font = ("Times", "14", "bold"), fill = "green2")
+                    self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 25 engrais", font = ("Times", "14", "bold"), fill = "white")    
+
+            elif towerName == "Catapult":
+                self.upgradeFrame.create_text(112,65, text = "Rayon de dommage: " + str(tower.damageRadius), font = ("Times", "14", "bold"), fill = "white")
+                if self.towerUpgradeChoice.upgraded == False:
+                    self.upgradeFrame.create_text(222,65, text = "+50" , font = ("Times", "14", "bold"), fill = "green2")
+                    self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 30 engrais", font = ("Times", "14", "bold"), fill = "white")
+        else:
+            if self.towerUpgradeChoice.upgraded == False:
+                self.upgradeFrame.create_text(100,65, text = "Génération d'UV: 5", font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(192,65, text = "+5" , font = ("Times", "14", "bold"), fill = "green2")
+                self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 15 engrais", font = ("Times", "14", "bold"), fill = "white")
+            else:
+                self.upgradeFrame.create_text(100,65, text = "Génération d'UV: 5", font = ("Times", "14", "bold"), fill = "white")
+
+        if self.towerUpgradeChoice.upgraded == False:
+            buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
+            buttonUpgrade_window = self.upgradeFrame.create_window(100,150,anchor=NW, window = buttonUpgrade)
+        
+    
+
+
+    def upgradeTower(self):  #Dans le modele?
+        towerName = self.towerUpgradeChoice.__class__.__name__
+        engrais = self.modele.points["Engrais"]
+        if towerName == "PeaShooter" and self.towerUpgradeChoice.upgradeCost <= engrais:
+            self.towerUpgradeChoice.rateOfFire = 5
+            self.towerUpgradeChoice.upgraded = True
+            self.modele.points["Engrais"] -= 20
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/peaShooterUpgrade.png")
+        elif towerName == "SunFlower" and self.towerUpgradeChoice.upgradeCost <= engrais:
+            self.towerUpgradeChoice.upgraded = True
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/sunFlowerUpgrade.png")
+            self.modele.points["Engrais"] -= 15
+        elif towerName == "IcePeaShooter" and self.towerUpgradeChoice.upgradeCost <= engrais:
+            self.towerUpgradeChoice.damage = 5
+            self.towerUpgradeChoice.upgraded = True
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/icePeaShooterUpgrade.png")
+            self.modele.points["Engrais"] -= 25
+        elif towerName == "Catapult" and self.towerUpgradeChoice.upgradeCost <= engrais:
+            self.towerUpgradeChoice.damageRadius = 100
+            self.towerUpgradeChoice.upgraded = True
+            self.modele.points["Engrais"] -= 30
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/catapultUpgrade.png")
+        
+        self.upgradeStats(self.towerUpgradeChoice)
+
+               
 
         
     def options(self):
@@ -294,7 +371,7 @@ class Modele():
             "Pointage":0,
             "Vie":10,
             "Engrais":75,
-            "RayonUV":500,
+            "RayonUV":0,
             "Wave":0,
             "Niveau":1
         }
@@ -410,7 +487,11 @@ class Modele():
     def sunflowerUV (self):
         for tower in self.TowerList:
             if isinstance(tower, Tower.SunFlower):
-                self.points["RayonUV"] += 5             ########################### self.perSunflowerUV todo
+                if tower.upgraded:
+                    self.points["RayonUV"] += 10 
+                else:
+                    self.points["RayonUV"] += 5
+
 
     def getTrapSelected(self, event):
 
@@ -461,8 +542,8 @@ class Modele():
     def upgradeChoice(self, event):
         for tower in self.TowerList:
             if event.x >= tower.posX and event.x <= tower.posX + 65 and event.y >= tower.posY and event.y <= tower.posY + 65:
-                if not tower.upgraded:
-                    pass
+                self.parent.vue.upgradeStats(tower)
+                    
                     
                     
 
