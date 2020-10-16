@@ -51,8 +51,8 @@ class Vue():
 
         self.menuFrame.pack()
 
-    def getXY(self,evt):
-        return evt.x,evt.y
+    #def getXY(self,evt):
+        #return evt.x,evt.y
         #print(evt.x, evt.y)
     
     def showGame(self):
@@ -206,8 +206,12 @@ class Vue():
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
-        self.gameCanvas.bind("<Button>", self.getXY)
-        self.gameCanvas.bind("<Button>",self.modele.getMowerPosition)
+        #self.gameCanvas.bind("<Button>", self.getXY)
+
+        #self.gameCanvas.bind("<Button>", self.modele.printXY)
+
+        self.gameCanvas.bind("<Button>", self.modele.upgradeChoice)
+        
         self.game.pack()
         
         self.gameInProg = True
@@ -290,7 +294,7 @@ class Modele():
             "Pointage":0,
             "Vie":10,
             "Engrais":75,
-            "RayonUV":0,
+            "RayonUV":500,
             "Wave":0,
             "Niveau":1
         }
@@ -414,24 +418,30 @@ class Modele():
 
         element = event.widget.gettags("current")
 
-        if "mushroom" in element:
-
+        if "mushroom" in element and self.points["RayonUV"] >= 50:
             self.trapChoice = "mushroom"
             self.activateMushroom()
-        elif "mower" in element:
+        elif "mower" in element and self.points["RayonUV"] >= 100:
             self.trapChoice = "mower"
+            self.parent.vue.gameCanvas.bind("<Button>", self.getMowerPosition)
 
     def activateMushroom(self):
         if self.trapChoice == "mushroom" and self.trapSelected:
+            self.points["RayonUV"] -= 50
             self.mushroomInUse = True
             self.trapSelected = not(self.trapSelected)
+
+    def printXY(self, evt):
+        print(evt.x, evt.y)
 
     def getMowerPosition(self,evt):
         if self.trapChoice == "mower" and self.trapSelected:
             x = evt.x
             y = evt.y
             self.createMower(x,y)
+            self.points["RayonUV"] -= 100
             self.trapSelected = not(self.trapSelected)
+            self.parent.vue.gameCanvas.bind("<Button>", self.upgradeChoice)
 
     def createMower(self,x,y):
         self.trapList.append(Mower.Mower(self, x, y, self.mowerSpeed))
@@ -447,6 +457,13 @@ class Modele():
 
                     if creep.health <= 0:
                         self.creepList.remove(creep)
+
+    def upgradeChoice(self, event):
+        for tower in self.TowerList:
+            if event.x >= tower.posX and event.x <= tower.posX + 65 and event.y >= tower.posY and event.y <= tower.posY + 65:
+                if not tower.upgraded:
+                    pass
+                    
                     
 
 class Controleur():

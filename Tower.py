@@ -22,6 +22,7 @@ class PeaShooter():
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
+        self.upgraded = False
 
     def tick(self):
         self.rateOfFireCounter += 1
@@ -136,6 +137,7 @@ class IcePeaShooter():
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightblue"
+        self.upgraded = False
        
     def tick(self):
 
@@ -249,6 +251,7 @@ class Catapult():
         self.impactX = None
         self.impactY = None
         self.count = 0
+        self.upgraded = False
        
     def tick(self):
 
