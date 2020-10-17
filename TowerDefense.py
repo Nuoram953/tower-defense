@@ -238,7 +238,7 @@ class Vue():
 
         
         if towerName != "SunFlower":      
-            self.upgradeFrame.create_text(65,100, text = "Cadence: " + str(tower.rateOfFire) , font = ("Times", "14", "bold"), fill = "white")
+            self.upgradeFrame.create_text(65,100, text = "Cadence: " + str(tower.rateOfFire) , font = ("Times", "14", "bold"), fill = "white")      # mettre tous les variables en str, ex: str(tower.damageRadius) todo
             self.upgradeFrame.create_text(215,100, text = "Vitesse: " + str(tower.projectileSpeed) , font = ("Times", "14", "bold"), fill = "white")
 
             if towerName == "PeaShooter":
@@ -320,12 +320,12 @@ class Modele():
 
         # CREEP / BOSS
         self.creepList = []
-        self.creepHealth = 40                               # à la création des creeps: self.creepHealth * self.currentMap todo
-        self.bossHealth = 120                               # à la création des boss: self.bossHealth * self.currentMap todo
-        self.checkpointList = MapCheckpoints.mapCreeps[1]   #self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] pour aller chercher map et checkpoints automatiquement todo
+        self.creepHealth = 40
+        self.bossHealth = 120
+        self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap]   #self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] pour aller chercher map et checkpoints automatiquement todo
 
         self.ShowSpots = False
-        self.CheckpointTowers = MapCheckpoints.mapTowers[1] #self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] todo
+        self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] #self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] todo
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
 
@@ -446,14 +446,14 @@ class Modele():
         nbCreep += (self.points["Wave"] * 3)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0], False))
+            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0], self.creepHealth, False))
 
     def updateCreepList(self):
         return self.creepList
 
     def createBoss(self):
         distanceX = random.randint(-500, 0)
-        self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], True))
+        self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], self.bossHealth, True))
 
     def creepMovement(self):
         for i in self.creepList:
