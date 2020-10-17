@@ -186,22 +186,22 @@ class Vue():
         self.ressourceFrame.create_text(150, 220, text = "NOM DU JOUEUR", font = ("Times", "24", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 50, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
-        self.towerFrame.create_text(90,120, text = "PeaShooter: 25" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(90,120, text = "PeaShooter: " + str((self.modele.peaTowerCost * self.modele.currentMap)), font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 45, image=self.sunFlowerimg, anchor=NE,tags = ("sunFlower", "tower"))
-        self.towerFrame.create_text(220,120, text = "Sunflower: 20" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(220,120, text = "Sunflower: " + str((self.modele.sunflowerCost * self.modele.currentMap)), font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(120, 150, image=self.icePeaShooterimg, anchor=NE,tags = ("icePeaShooter", "tower"))
-        self.towerFrame.create_text(90,220, text = "IcePeaShooter: 35" , font = ("Times", "12", "bold"), fill = "white")    # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(90,220, text = "IcePeaShooter: " + str((self.modele.iceTowerCost * self.modele.currentMap)), font = ("Times", "12", "bold"), fill = "white")    # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 150, image = self.catapultimg, anchor = NE,tags = ("catapult", "tower"))
-        self.towerFrame.create_text(220,220, text = "Catapulte: 40" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(220,220, text = "Catapulte: " + str((self.modele.catapultCost * self.modele.currentMap)) , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(120, 250, image = self.mushimg, anchor = NE,tags = ("mushroom", "hability"))
-        self.towerFrame.create_text(90,320, text = "Mush: 50 (UV)" , font = ("Times", "12", "bold"), fill = "white")        # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(90,320, text = "Mush: " + str((self.modele.mushUVCost * self.modele.currentMap)) + " (UV)" , font = ("Times", "12", "bold"), fill = "white")        # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 250, image = self.mowerimg, anchor = NE, tags = ("mower", "hability"))
-        self.towerFrame.create_text(220,320, text = "Tondeuse: 100 (UV)" , font = ("Times", "12", "bold"), fill = "white")  # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(220,320, text = "Tondeuse: " + str((self.modele.mowerUVCost * self.modele.currentMap)) + " (UV)" , font = ("Times", "12", "bold"), fill = "white")  # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
