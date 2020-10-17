@@ -322,10 +322,10 @@ class Modele():
         self.creepList = []
         self.creepHealth = 40
         self.bossHealth = 120
-        self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap]   #self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] pour aller chercher map et checkpoints automatiquement todo
+        self.checkpointList = MapCheckpoints.mapCreeps[1]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
 
         self.ShowSpots = False
-        self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] #self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] todo
+        self.CheckpointTowers = MapCheckpoints.mapTowers[1]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
 
@@ -358,7 +358,7 @@ class Modele():
         self.mushroomInUse = False
         self.mushroomDuration = 50
         self.mushUVCost = 50
-        self.mowerUV = 100
+        self.mowerUVCost = 100
         self.mowerSpeed = 30
 
         # USER
@@ -414,7 +414,7 @@ class Modele():
 
     def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter" and self.costCheck("peaShooter"):
-            tour = Tower.PeaShooter(self, posX, posY, creepList)                # tour = Tower.PeaShooter(self, posX, posY, creepList, (self.peaTowerDamage * self.currentMap)) todo
+            tour = Tower.PeaShooter(self, posX, posY, (self.peaTowerDamage * self.currentMap), creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["peaShooter"]
             self.validPurchase = True
@@ -426,13 +426,13 @@ class Modele():
             self.validPurchase = True
            
         elif self.towerChoice == "icePeaShooter" and self.costCheck("icePeaShooter"):
-            tour = Tower.IcePeaShooter(self, posX, posY, creepList)             # tour = Tower.IcePeaShooter(self, posX, posY, creepList, (self.iceTowerDamage * self.currentMap)) todo
+            tour = Tower.IcePeaShooter(self, posX, posY, (self.iceTowerDamage * self.currentMap), creepList)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["icePeaShooter"]
             self.validPurchase = True
 
         elif self.towerChoice == "catapult" and self.costCheck("catapult"):
-            tour = Tower.Catapult(self,posX,posY, creepList)                    # tour = Tower.Catapult(self,posX,posY, creepList, (self.catapultDamage * self.currentMap)) todo
+            tour = Tower.Catapult(self,posX,posY, (self.catapultDamage * self.currentMap), creepList)
             self.TowerList.append(tour)  
             self.points["Engrais"] -= self.towers["catapult"]
             self.validPurchase = True
@@ -446,14 +446,14 @@ class Modele():
         nbCreep += (self.points["Wave"] * 3)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0], self.creepHealth, False))
+            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
 
     def updateCreepList(self):
         return self.creepList
 
     def createBoss(self):
         distanceX = random.randint(-500, 0)
-        self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], self.bossHealth, True))
+        self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], (self.bossHealth * self.currentMap), True))
 
     def creepMovement(self):
         for i in self.creepList:
@@ -499,10 +499,10 @@ class Modele():
 
         element = event.widget.gettags("current")
 
-        if "mushroom" in element and self.points["RayonUV"] >= 50:
+        if "mushroom" in element and self.points["RayonUV"] >= self.mushUVCost:
             self.trapChoice = "mushroom"
             self.activateMushroom()
-        elif "mower" in element and self.points["RayonUV"] >= 100:
+        elif "mower" in element and self.points["RayonUV"] >= self.mowerUVCost:
             self.trapChoice = "mower"
             self.parent.vue.gameCanvas.bind("<Button>", self.getMowerPosition)
 
