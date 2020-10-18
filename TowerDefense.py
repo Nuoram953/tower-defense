@@ -451,6 +451,7 @@ class Modele():
     def createCreep(self):
         nbCreep = random.randint(5,10)
         nbCreep += (self.points["Wave"] * 3)
+        print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
             self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
