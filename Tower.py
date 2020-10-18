@@ -4,7 +4,7 @@ import helper
 import random
 
 class PeaShooter():
-    def __init__(self, parent, posX, posY, damage, creepList):  # doit devenir def createTower(self, posX, posY, creepList, damage) todo
+    def __init__(self, parent, posX, posY, damage, creepList):
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -12,7 +12,7 @@ class PeaShooter():
         self.projectileList = []
         self.speed = 20
         self.radius = 250
-        self.damage = damage                             # doit devenir self.damage = damage todo
+        self.damage = damage
         self.creepList = creepList
         self.projectileSpeed = 20
         self.image = PhotoImage(file="assets/towers/peaShooter.png")
@@ -23,7 +23,7 @@ class PeaShooter():
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
         self.upgraded = False
-        self.upgradeCost = 20
+        self.upgradeCost = 20 * self.parent.currentMap
 
     def tick(self):
         self.rateOfFireCounter += 1
@@ -116,13 +116,13 @@ class SunFlower():
         self.posX = posX
         self.posY = posY
         self.image = PhotoImage(file="assets/towers/sunFlower.png")
-        self.upgradeCost = 15
+        self.upgradeCost = 15 * self.parent.currentMap
 
     def tick(self):
         pass
 
 class IcePeaShooter():
-    def __init__(self, parent, posX, posY, damage, creepList):  # doit devenir def createTower(self, posX, posY, creepList, damage) todo
+    def __init__(self, parent, posX, posY, damage, creepList):
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -130,7 +130,7 @@ class IcePeaShooter():
         self.projectileList = []
         self.speed = 20
         self.radius = 250
-        self.damage = damage                         # doit devenir self.damage = damage todo
+        self.damage = damage
         self.creepList = creepList
         self.projectileSpeed = 15
         self.slow = 2
@@ -141,7 +141,7 @@ class IcePeaShooter():
         self.bulletSize = 10
         self.bulletColor = "lightblue"
         self.upgraded = False
-        self.upgradeCost = 25
+        self.upgradeCost = 25 * self.parent.currentMap
        
     def tick(self):
 
@@ -233,7 +233,7 @@ class IcePeaShooter():
             pass
 
 class Catapult():
-    def __init__(self, parent, posX, posY, damage, creepList):  # doit devenir def createTower(self, posX, posY, creepList, damage) todo
+    def __init__(self, parent, posX, posY, damage, creepList):
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -241,8 +241,8 @@ class Catapult():
         self.projectileList = []
         self.speed = 20
         self.radius = 400
-        self.damage = damage                             # doit devenir self.damage = damage todo
-        self.damageRadius = 50
+        self.damage = damage
+        self.damageRadius = 75
         self.epicenter = self.damageRadius / 2
         self.creepList = creepList
         self.projectileSpeed = 15
@@ -257,7 +257,7 @@ class Catapult():
         self.impactY = None
         self.count = 0
         self.upgraded = False
-        self.upgradeCost = 30
+        self.upgradeCost = 30 * self.parent.currentMap
        
     def tick(self):
 
