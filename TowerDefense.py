@@ -165,13 +165,13 @@ class Vue():
         self.towerFrame.create_image(0,0, image=self.towerBg, anchor=NW)
         self.upgradeFrame.create_image(0,0, image=self.upgradeBg, anchor=NW)
 
-        self.ressourceFrame.create_text(65,85,text = "Pointage: ", font = ("Times","18","bold"), fill = "white")
+        self.ressourceFrame.create_text(65,85,text = "Score: ", font = ("Times","18","bold"), fill = "white")
         self.pointage = self.ressourceFrame.create_text(140,85, text = self.modele.points["Pointage"], font = ("Times", "18", "bold"), fill ="white")   # faire en sorte que point s'update selon niveau avec self.modele.currentPoints todo
 
-        self.ressourceFrame.create_text(210,85,text = "Vie: ", font = ("Times","18","bold"), fill = "white")
+        self.ressourceFrame.create_text(210,85,text = "Life: ", font = ("Times","18","bold"), fill = "white")
         self.vie = self.ressourceFrame.create_text(255,85, text = self.modele.points["Vie"], font = ("Times", "18", "bold"), fill ="white") # faire en sorte que vie s'update selon niveau todo
 
-        self.ressourceFrame.create_text(60,120,text = "Engrais: ", font = ("Times","18","bold"), fill = "white")
+        self.ressourceFrame.create_text(60,120,text = "Fertilizer: ", font = ("Times","18","bold"), fill = "white")
         self.engrais = self.ressourceFrame.create_text(140,120, text = self.modele.points["Engrais"], font = ("Times", "18", "bold"), fill ="white")
 
         self.ressourceFrame.create_text(210,120,text = "UV: ", font = ("Times","18","bold"), fill = "white")
@@ -180,10 +180,10 @@ class Vue():
         self.ressourceFrame.create_text(50,155,text = "Wave: ", font = ("Times","18","bold"), fill = "white")
         self.wave = self.ressourceFrame.create_text(100,155, text = self.modele.points["Wave"], font = ("Times", "18", "bold"), fill ="white")
 
-        self.ressourceFrame.create_text(230,155,text = "Niveau: ", font = ("Times","18","bold"), fill = "white")
+        self.ressourceFrame.create_text(230,155,text = "Level: ", font = ("Times","18","bold"), fill = "white")
         self.level = self.ressourceFrame.create_text(280,155, text = self.modele.points["Niveau"], font = ("Times", "18", "bold"), fill ="white")
 
-        self.ressourceFrame.create_text(150, 220, text = "NOM DU JOUEUR", font = ("Times", "24", "bold"), fill = "white")
+        self.ressourceFrame.create_text(150, 220, text = "PLAYER NAME", font = ("Times", "24", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 50, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
         self.towerFrame.create_text(90,120, text = "PeaShooter: 25" , font = ("Times", "12", "bold"), fill = "white")       # faire en sorte que le cost s'update selon niveau todo
@@ -201,7 +201,7 @@ class Vue():
         self.towerFrame.create_text(90,320, text = "Mush: 50 (UV)" , font = ("Times", "12", "bold"), fill = "white")        # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.create_image(250, 250, image = self.mowerimg, anchor = NE, tags = ("mower", "hability"))
-        self.towerFrame.create_text(220,320, text = "Tondeuse: 100 (UV)" , font = ("Times", "12", "bold"), fill = "white")  # faire en sorte que le cost s'update selon niveau todo
+        self.towerFrame.create_text(220,320, text = "Mower: 100 (UV)" , font = ("Times", "12", "bold"), fill = "white")  # faire en sorte que le cost s'update selon niveau todo
 
         self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
@@ -238,35 +238,36 @@ class Vue():
 
         
         if towerName != "SunFlower":      
-            self.upgradeFrame.create_text(65,100, text = "Cadence: " + str(tower.rateOfFire) , font = ("Times", "14", "bold"), fill = "white")
-            self.upgradeFrame.create_text(215,100, text = "Vitesse: " + str(tower.projectileSpeed) , font = ("Times", "14", "bold"), fill = "white")
+            self.upgradeFrame.create_text(80,100, text = "Rate of Fire: " + str(tower.rateOfFire) , font = ("Times", "14", "bold"), fill = "white")
+            self.upgradeFrame.create_text(230,100, text = "Speed: " + str(tower.projectileSpeed) , font = ("Times", "14", "bold"), fill = "white")
 
             if towerName == "PeaShooter":
                 self.upgradeFrame.create_text(65,65, text = "Radius: " + str(tower.radius), font = ("Times", "14", "bold"), fill = "white")
-                self.upgradeFrame.create_text(220,65, text = "Dommage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(220,65, text = "Damage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
                 if self.towerUpgradeChoice.upgraded == False:
-                    self.upgradeFrame.create_text(127,100, text = "+5" , font = ("Times", "14", "bold"), fill = "green2")
-                    self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 20 engrais", font = ("Times", "14", "bold"), fill = "white")
+                    self.upgradeFrame.create_text(160,100, text = "+5" , font = ("Times", "14", "bold"), fill = "green2")
+                    self.upgradeFrame.create_text(150,130, text = "Upgrade Cost: 20 fertilizer", font = ("Times", "14", "bold"), fill = "white")
 
             elif towerName == "IcePeaShooter":
                 self.upgradeFrame.create_text(65,65, text = "Radius: " + str(tower.radius), font = ("Times", "14", "bold"), fill = "white") 
-                self.upgradeFrame.create_text(220,65, text = "Dommage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(220,65, text = "Dammage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
                 if self.towerUpgradeChoice.upgraded == False:
-                    self.upgradeFrame.create_text(280,65, text = "+2" , font = ("Times", "14", "bold"), fill = "green2")
-                    self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 25 engrais", font = ("Times", "14", "bold"), fill = "white")    
+                    self.upgradeFrame.create_text(285,65, text = "+2" , font = ("Times", "14", "bold"), fill = "green2")
+                    self.upgradeFrame.create_text(150,130, text = "Upgrade Cost: 25 fertilizer", font = ("Times", "14", "bold"), fill = "white")    
 
             elif towerName == "Catapult":
-                self.upgradeFrame.create_text(112,65, text = "Rayon de dommage: " + str(tower.damageRadius), font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(90,65, text = "Damage Radius: " + str(tower.damageRadius), font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(250,65, text = "Damage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
                 if self.towerUpgradeChoice.upgraded == False:
-                    self.upgradeFrame.create_text(222,65, text = "+50" , font = ("Times", "14", "bold"), fill = "green2")
-                    self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 30 engrais", font = ("Times", "14", "bold"), fill = "white")
+                    self.upgradeFrame.create_text(185,65, text = "+50" , font = ("Times", "14", "bold"), fill = "green2")
+                    self.upgradeFrame.create_text(150,130, text = "Upgrade Cost: 30 fertilizer", font = ("Times", "14", "bold"), fill = "white")
         else:
             if self.towerUpgradeChoice.upgraded == False:
-                self.upgradeFrame.create_text(100,65, text = "Génération d'UV: 5", font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(100,65, text = "UV gain: 5", font = ("Times", "14", "bold"), fill = "white")
                 self.upgradeFrame.create_text(192,65, text = "+5" , font = ("Times", "14", "bold"), fill = "green2")
-                self.upgradeFrame.create_text(150,130, text = "Coût d'amélioration: 15 engrais", font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(150,130, text = "Upgrade Cost: 15 fertilizer", font = ("Times", "14", "bold"), fill = "white")
             else:
-                self.upgradeFrame.create_text(100,65, text = "Génération d'UV: 5", font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(100,65, text = "UV gain: 5", font = ("Times", "14", "bold"), fill = "white")
 
         if self.towerUpgradeChoice.upgraded == False:
             buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
