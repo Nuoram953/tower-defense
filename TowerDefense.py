@@ -62,7 +62,7 @@ class Vue():
         if self.modele.mushroomInUse:
             self.mushroomCounter -= 1
 
-        self.img = PhotoImage(file="assets/Map #1/grass/map1.1.png",master=self.game)                ################## if self.modele.currentMap = 1(2,3...), self.img = ..... todo
+        self.img = PhotoImage(file="assets/maps/map3.png",master=self.game)                ################## if self.modele.currentMap = 1(2,3...), self.img = ..... todo
 
         self.gameCanvas.create_image(0, 0, image=self.img, anchor=NW)
 

@@ -10,6 +10,5 @@ creep = {
 }
 
 boss = {
-
     1: "assets/zombies/boss/boss1.png"
 }
