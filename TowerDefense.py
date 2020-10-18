@@ -45,11 +45,9 @@ class Vue():
 
         buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
         buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
-        buttonQuit = Button(self.menuFrame, text="QUITTER", command=self.quit, bg="DodgerBlue4", fg="DeepSkyBlue",font=("system", 12),relief="raised")
 
         buttonNewGame.grid(column=0, row=0, padx=200, pady=20)
         buttonOptions.grid(column=0, row=1, padx=200, pady=20)
-        buttonQuit.grid(column=0, row=2, padx=200, pady=20)
 
         self.menuFrame.pack()
 
@@ -317,8 +315,6 @@ class Vue():
     def options(self):
         pass
 
-    def quit(self):
-        pass
     
 class Modele():
     def __init__(self, parent):
