@@ -144,7 +144,7 @@ class Vue():
         self.mowerimg = PhotoImage(file = "assets/towers/mower.png")
         self.towerBg = PhotoImage(file = "assets/HUD/dirt.png")
         self.ressourceBg = PhotoImage(file = "assets/HUD/grass.png")
-        self.upgradeBg = PhotoImage(file = "assets/HUD/bedrock.png")
+        self.upgradeBg = PhotoImage(file = "assets/HUD/UpgradeStone.png")
         
         self.gameFrame = Frame(self.game, width=1600, height=800)
         self.gameCanvas = Canvas(self.gameFrame, width=1300, height=800)
