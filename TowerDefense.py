@@ -250,7 +250,7 @@ class Vue():
 
             elif towerName == "IcePeaShooter":
                 self.upgradeFrame.create_text(65,65, text = "Radius: " + str(tower.radius), font = ("Times", "14", "bold"), fill = "white") 
-                self.upgradeFrame.create_text(220,65, text = "Dammage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
+                self.upgradeFrame.create_text(220,65, text = "Damage: " + str(tower.damage), font = ("Times", "14", "bold"), fill = "white")
                 if self.towerUpgradeChoice.upgraded == False:
                     self.upgradeFrame.create_text(285,65, text = "+2" , font = ("Times", "14", "bold"), fill = "green2")
                     self.upgradeFrame.create_text(150,130, text = "Upgrade Cost: 25 fertilizer", font = ("Times", "14", "bold"), fill = "white")    
