@@ -1,9 +1,11 @@
 import TowerDefense
 from tkinter import *
 import random
+import Images
 
 class Creep1():
     def __init__(self, parent, posX, posY, currentCheckpoint, health, boss):
+
         self.posX = posX
         self.posY = posY
         self.parent = parent
@@ -22,11 +24,14 @@ class Creep1():
             self.health = health
         else:
             self.listImage = ["assets/zombies/zombie1.png", "assets/zombies/zombie2.png", "assets/zombies/zombie3.png","assets/zombies/zombie4.png","assets/zombies/zombie5.png","assets/zombies/zombie6.png"]
+
             self.height = 105
             self.width = 67
             self.health = health
+
         self.reachedEnd = False
-        self.zombie = PhotoImage(file = random.choice(self.listImage))
+        self.zombie = PhotoImage(file=random.choice(self.listImage))
+
 
         self.moveHorizontal = True
         self.moveUp = False

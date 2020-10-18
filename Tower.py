@@ -92,6 +92,7 @@ class PeaShooter():
 
                             self.parent.creepList.remove(self.target)
                             self.parent.points["Pointage"] += 1
+                            self.parent.points["Engrais"] += 5
                             self.target = None
 
                     else:
@@ -215,6 +216,7 @@ class IcePeaShooter():
 
                             self.parent.creepList.remove(self.target)
                             self.parent.points["Pointage"] += 1
+                            self.parent.points["Engrais"] += 5
                             self.target = None
 
                     else:
@@ -345,6 +347,7 @@ class Catapult():
 
                             self.parent.creepList.remove(self.target)
                             self.parent.points["Pointage"] += 1
+                            self.parent.points["Engrais"] += 5
 
                             for creep in self.creepList:
                                 if creep != self.target:
