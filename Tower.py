@@ -250,8 +250,8 @@ class Catapult():
         self.readyToFire = False
         self.rateOfFire = 40
         self.rateOfFireCounter = self.rateOfFire
-        self.bulletSize = 20
-        self.bulletColor = "green"
+        self.bulletSize = 15
+        self.bulletColor = "green3"
         self.impact = False
         self.impactX = None
         self.impactY = None

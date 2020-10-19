@@ -315,6 +315,7 @@ class Vue():
             self.towerUpgradeChoice.upgraded = True
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
             self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/peaShooterUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.bulletColor = "lawn green"
         elif towerName == "SunFlower" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.upgraded = True
             self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/sunFlowerUpgrade.png",master=self.game)
@@ -324,11 +325,14 @@ class Vue():
             self.towerUpgradeChoice.upgraded = True
             self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/icePeaShooterUpgrade.png",master=self.game)
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
+            self.towerUpgradeChoice.bulletColor = "RoyalBlue3"
         elif towerName == "Catapult" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.damageRadius = 150
             self.towerUpgradeChoice.upgraded = True
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
             self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/catapultUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.bulletSize += 10
+            self.towerUpgradeChoice.bulletColor = "dark green"
         
         self.upgradeStats(self.towerUpgradeChoice)
 
