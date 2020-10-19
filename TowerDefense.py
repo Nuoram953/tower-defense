@@ -37,7 +37,7 @@ class Vue():
         self.mushroomCounter = self.modele.mushroomDuration
         self.mowerPositionSelected = False
         self.towerUpgradeChoice = ""
-        self.test = None
+        self.playerName = None
 
 
 
@@ -60,6 +60,9 @@ class Vue():
        
 
         self.menuFrame.pack()
+
+       
+        
 
     #def getXY(self,evt):
         #return evt.x,evt.y
@@ -155,7 +158,8 @@ class Vue():
 
     def gameWindow(self):
 
-        print(self.entryPlayerName.get())
+        self.parent.profil(self.entryPlayerName.get())
+        #print(self.playerName)
 
 
         self.menuFrame.pack_forget()
@@ -391,6 +395,8 @@ class Modele():
         self.userVie = 10
         self.startFertilizer = 75
 
+        
+
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
@@ -466,7 +472,7 @@ class Modele():
     def createCreep(self):
         nbCreep = random.randint(5,10)
         nbCreep += (self.points["Wave"] * 3)
-        print(nbCreep)
+        #print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
             self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
@@ -530,8 +536,8 @@ class Modele():
             self.mushroomInUse = True
             self.trapSelected = not(self.trapSelected)
 
-    def printXY(self, evt):
-        print(evt.x, evt.y)
+    #def printXY(self, evt):
+    #    print(evt.x, evt.y)
 
     def getMowerPosition(self,evt):
         if self.trapChoice == "mower" and self.trapSelected:
@@ -563,16 +569,37 @@ class Modele():
         for tower in self.TowerList:
             if event.x >= tower.posX and event.x <= tower.posX + 65 and event.y >= tower.posY and event.y <= tower.posY + 65:
                 self.parent.vue.upgradeStats(tower)
+
+    
+
+
                     
 
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
         self.vue = Vue(self, self.modele)
+        
         self.creepWave()
         self.vue.root.after(10, self.animate)
         self.vue.root.after(10000, self.addUV)
         self.vue.root.mainloop()
+
+    def profil(self,name):
+        
+        print(name)
+       
+        if name != None:
+            playerStat=score.Score.getProfil(self,name)
+
+            self.modele.points["Wave"] = int(playerStat[1])
+            self.modele.points["RayonUV"] = int(playerStat[2])
+
+            print(self.modele.points.get("Wave"), "test")
+            print(self.modele.points.get("RayonUV"),"yolo")
+
+
+        
         
     def creepWave(self):
         if len(self.modele.creepList) == 0:
@@ -581,6 +608,7 @@ class Controleur():
             self.modele.points["Engrais"] += 50
             if self.modele.points["Wave"] == 5:
                 self.modele.createBoss()
+
 
     def nextLevelCheck(self):
         wave = self.modele.points["Wave"]
