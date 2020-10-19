@@ -72,13 +72,14 @@ class Vue():
 
         self.gameCanvas.delete(ALL)
 
-
-        if self.modele.mushroomInUse:
-            self.mushroomCounter -= 1
-
-        self.img = PhotoImage(file="assets/maps/map3.png",master=self.game)                ################## if self.modele.currentMap = 1(2,3...), self.img = ..... todo
+        self.img = PhotoImage(file="assets/maps/map1.png",master=self.game)   ################## if self.modele.currentMap = 1(2,3...), self.img = ..... todo
 
         self.gameCanvas.create_image(0, 0, image=self.img, anchor=NW)
+        
+        if self.modele.mushroomInUse:
+            self.image = PhotoImage(file="assets/UV.png",master=self.game) 
+            self.gameCanvas.create_image(0,0, image=self.image, anchor=NW)
+            self.mushroomCounter -= 1           
 
         for tower in self.modele.TowerList:
             self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
@@ -392,7 +393,7 @@ class Modele():
         self.playerName = None
         self.currentPoints = 0                 # si on passe au prochain niveau, on save nos points courants pour continuer notre high score
         self.currentFertilizer = 0              # engrais du user à la fin d'un niveau s'ajoute à l'engrais de base du prochain niveau
-        self.currentUV = 0                      # UV du user à la fin d'un niveau s'ajoute à l'UV de base du prochain niveau
+        self.currentUV = 0                     # UV du user à la fin d'un niveau s'ajoute à l'UV de base du prochain niveau
         self.userVie = 10
         self.startFertilizer = 75
 
@@ -401,7 +402,7 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":1,
+            "Vie":10,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(0 + self.currentUV),
             "Wave":0,
@@ -471,7 +472,7 @@ class Modele():
            
         
     def createCreep(self):
-        nbCreep = random.randint(5,10)
+        nbCreep = random.randint(4, 8)
         nbCreep += (self.points["Wave"] * 3)
         #print(nbCreep)
         for i in range(nbCreep):
