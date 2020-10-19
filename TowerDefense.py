@@ -442,6 +442,7 @@ class Modele():
                     self.CheckpointTowers.remove(square)
                 self.ShowSpots = not(self.ShowSpots)
 
+
     def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter" and self.costCheck("peaShooter"):
             tour = Tower.PeaShooter(self, posX, posY, self.peaTowerDamage, creepList)
@@ -593,8 +594,9 @@ class Controleur():
         if name != None:
             playerStat=score.Score.getProfil(self,name)
 
-            self.modele.points["Wave"] = int(playerStat[1])
-            self.modele.points["RayonUV"] = int(playerStat[2])
+            self.modele.points["Wave"] += int(playerStat[1])
+            self.modele.points["RayonUV"] += int(playerStat[2])
+            self.modele.points["Pointage"] += int(playerStat[3])
 
             self.modele.playerName = name
 
