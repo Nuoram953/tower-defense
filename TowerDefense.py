@@ -15,6 +15,7 @@ import Tower
 import Creep
 import Mower
 import Checkpoint
+import score
 
 class Vue():
     def __init__(self, parent, modele):
@@ -35,19 +36,23 @@ class Vue():
 
 
     def windowMenu(self):
+
         self.menuFrame = Frame(self.root, bg="spring green3")
 
         self.welcomeLabel = Label(self.root, text="* WELCOME TO BOTANIK PANIK *",bg="spring green4", fg="dark goldenrod1", font=("system", 20),pady=20)
 
         self.welcomeLabel.pack(expand=True,fill=BOTH)
 
+        entryPlayerName = Entry(self.menuFrame,relief="raised")
         buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
         buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
         buttonQuit = Button(self.menuFrame, text="QUITTER", command=self.quit, bg="DodgerBlue4", fg="DeepSkyBlue",font=("system", 12),relief="raised")
 
-        buttonNewGame.grid(column=0, row=0, padx=200, pady=20)
-        buttonOptions.grid(column=0, row=1, padx=200, pady=20)
-        buttonQuit.grid(column=0, row=2, padx=200, pady=20)
+        entryPlayerName.grid(column=0,row=0,padx = 10 ,pady=25)
+      
+        buttonNewGame.grid(column=0, row=1, padx=200, pady=20)
+        buttonOptions.grid(column=0, row=2, padx=200, pady=20)
+        buttonQuit.grid(column=0, row=3, padx=200, pady=20)
 
         self.menuFrame.pack()
 
@@ -58,6 +63,7 @@ class Vue():
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
+
 
         if self.modele.mushroomInUse:
             self.mushroomCounter -= 1
