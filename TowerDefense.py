@@ -37,6 +37,9 @@ class Vue():
         self.mushroomCounter = self.modele.mushroomDuration
         self.mowerPositionSelected = False
         self.towerUpgradeChoice = ""
+        self.test = None
+
+
 
     def windowMenu(self):
 
@@ -46,15 +49,15 @@ class Vue():
 
         self.welcomeLabel.pack(expand=True,fill=BOTH)
 
-        entryPlayerName = Entry(self.menuFrame,relief="raised")
+        self.entryPlayerName = Entry(self.menuFrame,relief="raised")
         buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
         buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
 
-        entryPlayerName.grid(column=0,row=0,padx = 10 ,pady=25)
+        self.entryPlayerName.grid(column=0,row=0,padx = 10 ,pady=25)
       
         buttonNewGame.grid(column=0, row=1, padx=200, pady=20)
         buttonOptions.grid(column=0, row=2, padx=200, pady=20)
-        buttonQuit.grid(column=0, row=3, padx=200, pady=20)
+       
 
         self.menuFrame.pack()
 
@@ -151,6 +154,10 @@ class Vue():
                 self.root.after(2500, self.parent.close_window)
 
     def gameWindow(self):
+
+        print(self.entryPlayerName.get())
+
+
         self.menuFrame.pack_forget()
         self.welcomeLabel.pack_forget()
 
