@@ -7,7 +7,7 @@ class Score():
     def getProfil(self,namePlayer):
 
         try:
-            file = open("score.csv")
+            file = open("score.csv", "w+")
             file.close()
         except:
             print("Le fichier n'existe pas.")
@@ -21,6 +21,7 @@ class Score():
             if currentPlayer[0].lower() == namePlayer.lower() and not playerFound:
                 playerFound = True
                 nom = currentPlayer[0]
+                score = currentPlayer[2]
                 niveau = currentPlayer[3]
                 UV = currentPlayer[4]
 
@@ -28,9 +29,10 @@ class Score():
             nom = namePlayer
             niveau = 0
             UV = 0
+            score = 0
         file.close()
 
-        return [nom,niveau,UV]
+        return [nom,niveau,UV,score]
     #TODO: Changer le nom des variables
     def addScore(self,nom,point,level,rayonUV):
         file = open("score.csv", "a")

@@ -401,7 +401,7 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":1,
+            "Vie":10,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(0 + self.currentUV),
             "Wave":0,
@@ -440,6 +440,7 @@ class Modele():
                 if self.validPurchase:
                     self.CheckpointTowers.remove(square)
                 self.ShowSpots = not(self.ShowSpots)
+
 
     def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter" and self.costCheck("peaShooter"):
@@ -592,8 +593,9 @@ class Controleur():
         if name != None:
             playerStat=score.Score.getProfil(self,name)
 
-            self.modele.points["Wave"] = int(playerStat[1])
-            self.modele.points["RayonUV"] = int(playerStat[2])
+            self.modele.points["Wave"] += int(playerStat[1])
+            self.modele.points["RayonUV"] += int(playerStat[2])
+            self.modele.points["Pointage"] += int(playerStat[3])
 
             self.modele.playerName = name
 
