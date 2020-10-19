@@ -17,7 +17,7 @@ class Score():
         file = open("score.csv", "r")
         line=file.readlines()
         print(line)
-        for player in line:
+        for player in reversed(line):
             currentPlayer = player.split(",")
             if currentPlayer[0].lower() == namePlayer.lower() and not playerFound:
                 playerFound = True
@@ -34,9 +34,9 @@ class Score():
 
         return [nom,niveau,UV]
     #TODO: Changer le nom des variables
-    def score(self,nom,point,level,sagessse):
+    def addScore(self,nom,point,level,rayonUV):
         file = open("score.csv", "a")
-        file.write(f"{nom},{str(date.today())},{str(point)},{str(level)},{str(sagesse)}")
+        file.write(f"{nom},{str(date.today())},{str(point)},{str(level)},{str(rayonUV)}\n")
         file.close()
 
  

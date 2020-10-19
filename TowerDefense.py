@@ -213,7 +213,7 @@ class Vue():
         self.ressourceFrame.create_text(230,155,text = "Level: ", font = ("Times","18","bold"), fill = "white")
         self.level = self.ressourceFrame.create_text(280,155, text = self.modele.points["Niveau"], font = ("Times", "18", "bold"), fill ="white")
 
-        self.ressourceFrame.create_text(150, 220, text = "PLAYER NAME", font = ("Times", "24", "bold"), fill = "white")
+        self.ressourceFrame.create_text(150, 220, text = self.modele.playerName, font = ("Times", "24", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 50, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
         self.towerFrame.create_text(90,120, text = "PeaShooter: " + str(self.modele.peaTowerCost), font = ("Times", "12", "bold"), fill = "white")
@@ -389,6 +389,7 @@ class Modele():
         self.mowerSpeed = 30
 
         # USER
+        self.playerName = None
         self.currentPoints = 0                 # si on passe au prochain niveau, on save nos points courants pour continuer notre high score
         self.currentFertilizer = 0              # engrais du user à la fin d'un niveau s'ajoute à l'engrais de base du prochain niveau
         self.currentUV = 0                      # UV du user à la fin d'un niveau s'ajoute à l'UV de base du prochain niveau
@@ -400,7 +401,7 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":10,
+            "Vie":1,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(0 + self.currentUV),
             "Wave":0,
@@ -598,6 +599,8 @@ class Controleur():
             print(self.modele.points.get("Wave"), "test")
             print(self.modele.points.get("RayonUV"),"yolo")
 
+            self.modele.playerName = name
+
 
         
         
@@ -655,6 +658,12 @@ class Controleur():
 
 
     def gameOver(self):
+        if not self.modele.gameIsOver:
+            score.Score.addScore(self,
+                                        self.modele.playerName,
+                                        self.modele.points.get("Pointage"),
+                                        self.modele.points.get("Wave"),
+                                        self.modele.points.get("RayonUV"))
         self.modele.gameIsOver = True
 
 
