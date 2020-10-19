@@ -14,6 +14,8 @@ import MapCheckpoints
 import Tower
 import Creep
 import Mower
+import Checkpoint
+import score
 
 class Vue():
     def __init__(self, parent, modele):
@@ -35,21 +37,32 @@ class Vue():
         self.mushroomCounter = self.modele.mushroomDuration
         self.mowerPositionSelected = False
         self.towerUpgradeChoice = ""
+        self.playerName = None
+
+
 
     def windowMenu(self):
+
         self.menuFrame = Frame(self.root, bg="spring green3")
 
         self.welcomeLabel = Label(self.root, text="* WELCOME TO BOTANIK PANIK *",bg="spring green4", fg="dark goldenrod1", font=("system", 20),pady=20)
 
         self.welcomeLabel.pack(expand=True,fill=BOTH)
 
+        self.entryPlayerName = Entry(self.menuFrame,relief="raised")
         buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
         buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
 
-        buttonNewGame.grid(column=0, row=0, padx=200, pady=20)
-        buttonOptions.grid(column=0, row=1, padx=200, pady=20)
+        self.entryPlayerName.grid(column=0,row=0,padx = 10 ,pady=25)
+      
+        buttonNewGame.grid(column=0, row=1, padx=200, pady=20)
+        buttonOptions.grid(column=0, row=2, padx=200, pady=20)
+       
 
         self.menuFrame.pack()
+
+       
+        
 
     #def getXY(self,evt):
         #return evt.x,evt.y
@@ -58,6 +71,7 @@ class Vue():
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
+
 
         if self.modele.mushroomInUse:
             self.mushroomCounter -= 1
@@ -143,6 +157,11 @@ class Vue():
                 self.root.after(2500, self.parent.close_window)
 
     def gameWindow(self):
+
+        self.parent.profil(self.entryPlayerName.get())
+        #print(self.playerName)
+
+
         self.menuFrame.pack_forget()
         self.welcomeLabel.pack_forget()
 
@@ -194,7 +213,7 @@ class Vue():
         self.ressourceFrame.create_text(230,155,text = "Level: ", font = ("Times","18","bold"), fill = "white")
         self.level = self.ressourceFrame.create_text(280,155, text = self.modele.points["Niveau"], font = ("Times", "18", "bold"), fill ="white")
 
-        self.ressourceFrame.create_text(150, 220, text = "PLAYER NAME", font = ("Times", "24", "bold"), fill = "white")
+        self.ressourceFrame.create_text(150, 220, text = self.modele.playerName, font = ("Times", "24", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 50, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
         self.towerFrame.create_text(90,120, text = "PeaShooter: " + str(self.modele.peaTowerCost), font = ("Times", "12", "bold"), fill = "white")
@@ -370,16 +389,19 @@ class Modele():
         self.mowerSpeed = 30
 
         # USER
+        self.playerName = None
         self.currentPoints = 0                 # si on passe au prochain niveau, on save nos points courants pour continuer notre high score
         self.currentFertilizer = 0              # engrais du user à la fin d'un niveau s'ajoute à l'engrais de base du prochain niveau
         self.currentUV = 0                      # UV du user à la fin d'un niveau s'ajoute à l'UV de base du prochain niveau
         self.userVie = 10
         self.startFertilizer = 75
 
+        
+
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":10,
+            "Vie":1,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(0 + self.currentUV),
             "Wave":0,
@@ -451,7 +473,7 @@ class Modele():
     def createCreep(self):
         nbCreep = random.randint(5,10)
         nbCreep += (self.points["Wave"] * 3)
-        print(nbCreep)
+        #print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
             self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
@@ -515,8 +537,8 @@ class Modele():
             self.mushroomInUse = True
             self.trapSelected = not(self.trapSelected)
 
-    def printXY(self, evt):
-        print(evt.x, evt.y)
+    #def printXY(self, evt):
+    #    print(evt.x, evt.y)
 
     def getMowerPosition(self,evt):
         if self.trapChoice == "mower" and self.trapSelected:
@@ -548,16 +570,39 @@ class Modele():
         for tower in self.TowerList:
             if event.x >= tower.posX and event.x <= tower.posX + 65 and event.y >= tower.posY and event.y <= tower.posY + 65:
                 self.parent.vue.upgradeStats(tower)
+
+    
+
+
                     
 
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
         self.vue = Vue(self, self.modele)
+        
         self.creepWave()
         self.vue.root.after(10, self.animate)
         self.vue.root.after(10000, self.addUV)
         self.vue.root.mainloop()
+
+    def profil(self,name):
+        
+        print(name)
+       
+        if name != None:
+            playerStat=score.Score.getProfil(self,name)
+
+            self.modele.points["Wave"] = int(playerStat[1])
+            self.modele.points["RayonUV"] = int(playerStat[2])
+
+            print(self.modele.points.get("Wave"), "test")
+            print(self.modele.points.get("RayonUV"),"yolo")
+
+            self.modele.playerName = name
+
+
+        
         
     def creepWave(self):
         if len(self.modele.creepList) == 0:
@@ -566,6 +611,7 @@ class Controleur():
             self.modele.points["Engrais"] += 50
             if self.modele.points["Wave"] == 5:
                 self.modele.createBoss()
+
 
     def nextLevelCheck(self):
         wave = self.modele.points["Wave"]
@@ -612,6 +658,12 @@ class Controleur():
 
 
     def gameOver(self):
+        if not self.modele.gameIsOver:
+            score.Score.addScore(self,
+                                        self.modele.playerName,
+                                        self.modele.points.get("Pointage"),
+                                        self.modele.points.get("Wave"),
+                                        self.modele.points.get("RayonUV"))
         self.modele.gameIsOver = True
 
 
