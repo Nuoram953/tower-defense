@@ -588,16 +588,12 @@ class Controleur():
 
     def profil(self,name):
         
-        print(name)
        
         if name != None:
             playerStat=score.Score.getProfil(self,name)
 
             self.modele.points["Wave"] = int(playerStat[1])
             self.modele.points["RayonUV"] = int(playerStat[2])
-
-            print(self.modele.points.get("Wave"), "test")
-            print(self.modele.points.get("RayonUV"),"yolo")
 
             self.modele.playerName = name
 

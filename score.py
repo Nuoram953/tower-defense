@@ -16,12 +16,10 @@ class Score():
         playerFound = False
         file = open("score.csv", "r")
         line=file.readlines()
-        print(line)
         for player in reversed(line):
             currentPlayer = player.split(",")
             if currentPlayer[0].lower() == namePlayer.lower() and not playerFound:
                 playerFound = True
-                print("YEAH")
                 nom = currentPlayer[0]
                 niveau = currentPlayer[3]
                 UV = currentPlayer[4]
