@@ -49,14 +49,16 @@ class Vue():
 
         self.welcomeLabel.pack(expand=True,fill=BOTH)
 
+        self.entryPlayerNameLabel = Label(self.menuFrame,relief="raised",text="Entrez votre nom: ",borderwidth=0,highlightthickness=0,bg="spring green3")
         self.entryPlayerName = Entry(self.menuFrame,relief="raised")
         buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
         buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
 
-        self.entryPlayerName.grid(column=0,row=0,padx = 10 ,pady=25)
+        self.entryPlayerNameLabel.grid(column=0,row=0,padx=50,pady=25)
+        self.entryPlayerName.grid(column=0,row=1,padx = 50,pady=0 )
       
-        buttonNewGame.grid(column=0, row=1, padx=200, pady=20)
-        buttonOptions.grid(column=0, row=2, padx=200, pady=20)
+        buttonNewGame.grid(column=0, row=2, padx=200, pady=40)
+        buttonOptions.grid(column=0, row=3, padx=200, pady=20)
        
 
         self.menuFrame.pack()
@@ -404,7 +406,7 @@ class Modele():
             "Pointage": (0 + self.currentPoints),
             "Vie":10,
             "Engrais":(75 + self.currentFertilizer),
-            "RayonUV":(0 + self.currentUV),
+            "RayonUV":(50 + self.currentUV),
             "Wave":0,
             "Niveau":self.currentMap
         }
@@ -589,8 +591,7 @@ class Controleur():
         self.vue.root.mainloop()
 
     def profil(self,name):
-        
-       
+      
         if name != None:
             playerStat=score.Score.getProfil(self,name)
 
