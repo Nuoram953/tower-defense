@@ -4,7 +4,7 @@ import helper
 import random
 
 class PeaShooter():
-    def __init__(self, parent, posX, posY, damage, creepList):
+    def __init__(self, parent, posX, posY, damage, creepList, alreadyUpgraded):
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -15,14 +15,17 @@ class PeaShooter():
         self.damage = damage
         self.creepList = creepList
         self.projectileSpeed = 20
-        self.image = PhotoImage(file="assets/towers/peaShooter.png")
+        if self.upgraded == True:
+            self.image = PhotoImage(file="assets/towers/peaShooterUpgrade.png")
+        else:
+            self.image = PhotoImage(file="assets/towers/peaShooter.png")
         self.checkDist = None
         self.readyToFire = False
         self.rateOfFire = 10
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
-        self.upgraded = False
+        self.upgraded = alreadyUpgraded
         self.upgradeCost = 20 * self.parent.currentMap
 
     def tick(self):
@@ -109,20 +112,23 @@ class PeaShooter():
             pass
 
 class SunFlower():
-    def __init__(self, parent, posX, posY):
+    def __init__(self, parent, posX, posY, alreadyUpgraded):
         self.parent = parent
         self.projectileList = []
-        self.upgraded = False
+        self.upgraded = alreadyUpgraded
         self.posX = posX
         self.posY = posY
-        self.image = PhotoImage(file="assets/towers/sunFlower.png")
+        if self.upgraded == True:
+            self.image = PhotoImage(file="assets/towers/sunFlowerUpgrade.png")
+        else:
+            self.image = PhotoImage(file="assets/towers/sunFlower.png")
         self.upgradeCost = 15 * self.parent.currentMap
 
     def tick(self):
         pass
 
 class IcePeaShooter():
-    def __init__(self, parent, posX, posY, damage, creepList):
+    def __init__(self, parent, posX, posY, damage, creepList, alreadyUpgraded):
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -134,13 +140,16 @@ class IcePeaShooter():
         self.creepList = creepList
         self.projectileSpeed = 15
         self.slow = 2
-        self.image = PhotoImage(file="assets/towers/icePeaShooter.png")
+        self.upgraded = alreadyUpgraded
+        if self.upgraded == True:
+            self.image = PhotoImage(file="assets/towers/icePeaShooterUpgrade.png")
+        else:
+            self.image = PhotoImage(file="assets/towers/icePeaShooter.png")
         self.readyToFire = False
         self.rateOfFire = 20
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightblue"
-        self.upgraded = False
         self.upgradeCost = 25 * self.parent.currentMap
        
     def tick(self):
@@ -233,7 +242,7 @@ class IcePeaShooter():
             pass
 
 class Catapult():
-    def __init__(self, parent, posX, posY, damage, creepList):
+    def __init__(self, parent, posX, posY, damage, creepList, alreadyUpgraded):
         self.parent = parent
         self.posX = posX
         self.posY = posY
@@ -246,7 +255,11 @@ class Catapult():
         self.epicenter = self.damageRadius / 2
         self.creepList = creepList
         self.projectileSpeed = 15
-        self.image = PhotoImage(file="assets/towers/catapult.png")
+        self.upgraded = alreadyUpgraded
+        if self.upgraded == True:
+            self.image = PhotoImage(file="assets/towers/catapultUpgrade.png")
+        else:
+            self.image = PhotoImage(file="assets/towers/catapult.png")
         self.readyToFire = False
         self.rateOfFire = 40
         self.rateOfFireCounter = self.rateOfFire
@@ -256,7 +269,7 @@ class Catapult():
         self.impactX = None
         self.impactY = None
         self.count = 0
-        self.upgraded = False
+
         self.upgradeCost = 30 * self.parent.currentMap
        
     def tick(self):
