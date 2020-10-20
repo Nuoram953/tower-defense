@@ -300,6 +300,9 @@ class Vue():
                                                           text="Mower: " + str(self.modele.mowerUVCost) + " (UV)",
                                                           font=("Times", "12", "bold"), fill="white")
 
+        self.upgradeFrame.delete(ALL)
+        self.upgradeFrame.create_image(0, 0, image=self.upgradeBg, anchor=NW)                   # clear upgradeFrame des derniers infos
+
 
     def upgradeStats(self,tower):
         self.upgradeFrame.delete(ALL)
