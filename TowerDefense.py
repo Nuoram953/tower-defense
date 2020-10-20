@@ -384,11 +384,7 @@ class Modele():
         self.parent = parent
         # MAP / LEVEL
 
-       
-
         self.currentMap = 1            # si on passe au prochain niveau, self.currentMap++ todo
-
-
 
         # CREEP / BOSS
         self.creepList = []
@@ -401,7 +397,7 @@ class Modele():
         self.lastCheckpointY = self.checkpointList[(len(self.checkpointList)-1)].y
 
         self.ShowSpots = False
-        self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
+        self.CheckpointTowers = MapCheckpoints.mapTowers[str(self.currentMap)]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
         self.gameIsOver = False
@@ -451,10 +447,10 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":10,
+            "Vie":15,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":0,
+            "Wave":1,
             "Niveau":1
         }
 
@@ -548,8 +544,8 @@ class Modele():
            
         
     def createCreep(self):
-        nbCreep = random.randint(4, 8)
-        nbCreep += (self.points["Wave"] * 3)
+        nbCreep = 4
+        nbCreep += (self.points["Wave"] * 4)
 
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
@@ -696,7 +692,6 @@ class Controleur():
 
                 self.modele.currentMap += 1
                 self.modele.points["Wave"] = 0
-                self.modele.points["Vie"] = 10
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
@@ -705,11 +700,12 @@ class Controleur():
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
 
-                self.modele.checkpointList = MapCheckpoints.mapCreeps[str(self.modele.currentMap)]      #création des nouveaux checkpoints/start positions
+                self.modele.checkpointList = MapCheckpoints.mapCreeps[str(self.modele.currentMap)] 
+                self.modele.CheckpointTowers = MapCheckpoints.mapTowers[str(self.modele.currentMap)]     #création des nouveaux checkpoints/start positions
                 self.modele.creepStartY = self.setStartY()
                 self.modele.bossStartY = self.setStartY() - 60
                 self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
-
+                
                 self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
                 self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
