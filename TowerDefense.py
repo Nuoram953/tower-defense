@@ -682,11 +682,11 @@ class Controleur():
         if name != None:
             playerStat=score.Score.getProfil(self,name)
 
-            self.modele.points["Wave"] += int(playerStat[1])
-            self.modele.points["RayonUV"] += int(playerStat[2])
-            self.modele.points["Pointage"] += int(playerStat[3])
+            self.modele.playerName = str(playerStat[0])
+            self.modele.points["RayonUV"] = int(playerStat[2])
 
-            self.modele.playerName = name
+
+            
         
     def creepWave(self):
         if len(self.modele.creepList) == 0:

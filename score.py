@@ -1,4 +1,7 @@
 from _datetime import date
+import os.path
+from os import path
+
 
 class Score():
      #Vérification si le joueur existe dans le fichier score.csv
@@ -6,13 +9,11 @@ class Score():
     #TODO: Offrir au joueur la possibilité de refuser de continuer avec son profil si il veux recommencer?
     def getProfil(self,namePlayer):
 
-        try:
+    
+        if not path.exists("score.csv"):
             file = open("score.csv", "w+")
             file.close()
-        except:
-            print("Le fichier n'existe pas.")
-
-
+        
         playerFound = False
         file = open("score.csv", "r")
         line=file.readlines()
@@ -22,17 +23,15 @@ class Score():
                 playerFound = True
                 nom = currentPlayer[0]
                 score = currentPlayer[2]
-                niveau = currentPlayer[3]
                 UV = currentPlayer[4]
 
         if not playerFound:
             nom = namePlayer
-            niveau = 0
             UV = 0
             score = 0
         file.close()
 
-        return [nom,niveau,UV,score]
+        return [nom,score,UV]
     #TODO: Changer le nom des variables
     def addScore(self,nom,point,level,rayonUV):
         file = open("score.csv", "a")
