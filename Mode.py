@@ -1,18 +1,18 @@
 normal = {
-    "perSunflowerUV":5,
     "creepHealth": 40,
     "bossHealth": 120,
+    "startFertilizer": 100,
+}
+
+hard = {
+    "creepHealth": 55,
+    "bossHealth": 145,
     "startFertilizer": 75,
 
 }
 
-hard = {
-    "perSunflowerUV":2,
-    "creepHealth": 55,
-    "bossHealth": 145,
-    "startFertilizer": 65,
 
-}
+# towerUpgraded true/False
 
 # dans modele
 # self.difficulty = normal de base

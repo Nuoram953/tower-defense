@@ -14,6 +14,7 @@ import MapCheckpoints
 import Tower
 import Creep
 import Mower
+import Mode
 import Checkpoint
 import score
 
@@ -25,6 +26,10 @@ class Vue():
         self.restart = False
         self.root = Tk()
         self.root.title("towerDefense")
+        self.backFromOptions = False
+        self.life = None
+        self.mode = None
+        self.towersUpgraded = None
         self.windowMenu()
         self.game = None
         self.top = None
@@ -42,8 +47,11 @@ class Vue():
         self.messageY = 150
 
 
-
     def windowMenu(self):
+
+        if self.backFromOptions == True:
+            self.optionFrame.pack_forget()
+            self.optionsLabel.pack_forget()
 
         self.menuFrame = Frame(self.root, bg="spring green3")
 
@@ -54,7 +62,7 @@ class Vue():
         self.entryPlayerNameLabel = Label(self.menuFrame,relief="raised",text="Entrez votre nom: ",borderwidth=0,highlightthickness=0,bg="spring green3")
         self.entryPlayerName = Entry(self.menuFrame,relief="raised")
         buttonNewGame = Button(self.menuFrame, text="NEW GAME", command=self.gameWindow, bg="deep pink4", fg="pale violetred1",font=("system", 12),relief="raised")
-        buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.options, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
+        buttonOptions = Button(self.menuFrame, text="OPTIONS", command=self.optionMenu, bg="dark green", fg="lime green",font=("system", 12),relief="raised")
 
         self.entryPlayerNameLabel.grid(column=0,row=0,padx=50,pady=25)
         self.entryPlayerName.grid(column=0,row=1,padx = 50,pady=0 )
@@ -64,6 +72,63 @@ class Vue():
        
 
         self.menuFrame.pack()
+
+    def optionMenu(self):
+
+        self.mode = StringVar()
+        self.life = StringVar()
+        self.towersUpgraded = IntVar()
+
+
+        self.menuFrame.pack_forget()
+        self.welcomeLabel.pack_forget()
+
+        self.optionFrame = Frame(self.root, bg="spring green3")
+
+        self.optionsLabel = Label(self.root, text="* OPTIONS *", bg="spring green4",
+                                  fg="dark goldenrod1", font=("system", 20), pady=20, padx=100)
+
+        self.optionsLabel.pack(expand=True, fill=BOTH)
+
+        self.modeFrame = Frame(self.optionFrame, bg="spring green3")
+
+        option1 = Radiobutton(self.modeFrame, text="Normal difficulty", variable=self.mode, value="normal", bg="spring green3", command=self.parent.setNormalDifficulty)
+        option1.pack()
+
+        option2 = Radiobutton(self.modeFrame, text="Hard difficulty", variable=self.mode, value="hard", bg="spring green3", command=self.parent.setHardDifficulty)
+        option2.pack()
+
+        self.modeFrame.pack(expand=True, fill=BOTH)
+
+        self.lifeFrame = Frame(self.optionFrame, bg="spring green3")
+
+        life1 = Radiobutton(self.lifeFrame, text="10", variable=self.life, value=10, bg="spring green3", command=self.parent.setLifeTen)
+        life1.pack()
+
+        life2 = Radiobutton(self.lifeFrame, text="20", variable=self.life, value=20, bg="spring green3", command=self.parent.setLifeTwenty)
+        life2.pack()
+
+        life3 = Radiobutton(self.lifeFrame, text="30", variable=self.life, value=30, bg="spring green3", command=self.parent.setLifeThirty)
+        life3.pack()
+
+        self.lifeFrame.pack(expand=True, fill=BOTH)
+
+        upgrade = Checkbutton(self.optionFrame, text="Towers Already Upgraded",variable=self.towersUpgraded, bg="spring green3", command=self.parent.setUpgraded)
+        upgrade.pack(expand=True, fill=BOTH)
+
+        buttonBack = Button(self.optionFrame, text="BACK", command=self.setOptions, bg="blue", fg="deep sky blue",
+                               font=("system", 12), relief="raised")
+
+        buttonBack.pack()
+
+        self.optionFrame.pack()
+
+
+    def setOptions(self):
+
+        self.backFromOptions = True
+        self.windowMenu()
+
 
     def getXY(self,evt):
         #return evt.x,evt.y
@@ -179,8 +244,7 @@ class Vue():
     def gameWindow(self):
 
         self.parent.profil(self.entryPlayerName.get())
-        #print(self.playerName)
-
+        self.parent.setDifficultyValues()
 
         self.menuFrame.pack_forget()
         self.welcomeLabel.pack_forget()
@@ -380,9 +444,6 @@ class Vue():
         self.upgradeStats(self.towerUpgradeChoice)
 
 
-        
-    def options(self):
-        pass
 
     
 class Modele():
@@ -390,7 +451,7 @@ class Modele():
         self.parent = parent
         # MAP / LEVEL
         self.currentMap = 1             # si on passe au prochain niveau, self.currentMap++ todo
-
+        self.difficulty = "normal"      # default
 
         # CREEP / BOSS
         self.creepList = []
@@ -413,6 +474,7 @@ class Modele():
         # TOWERS
         self.towerChoice = ""
         self.TowerList = []
+        self.alreadyUpgraded = False
 
         #PEASHOOTER
         self.peaTowerDamage = 2 * self.currentMap
@@ -448,13 +510,12 @@ class Modele():
         self.currentPoints = 0                 # si on passe au prochain niveau, on save nos points courants pour continuer notre high score
         self.currentFertilizer = 0              # engrais du user à la fin d'un niveau s'ajoute à l'engrais de base du prochain niveau
         self.currentUV = 0                     # UV du user à la fin d'un niveau s'ajoute à l'UV de base du prochain niveau
-        self.userVie = 10
-        self.startFertilizer = 75
+
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
             "Vie":10,
-            "Engrais":(75 + self.currentFertilizer),
+            "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
             "Wave":0,
             "Niveau":1
@@ -522,25 +583,25 @@ class Modele():
 
     def createTower(self, posX, posY, creepList):
         if self.towerChoice == "peaShooter" and self.costCheck("peaShooter"):
-            tour = Tower.PeaShooter(self, posX, posY, self.peaTowerDamage, creepList)
+            tour = Tower.PeaShooter(self, posX, posY, self.peaTowerDamage, creepList, self.alreadyUpgraded)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["peaShooter"]
             self.validPurchase = True
             
         elif self.towerChoice == "sunFlower" and self.costCheck("sunFlower"):
-            tour = Tower.SunFlower(self, posX, posY)
+            tour = Tower.SunFlower(self, posX, posY, self.alreadyUpgraded)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["sunFlower"]
             self.validPurchase = True
            
         elif self.towerChoice == "icePeaShooter" and self.costCheck("icePeaShooter"):
-            tour = Tower.IcePeaShooter(self, posX, posY, self.iceTowerDamage, creepList)
+            tour = Tower.IcePeaShooter(self, posX, posY, self.iceTowerDamage, creepList, self.alreadyUpgraded)
             self.TowerList.append(tour)
             self.points["Engrais"] -= self.towers["icePeaShooter"]
             self.validPurchase = True
 
         elif self.towerChoice == "catapult" and self.costCheck("catapult"):
-            tour = Tower.Catapult(self,posX,posY, self.catapultDamage, creepList)
+            tour = Tower.Catapult(self,posX,posY, self.catapultDamage, creepList, self.alreadyUpgraded)
             self.TowerList.append(tour)  
             self.points["Engrais"] -= self.towers["catapult"]
             self.validPurchase = True
@@ -663,6 +724,41 @@ class Controleur():
         self.vue.root.after(10000, self.addUV)
         self.vue.root.mainloop()
 
+    def setNormalDifficulty(self):
+        self.modele.difficulty = "normal"
+
+    def setHardDifficulty(self):
+        self.modele.difficulty = "hard"
+
+    def setDifficultyValues(self):
+
+        if self.modele.difficulty == "normal":
+
+            self.modele.creepHealth = Mode.normal["creepHealth"]
+            self.modele.bossHealth = Mode.normal["bossHealth"]
+            self.modele.points["Engrais"] = Mode.normal["startFertilizer"]
+
+        elif self.modele.difficulty == "hard":
+
+            self.modele.creepHealth = Mode.hard["creepHealth"]
+            self.modele.bossHealth = Mode.hard["bossHealth"]
+            self.modele.points["Engrais"] = Mode.hard["startFertilizer"]
+
+    def setLifeTen(self):
+        self.modele.points["Vie"] = 10
+
+
+    def setLifeTwenty(self):
+        self.modele.points["Vie"] = 20
+
+
+    def setLifeThirty(self):
+        self.modele.points["Vie"] = 30
+
+    def setUpgraded(self):
+        self.modele.alreadyUpgraded = not self.modele.alreadyUpgraded
+
+
     def setStartY(self):
 
         firstCheckpoint = self.modele.checkpointList
@@ -780,13 +876,13 @@ class Controleur():
 
     def animate(self):
         if self.vue.gameInProg == True:
-            self.nextLevelCheck()
             self.creepWave()
             self.modele.deathCheck()
             self.modele.creepMovement()
             self.vue.showGame()
             self.vue.update()
             self.checkGameOver()
+            self.nextLevelCheck()
             self.vue.root.after(25, self.animate)
 
     def close_window(self):
