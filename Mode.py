@@ -11,7 +11,6 @@ hard = {
     "creepHealth": 55,
     "bossHealth": 145,
     "startFertilizer": 65,
-
 }
 
 # dans modele

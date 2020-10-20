@@ -179,9 +179,7 @@ class Vue():
     def gameWindow(self):
 
         self.parent.profil(self.entryPlayerName.get())
-        #print(self.playerName)
-
-
+       
         self.menuFrame.pack_forget()
         self.welcomeLabel.pack_forget()
 
@@ -257,9 +255,8 @@ class Vue():
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
-        #self.gameCanvas.bind("<Button>", self.getXY)
 
-        # self.gameCanvas.bind("<Button>", self.modele.printXY)
+        self.gameCanvas.bind("<Button>", self.getXY)
 
         self.gameCanvas.bind("<Button>", self.modele.upgradeChoice)
 
@@ -346,40 +343,37 @@ class Vue():
                 self.upgradeFrame.create_text(100,65, text = "UV gain: " + str(self.modele.perSunflowerUpgradeUV), font = ("Times", "14", "bold"), fill = "white")
 
         if self.towerUpgradeChoice.upgraded == False:
-            buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
+            buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.modele.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
             buttonUpgrade_window = self.upgradeFrame.create_window(100,150,anchor=NW, window = buttonUpgrade)
-        
 
-    def upgradeTower(self):  #Dans le modele?
+    def upgradeTower(self):  
         towerName = self.towerUpgradeChoice.__class__.__name__
         engrais = self.modele.points["Engrais"]
         if towerName == "PeaShooter" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.rateOfFire = 5
             self.towerUpgradeChoice.upgraded = True
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/peaShooterUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/peaShooterUpgrade.png")
             self.towerUpgradeChoice.bulletColor = "lawn green"
         elif towerName == "SunFlower" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.upgraded = True
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/sunFlowerUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/sunFlowerUpgrade.png")
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
         elif towerName == "IcePeaShooter" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.damage = 5
             self.towerUpgradeChoice.upgraded = True
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/icePeaShooterUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/icePeaShooterUpgrade.png")
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
             self.towerUpgradeChoice.bulletColor = "RoyalBlue3"
         elif towerName == "Catapult" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.damageRadius = 150
             self.towerUpgradeChoice.upgraded = True
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/catapultUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/catapultUpgrade.png")
             self.towerUpgradeChoice.bulletSize += 10
             self.towerUpgradeChoice.bulletColor = "dark green"
         
         self.upgradeStats(self.towerUpgradeChoice)
-
-
         
     def options(self):
         pass
@@ -389,7 +383,7 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
-        self.currentMap = 1             # si on passe au prochain niveau, self.currentMap++ todo
+        self.currentMap = 3             # si on passe au prochain niveau, self.currentMap++ todo
 
 
         # CREEP / BOSS
@@ -403,7 +397,7 @@ class Modele():
         self.lastCheckpointY = self.checkpointList[(len(self.checkpointList)-1)].y
 
         self.ShowSpots = False
-        self.CheckpointTowers = MapCheckpoints.mapTowers[1]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
+        self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
         self.gameIsOver = False
@@ -453,10 +447,10 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":10,
+            "Vie":20,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":0,
+            "Wave":1,
             "Niveau":1
         }
 
@@ -553,7 +547,7 @@ class Modele():
         nbCreep = random.randint(4, 8)
         nbCreep += (self.points["Wave"] * 3)
 
-
+        nbCreep = 0
         #print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
@@ -617,9 +611,6 @@ class Modele():
             self.points["RayonUV"] -= self.mushUVCost
             self.mushroomInUse = True
             self.trapSelected = not(self.trapSelected)
-
-    #def printXY(self, evt):
-    #    print(evt.x, evt.y)
 
     def getMowerPosition(self,evt):
         if self.trapChoice == "mower" and self.trapSelected:
