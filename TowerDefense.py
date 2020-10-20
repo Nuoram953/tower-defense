@@ -66,15 +66,20 @@ class Vue():
        
         
 
-    #def getXY(self,evt):
+    def getXY(self,evt):
         #return evt.x,evt.y
-        #print(evt.x, evt.y)
+        print(evt.x, evt.y)
     
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
 
-        self.img = PhotoImage(file="assets/maps/map1.png",master=self.game)   ################## if self.modele.currentMap = 1(2,3...), self.img = ..... todo
+        if (self.modele.currentMap == 1):
+            self.img = PhotoImage(file="assets/maps/map1.png", master=self.game)
+        elif (self.modele.currentMap == 2):
+            self.img = PhotoImage(file="assets/maps/map2.png", master=self.game)
+        else:
+            self.img = PhotoImage(file="assets/maps/map3.png", master=self.game)
 
         self.gameCanvas.create_image(0, 0, image=self.img, anchor=NW)
         
@@ -240,7 +245,7 @@ class Vue():
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
-        # self.gameCanvas.bind("<Button>", self.getXY)
+        #self.gameCanvas.bind("<Button>", self.getXY)
 
         # self.gameCanvas.bind("<Button>", self.modele.printXY)
 
@@ -346,13 +351,17 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
-        self.currentMap = 1             # si on passe au prochain niveau, self.currentMap++ todo
+        self.currentMap = 2             # si on passe au prochain niveau, self.currentMap++ todo
+
 
         # CREEP / BOSS
         self.creepList = []
         self.creepHealth = 40
         self.bossHealth = 120
-        self.checkpointList = MapCheckpoints.mapCreeps[1]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
+        self.checkpointList = MapCheckpoints.mapCreeps[str(self.currentMap)]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
+        self.creepStartY = self.setStartY()
+        self.bossStartY = self.setStartY() - 60
+        self.lastCheckpointX, self.lastCheckpointY = self.setLastCheckpoint()
 
         self.ShowSpots = False
         self.CheckpointTowers = MapCheckpoints.mapTowers[1]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
@@ -403,9 +412,6 @@ class Modele():
         self.userVie = 10
         self.startFertilizer = 75
 
-        
-
-
         self.points = {
             "Pointage": (0 + self.currentPoints),
             "Vie":10,
@@ -421,6 +427,20 @@ class Modele():
             "icePeaShooter":self.iceTowerCost,
             "catapult":self.catapultCost
         }
+
+    def setStartY(self):
+
+        firstCheckpoint = self.checkpointList
+
+        return firstCheckpoint[0].y
+
+    def setLastCheckpoint(self):
+
+        map = self.checkpointList
+        index = len(map)-1
+        lastCheckpoint = map[index]
+
+        return lastCheckpoint.x, lastCheckpoint.y
     
     def costCheck (self, tower):
         return self.points["Engrais"] >= self.towers[tower]
@@ -481,17 +501,19 @@ class Modele():
     def createCreep(self):
         nbCreep = random.randint(4, 8)
         nbCreep += (self.points["Wave"] * 3)
+
+
         #print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, 610, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
+            self.creepList.append(Creep.Creep1(self, distanceX, self.creepStartY, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
 
     def updateCreepList(self):
         return self.creepList
 
     def createBoss(self):
         distanceX = random.randint(-500, 0)
-        self.creepList.append(Creep.Creep1(self, distanceX, 550, self.checkpointList[0], (self.bossHealth * self.currentMap), True))
+        self.creepList.append(Creep.Creep1(self, distanceX, self.bossStartY, self.checkpointList[0], (self.bossHealth * self.currentMap), True))
 
     def creepMovement(self):
         for i in self.creepList:
@@ -579,16 +601,11 @@ class Modele():
             if event.x >= tower.posX and event.x <= tower.posX + 65 and event.y >= tower.posY and event.y <= tower.posY + 65:
                 self.parent.vue.upgradeStats(tower)
 
-    
-
-
-                    
 
 class Controleur():
     def __init__(self):
         self.modele = Modele(self)
         self.vue = Vue(self, self.modele)
-        
         self.creepWave()
         self.vue.root.after(10, self.animate)
         self.vue.root.after(10000, self.addUV)
@@ -604,9 +621,6 @@ class Controleur():
             self.modele.points["Pointage"] += int(playerStat[3])
 
             self.modele.playerName = name
-
-
-        
         
     def creepWave(self):
         if len(self.modele.creepList) == 0:

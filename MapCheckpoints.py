@@ -1,9 +1,9 @@
 from Checkpoint import *
 
 mapCreeps = {
-    1: [Checkpoint(350,610), Checkpoint(350,360), Checkpoint(1150,360), Checkpoint(1150,635), Checkpoint(1400,635)],
-    2: [],
-    3: []
+    "1": [Checkpoint(350,610), Checkpoint(350,360), Checkpoint(1150,360), Checkpoint(1150,635), Checkpoint(1400,635)],
+    "2": [Checkpoint(335,90), Checkpoint(335,277), Checkpoint(1400,277)],
+    "3": [Checkpoint(747,105), Checkpoint(747,403), Checkpoint(1400,403)]
 }
 
 mapTowers = {

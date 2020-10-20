@@ -15,6 +15,8 @@ class Creep1():
         self.vitesse = random.randint(4,10)
         self.buffer = 5
         self.boss = boss
+        self.endX = self.parent.lastCheckpointX
+        self.endY = self.parent.lastCheckpointY
 
         if self.boss:
             self.listImage = ["assets/zombies/boss/boss1.png"]
@@ -70,7 +72,7 @@ class Creep1():
         else:
             height = 0
 
-        if (self.posX >= 1400 and self.posY >= 635 - height):
+        if (self.posX >= self.endX and self.posY >= self.endY - height):
             self.reachedEnd = True
         else:
             self.currentCheckpoint = self.parent.getNextCheckpoint(self.currentCheckpoint)
