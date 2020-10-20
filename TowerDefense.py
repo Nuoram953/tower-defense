@@ -539,7 +539,7 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":1,
+            "Vie":15,
             "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
             "Wave":0,
