@@ -321,9 +321,8 @@ class Vue():
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
-        #self.gameCanvas.bind("<Button>", self.getXY)
 
-        # self.gameCanvas.bind("<Button>", self.modele.printXY)
+        self.gameCanvas.bind("<Button>", self.getXY)
 
         self.gameCanvas.bind("<Button>", self.modele.upgradeChoice)
 
@@ -412,32 +411,31 @@ class Vue():
         if self.towerUpgradeChoice.upgraded == False:
             buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
             buttonUpgrade_window = self.upgradeFrame.create_window(100,150,anchor=NW, window = buttonUpgrade)
-        
 
-    def upgradeTower(self):  #Dans le modele?
+    def upgradeTower(self):  
         towerName = self.towerUpgradeChoice.__class__.__name__
         engrais = self.modele.points["Engrais"]
         if towerName == "PeaShooter" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.rateOfFire = 5
             self.towerUpgradeChoice.upgraded = True
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/peaShooterUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/peaShooterUpgrade.png")
             self.towerUpgradeChoice.bulletColor = "lawn green"
         elif towerName == "SunFlower" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.upgraded = True
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/sunFlowerUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/sunFlowerUpgrade.png")
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
         elif towerName == "IcePeaShooter" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.damage = 5
             self.towerUpgradeChoice.upgraded = True
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/icePeaShooterUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/icePeaShooterUpgrade.png")
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
             self.towerUpgradeChoice.bulletColor = "RoyalBlue3"
         elif towerName == "Catapult" and self.towerUpgradeChoice.upgradeCost <= engrais:
             self.towerUpgradeChoice.damageRadius = 150
             self.towerUpgradeChoice.upgraded = True
             self.modele.points["Engrais"] -= self.towerUpgradeChoice.upgradeCost
-            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/catapultUpgrade.png",master=self.game)
+            self.towerUpgradeChoice.image = PhotoImage(file = "assets/towers/catapultUpgrade.png")
             self.towerUpgradeChoice.bulletSize += 10
             self.towerUpgradeChoice.bulletColor = "dark green"
         
@@ -455,7 +453,7 @@ class Modele():
 
         # CREEP / BOSS
         self.creepList = []
-        self.creepHealth = 40
+        self.creepHealth = 35
         self.bossHealth = 120
         self.checkpointList = MapCheckpoints.mapCreeps[str(self.currentMap)]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
         self.creepStartY = self.checkpointList[0].y
@@ -464,7 +462,7 @@ class Modele():
         self.lastCheckpointY = self.checkpointList[(len(self.checkpointList)-1)].y
 
         self.ShowSpots = False
-        self.CheckpointTowers = MapCheckpoints.mapTowers[1]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
+        self.CheckpointTowers = MapCheckpoints.mapTowers[str(self.currentMap)]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
         self.gameIsOver = False
@@ -477,21 +475,21 @@ class Modele():
         self.alreadyUpgraded = False
 
         #PEASHOOTER
-        self.peaTowerDamage = 2 * self.currentMap
-        self.peaTowerCost = 25 * self.currentMap
+        self.peaTowerDamage = 2 
+        self.peaTowerCost = 25 
 
         #ICESHOOTER
-        self.iceTowerDamage = 3 * self.currentMap
-        self.iceTowerCost = 35 * self.currentMap
+        self.iceTowerDamage = 3 
+        self.iceTowerCost = 35 
 
         #CATAPULT
-        self.catapultDamage = 5 * self.currentMap
-        self.catapultCost = 40 * self.currentMap
+        self.catapultDamage = 5 
+        self.catapultCost = 40 
 
         #SUNFLOWER
-        self.perSunflowerUV = 5 * self.currentMap
-        self.perSunflowerUpgradeUV = 10 * self.currentMap
-        self.sunflowerCost = 20 * self.currentMap
+        self.perSunflowerUV = 5 
+        self.perSunflowerUpgradeUV = 10 
+        self.sunflowerCost = 20 
         
         self.validPurchase = False
 
@@ -514,10 +512,10 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":10,
+            "Vie":15,
             "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":0,
+            "Wave":1,
             "Niveau":1
         }
 
@@ -530,23 +528,23 @@ class Modele():
 
     def setLevelValues(self):
 
-        self.peaTowerDamage = 2 * self.currentMap
-        self.peaTowerCost = 25 * self.currentMap
+        self.peaTowerDamage = 2 
+        self.peaTowerCost = 25 
 
         # ICESHOOTER
-        self.iceTowerDamage = 3 * self.currentMap
-        self.iceTowerCost = 35 * self.currentMap
+        self.iceTowerDamage = 3 
+        self.iceTowerCost = 35 
 
         # CATAPULT
-        self.catapultDamage = 5 * self.currentMap
-        self.catapultCost = 40 * self.currentMap
+        self.catapultDamage = 5 
+        self.catapultCost = 40 
 
         # SUNFLOWER
-        self.perSunflowerUV = 5 * self.currentMap
-        self.perSunflowerUpgradeUV = 10 * self.currentMap
-        self.sunflowerCost = 20 * self.currentMap
-        self.mushUVCost = 50 * self.currentMap
-        self.mowerUVCost = 100 * self.currentMap
+        self.perSunflowerUV = 5 
+        self.perSunflowerUpgradeUV = 10 
+        self.sunflowerCost = 20 
+        self.mushUVCost = 50 
+        self.mowerUVCost = 100 
 
         self.towers["peaShooter"] = self.peaTowerCost
         self.towers["sunFlower"] = self.sunflowerCost
@@ -611,21 +609,19 @@ class Modele():
            
         
     def createCreep(self):
-        nbCreep = random.randint(4, 8)
-        nbCreep += (self.points["Wave"] * 3)
+        nbCreep = 4
+        nbCreep += (self.points["Wave"] * 4)
 
-
-        #print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, self.creepStartY, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
+            self.creepList.append(Creep.Creep1(self, distanceX, self.creepStartY, self.checkpointList[0],self.creepHealth , False))
 
     def updateCreepList(self):
         return self.creepList
 
     def createBoss(self):
         distanceX = random.randint(-500, 0)
-        self.creepList.append(Creep.Creep1(self, distanceX, self.bossStartY, self.checkpointList[0], (self.bossHealth * self.currentMap), True))
+        self.creepList.append(Creep.Creep1(self, distanceX, self.bossStartY, self.checkpointList[0],self.bossHealth , True))
 
     def creepMovement(self):
         for i in self.creepList:
@@ -678,9 +674,6 @@ class Modele():
             self.points["RayonUV"] -= self.mushUVCost
             self.mushroomInUse = True
             self.trapSelected = not(self.trapSelected)
-
-    #def printXY(self, evt):
-    #    print(evt.x, evt.y)
 
     def getMowerPosition(self,evt):
         if self.trapChoice == "mower" and self.trapSelected:
@@ -778,12 +771,9 @@ class Controleur():
         if name != None:
             playerStat=score.Score.getProfil(self,name)
 
-            self.modele.points["Wave"] += int(playerStat[1])
-            self.modele.points["RayonUV"] += int(playerStat[2])
-            self.modele.points["Pointage"] += int(playerStat[3])
+            self.modele.playerName = str(playerStat[0])
+            self.modele.points["RayonUV"] = int(playerStat[2])
 
-            self.modele.playerName = name
-        
     def creepWave(self):
         if len(self.modele.creepList) == 0:
             self.modele.createCreep()
@@ -802,20 +792,20 @@ class Controleur():
 
                 self.modele.currentMap += 1
                 self.modele.points["Wave"] = 0
-                self.modele.points["Vie"] = 10
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
-                self.modele.currentFertilizer += (50 * self.modele.currentMap)      # engrais de base pour next level
+                self.modele.currentFertilizer += 100      # engrais de base pour next level
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
 
-                self.modele.checkpointList = MapCheckpoints.mapCreeps[str(self.modele.currentMap)]      #création des nouveaux checkpoints/start positions
+                self.modele.checkpointList = MapCheckpoints.mapCreeps[str(self.modele.currentMap)] 
+                self.modele.CheckpointTowers = MapCheckpoints.mapTowers[str(self.modele.currentMap)]     #création des nouveaux checkpoints/start positions
                 self.modele.creepStartY = self.setStartY()
                 self.modele.bossStartY = self.setStartY() - 60
                 self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
-
+                
                 self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
                 self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
@@ -890,4 +880,3 @@ class Controleur():
             
 if __name__ == '__main__':
     c = Controleur()
-
