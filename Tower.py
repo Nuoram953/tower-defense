@@ -15,6 +15,7 @@ class PeaShooter():
         self.damage = damage
         self.creepList = creepList
         self.projectileSpeed = 20
+        self.upgraded = alreadyUpgraded
         if self.upgraded == True:
             self.image = PhotoImage(file="assets/towers/peaShooterUpgrade.png")
         else:
@@ -25,7 +26,6 @@ class PeaShooter():
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
-        self.upgraded = alreadyUpgraded
         self.upgradeCost = 20 * self.parent.currentMap
 
     def tick(self):
