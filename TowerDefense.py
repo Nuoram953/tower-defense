@@ -383,7 +383,7 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
-        self.currentMap = 3             # si on passe au prochain niveau, self.currentMap++ todo
+        self.currentMap = 1            # si on passe au prochain niveau, self.currentMap++ todo
 
 
         # CREEP / BOSS
@@ -447,10 +447,10 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":20,
+            "Vie":10,
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":1,
+            "Wave":0,
             "Niveau":1
         }
 
@@ -547,8 +547,6 @@ class Modele():
         nbCreep = random.randint(4, 8)
         nbCreep += (self.points["Wave"] * 3)
 
-        nbCreep = 0
-        #print(nbCreep)
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
             self.creepList.append(Creep.Creep1(self, distanceX, self.creepStartY, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
@@ -676,9 +674,6 @@ class Controleur():
             self.modele.playerName = str(playerStat[0])
             self.modele.points["RayonUV"] = int(playerStat[2])
 
-
-            
-        
     def creepWave(self):
         if len(self.modele.creepList) == 0:
             self.modele.createCreep()
