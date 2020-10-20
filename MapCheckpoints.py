@@ -15,6 +15,12 @@ mapTowers = {
         Checkpoint(875, 425), Checkpoint(955, 425), Checkpoint(1035, 425), Checkpoint(1050, 500),
         Checkpoint(1050, 580), Checkpoint(1050, 660), Checkpoint(1120, 715), Checkpoint(1200, 715),
         Checkpoint(1200, 470), Checkpoint(1200, 550)],
-    2: [],
+    2: [Checkpoint(150, 170), Checkpoint(230, 170), Checkpoint(230, 250), Checkpoint(230, 330),
+        Checkpoint(150, 25), Checkpoint(230, 25), Checkpoint(230, 25), Checkpoint(310, 25),
+        Checkpoint(310, 365), Checkpoint(390, 365), Checkpoint(390, 365), Checkpoint(470, 365),
+        Checkpoint(550, 365), Checkpoint(630, 365), Checkpoint(710, 365), Checkpoint(790, 365),
+        Checkpoint(470, 215), Checkpoint(550, 215), Checkpoint(630, 215), Checkpoint(710, 215)
+    
+        ],
     3: []
 }
