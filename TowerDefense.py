@@ -45,6 +45,12 @@ class Vue():
         self.playerName = None
         self.messageX = 1400
         self.messageY = 150
+        self.gameOverCreep = None
+        self.creepX = 415
+        self.creepY = 750
+        self.winCounter = 0
+        self.winX = 1400
+        self.winY = 250
 
 
     def windowMenu(self):
@@ -225,10 +231,29 @@ class Vue():
 
         if self.modele.gameIsOver:
             self.gameCanvas.create_text(self.messageX, self.messageY, text="GAME OVER", font=("system", "70", "bold"), fill="red")
+            self.gameCanvas.create_image(self.creepX, self.creepY, image=self.gameOverCreep, anchor=NW)
+
             if self.messageX > 725:
                 self.messageX -= 30
+
+            if self.creepY >= 200:
+                self.creepY -= 25
             else:
                 self.root.after(2500, self.parent.close_window)
+
+        if self.modele.userWon == True:
+            self.winCounter += 1
+
+            if self.winX > 725:
+                self.winX -= 40
+
+            if self.winCounter % 2 == 0:
+                self.gameCanvas.create_text(self.winX, self.winY, text="Y O U  W I N", font=("system","100", "bold"), fill="DarkGoldenrod1")
+            else:
+                self.gameCanvas.create_text(self.winX, self.winY, text="Y O U  W I N", font=("system","100", "bold"), fill="yellow")
+
+
+
 
         if self.parent.startLevelMessage == True:
             self.gameCanvas.create_text(self.messageX, self.messageY, text="LEVEL " + str(self.modele.currentMap),
@@ -250,6 +275,7 @@ class Vue():
         self.welcomeLabel.pack_forget()
 
         self.game = Frame(self.root)
+        self.gameOverCreep = PhotoImage(file="assets/zombies/gameOverCreep.png")
         self.peaShooterimg = PhotoImage(file="assets/towers/peaShooter.png")
         self.sunFlowerimg = PhotoImage(file="assets/towers/sunFlower.png")
         self.catapultimg = PhotoImage(file="assets/towers/catapult.png")
@@ -466,6 +492,7 @@ class Modele():
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
         self.gameIsOver = False
+        self.userWon = False
         self.newLevel = False
 
 
@@ -512,10 +539,10 @@ class Modele():
 
         self.points = {
             "Pointage": (0 + self.currentPoints),
-            "Vie":15,
+            "Vie":1,
             "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":1,
+            "Wave":0,
             "Niveau":1
         }
 
@@ -820,7 +847,8 @@ class Controleur():
             self.gameOver()
 
     def userWinsGame(self):
-        pass
+        self.modele.userWon = True
+
 
     def resetLists(self):
         for tower in self.modele.TowerList:  # on vide tous les arrays de leurs objets pour prochain level
