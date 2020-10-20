@@ -388,7 +388,7 @@ class Modele():
 
         # CREEP / BOSS
         self.creepList = []
-        self.creepHealth = 40
+        self.creepHealth = 30
         self.bossHealth = 120
         self.checkpointList = MapCheckpoints.mapCreeps[str(self.currentMap)]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
         self.creepStartY = self.checkpointList[0].y
@@ -409,21 +409,21 @@ class Modele():
         self.TowerList = []
 
         #PEASHOOTER
-        self.peaTowerDamage = 2 * self.currentMap
-        self.peaTowerCost = 25 * self.currentMap
+        self.peaTowerDamage = 2 
+        self.peaTowerCost = 25 
 
         #ICESHOOTER
-        self.iceTowerDamage = 3 * self.currentMap
-        self.iceTowerCost = 35 * self.currentMap
+        self.iceTowerDamage = 3 
+        self.iceTowerCost = 35 
 
         #CATAPULT
-        self.catapultDamage = 5 * self.currentMap
-        self.catapultCost = 40 * self.currentMap
+        self.catapultDamage = 5 
+        self.catapultCost = 40 
 
         #SUNFLOWER
-        self.perSunflowerUV = 5 * self.currentMap
-        self.perSunflowerUpgradeUV = 10 * self.currentMap
-        self.sunflowerCost = 20 * self.currentMap
+        self.perSunflowerUV = 5 
+        self.perSunflowerUpgradeUV = 10 
+        self.sunflowerCost = 20 
         
         self.validPurchase = False
 
@@ -463,23 +463,23 @@ class Modele():
 
     def setLevelValues(self):
 
-        self.peaTowerDamage = 2 * self.currentMap
-        self.peaTowerCost = 25 * self.currentMap
+        self.peaTowerDamage = 2 
+        self.peaTowerCost = 25 
 
         # ICESHOOTER
-        self.iceTowerDamage = 3 * self.currentMap
-        self.iceTowerCost = 35 * self.currentMap
+        self.iceTowerDamage = 3 
+        self.iceTowerCost = 35 
 
         # CATAPULT
-        self.catapultDamage = 5 * self.currentMap
-        self.catapultCost = 40 * self.currentMap
+        self.catapultDamage = 5 
+        self.catapultCost = 40 
 
         # SUNFLOWER
-        self.perSunflowerUV = 5 * self.currentMap
-        self.perSunflowerUpgradeUV = 10 * self.currentMap
-        self.sunflowerCost = 20 * self.currentMap
-        self.mushUVCost = 50 * self.currentMap
-        self.mowerUVCost = 100 * self.currentMap
+        self.perSunflowerUV = 5 
+        self.perSunflowerUpgradeUV = 10 
+        self.sunflowerCost = 20 
+        self.mushUVCost = 50 
+        self.mowerUVCost = 100 
 
         self.towers["peaShooter"] = self.peaTowerCost
         self.towers["sunFlower"] = self.sunflowerCost
@@ -701,7 +701,7 @@ class Controleur():
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
-                self.modele.currentFertilizer += (50 * self.modele.currentMap)      # engrais de base pour next level
+                self.modele.currentFertilizer += (75 * self.modele.currentMap)      # engrais de base pour next level
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
@@ -785,4 +785,3 @@ class Controleur():
             
 if __name__ == '__main__':
     c = Controleur()
-
