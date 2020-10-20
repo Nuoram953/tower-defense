@@ -38,6 +38,8 @@ class Vue():
         self.mowerPositionSelected = False
         self.towerUpgradeChoice = ""
         self.playerName = None
+        self.messageX = 1400
+        self.messageY = 150
 
 
 
@@ -63,9 +65,6 @@ class Vue():
 
         self.menuFrame.pack()
 
-       
-        
-
     def getXY(self,evt):
         #return evt.x,evt.y
         print(evt.x, evt.y)
@@ -88,45 +87,47 @@ class Vue():
             self.gameCanvas.create_image(0,0, image=self.image, anchor=NW)
             self.mushroomCounter -= 1           
 
-        for tower in self.modele.TowerList:
-            self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
-            if not self.modele.gameIsOver:
-                tower.tick()
-            else:
-                tower.projectileList = []
 
-            self.update()        # pour update le nombre de points au fur et à mesure que les creeps meurent
+        if self.modele.TowerList != None:
+            for tower in self.modele.TowerList:
+                self.gameCanvas.create_image(tower.posX, tower.posY, image = tower.image, anchor = NW)
+                if not self.modele.gameIsOver:
+                    tower.tick()
+                else:
+                    tower.projectileList = []
 
-            if isinstance(tower, Tower.Catapult) and tower.impact:
+                self.update()        # pour update le nombre de points au fur et à mesure que les creeps meurent
 
-                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius/8), tower.impactY - (tower.damageRadius/8),tower.impactX + (tower.damageRadius/8), tower.impactY + (tower.damageRadius/8),outline="red", width=4, tags="circle1")
-                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 4),
-                                            tower.impactY - (tower.damageRadius / 4),
-                                            tower.impactX + (tower.damageRadius / 4),
-                                            tower.impactY + (tower.damageRadius / 4), outline="red3", width=3,
-                                            tags="circle2")
-                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 2),
-                                            tower.impactY - (tower.damageRadius / 2),
-                                            tower.impactX + (tower.damageRadius / 2),
-                                            tower.impactY + (tower.damageRadius / 2), outline="DarkOrange1", width=3,
-                                            tags="circle3")
-                self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 1.25),
-                                            tower.impactY - (tower.damageRadius / 1.25),
-                                            tower.impactX + (tower.damageRadius / 1.25),
-                                            tower.impactY + (tower.damageRadius / 1.25), outline="orange", dash=4,
-                                            tags="circle4")
-                self.gameCanvas.create_oval(tower.impactX - tower.damageRadius,
-                                            tower.impactY - tower.damageRadius,
-                                            tower.impactX + tower.damageRadius,
-                                            tower.impactY + tower.damageRadius, outline="yellow", dash=3,
-                                            tags="circle5")
+                if isinstance(tower, Tower.Catapult) and tower.impact:
 
-            if tower.projectileList != None:
+                    self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius/8), tower.impactY - (tower.damageRadius/8),tower.impactX + (tower.damageRadius/8), tower.impactY + (tower.damageRadius/8),outline="red", width=4, tags="circle1")
+                    self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 4),
+                                                tower.impactY - (tower.damageRadius / 4),
+                                                tower.impactX + (tower.damageRadius / 4),
+                                                tower.impactY + (tower.damageRadius / 4), outline="red3", width=3,
+                                                tags="circle2")
+                    self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 2),
+                                                tower.impactY - (tower.damageRadius / 2),
+                                                tower.impactX + (tower.damageRadius / 2),
+                                                tower.impactY + (tower.damageRadius / 2), outline="DarkOrange1", width=3,
+                                                tags="circle3")
+                    self.gameCanvas.create_oval(tower.impactX - (tower.damageRadius / 1.25),
+                                                tower.impactY - (tower.damageRadius / 1.25),
+                                                tower.impactX + (tower.damageRadius / 1.25),
+                                                tower.impactY + (tower.damageRadius / 1.25), outline="orange", dash=4,
+                                                tags="circle4")
+                    self.gameCanvas.create_oval(tower.impactX - tower.damageRadius,
+                                                tower.impactY - tower.damageRadius,
+                                                tower.impactX + tower.damageRadius,
+                                                tower.impactY + tower.damageRadius, outline="yellow", dash=3,
+                                                tags="circle5")
 
-                for bullet in tower.projectileList:
-                    if bullet.bulletTarget.posX != None and bullet.bulletTarget.posY != None and bullet.bulletTarget != None:
-                        bullet.move()
-                        self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - bullet.size, bullet.bulletX + bullet.size, bullet.bulletY + bullet.size, fill=bullet.color)
+                if tower.projectileList != None:
+
+                    for bullet in tower.projectileList:
+                        if bullet.bulletTarget.posX != None and bullet.bulletTarget.posY != None and bullet.bulletTarget != None:
+                            bullet.move()
+                            self.gameCanvas.create_oval(bullet.bulletX - bullet.size, bullet.bulletY - bullet.size, bullet.bulletX + bullet.size, bullet.bulletY + bullet.size, fill=bullet.color)
 
 
         if self.modele.ShowSpots == True:
@@ -158,11 +159,22 @@ class Vue():
             self.modele.mushroomInUse = False
 
         if self.modele.gameIsOver:
-            self.gameCanvas.create_text(self.modele.gameOverX, self.modele.gameOverY, text="GAME OVER", font=("system", "70", "bold"), fill="red")
-            if self.modele.gameOverX > 725:
-                self.modele.gameOverX -= 30
+            self.gameCanvas.create_text(self.messageX, self.messageY, text="GAME OVER", font=("system", "70", "bold"), fill="red")
+            if self.messageX > 725:
+                self.messageX -= 30
             else:
                 self.root.after(2500, self.parent.close_window)
+
+        if self.parent.startLevelMessage == True:
+            self.gameCanvas.create_text(self.messageX, self.messageY, text="LEVEL " + str(self.modele.currentMap),
+                                        font=("system", "70", "bold"), fill="DarkGoldenrod1")
+            if self.messageX > -200:
+                self.messageX -= 50
+            else:
+                self.parent.startLevelMessage = False
+                self.messageX = 1400
+
+
 
     def gameWindow(self):
 
@@ -224,22 +236,22 @@ class Vue():
         self.ressourceFrame.create_text(150, 220, text = self.modele.playerName, font = ("Times", "24", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 50, image=self.peaShooterimg, anchor=NE,tags = ("peaShooter", "tower"))
-        self.towerFrame.create_text(90,120, text = "PeaShooter: " + str(self.modele.peaTowerCost), font = ("Times", "12", "bold"), fill = "white")
+        self.peaFrameCost = self.towerFrame.create_text(90,120, text = "PeaShooter: " + str(self.modele.peaTowerCost), font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.create_image(250, 45, image=self.sunFlowerimg, anchor=NE,tags = ("sunFlower", "tower"))
-        self.towerFrame.create_text(220,120, text = "Sunflower: " + str(self.modele.sunflowerCost), font = ("Times", "12", "bold"), fill = "white")
+        self.sunFrameCost = self.towerFrame.create_text(220,120, text = "Sunflower: " + str(self.modele.sunflowerCost), font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 150, image=self.icePeaShooterimg, anchor=NE,tags = ("icePeaShooter", "tower"))
-        self.towerFrame.create_text(90,220, text = "IcePeaShooter: " + str(self.modele.iceTowerCost), font = ("Times", "12", "bold"), fill = "white")
+        self.iceFrameCost = self.towerFrame.create_text(90,220, text = "IcePeaShooter: " + str(self.modele.iceTowerCost), font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.create_image(250, 150, image = self.catapultimg, anchor = NE,tags = ("catapult", "tower"))
-        self.towerFrame.create_text(220,220, text = "Catapulte: " + str(self.modele.catapultCost), font = ("Times", "12", "bold"), fill = "white")
+        self.catapultFrameCost = self.towerFrame.create_text(220,220, text = "Catapulte: " + str(self.modele.catapultCost), font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.create_image(120, 250, image = self.mushimg, anchor = NE,tags = ("mushroom", "hability"))
-        self.towerFrame.create_text(90,320, text = "Mush: " + str(self.modele.mushUVCost) + " (UV)", font = ("Times", "12", "bold"), fill = "white")
+        self.mushFrameCost = self.towerFrame.create_text(90,320, text = "Mush: " + str(self.modele.mushUVCost) + " (UV)", font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.create_image(250, 250, image = self.mowerimg, anchor = NE, tags = ("mower", "hability"))
-        self.towerFrame.create_text(220,320, text = "Mower: " + str(self.modele.mowerUVCost) + " (UV)", font = ("Times", "12", "bold"), fill = "white")
+        self.mowerFrameCost = self.towerFrame.create_text(220,320, text = "Mower: " + str(self.modele.mowerUVCost) + " (UV)", font = ("Times", "12", "bold"), fill = "white")
 
         self.towerFrame.tag_bind("tower", "<Button>", self.modele.ShowSquares)
         self.towerFrame.tag_bind("hability", "<Button>", self.modele.getTrapSelected)
@@ -263,6 +275,31 @@ class Vue():
         self.ressourceFrame.itemconfigure(self.uv, text = self.modele.points["RayonUV"])
         self.ressourceFrame.itemconfigure(self.level, text = self.modele.points["Niveau"])
         self.ressourceFrame.itemconfigure(self.pointage, text = self.modele.points["Pointage"])
+
+    def updateLevelCosts(self):                         # update le ResourceFrame avec le nouveau cost des tours/traps après next level
+
+        self.towerFrame.delete(self.peaFrameCost)
+        self.towerFrame.delete(self.sunFrameCost)
+        self.towerFrame.delete(self.iceFrameCost)
+        self.towerFrame.delete(self.catapultFrameCost)
+        self.towerFrame.delete(self.mushFrameCost)
+        self.towerFrame.delete(self.mowerFrameCost)
+
+        self.peaFrameCost = self.towerFrame.create_text(90, 120, text="PeaShooter: " + str(self.modele.peaTowerCost),
+                                                        font=("Times", "12", "bold"), fill="white")
+        self.sunFrameCost = self.towerFrame.create_text(220, 120, text="Sunflower: " + str(self.modele.sunflowerCost),
+                                                        font=("Times", "12", "bold"), fill="white")
+        self.iceFrameCost = self.towerFrame.create_text(90, 220, text="IcePeaShooter: " + str(self.modele.iceTowerCost),
+                                                        font=("Times", "12", "bold"), fill="white")
+        self.catapultFrameCost = self.towerFrame.create_text(220, 220,
+                                                             text="Catapulte: " + str(self.modele.catapultCost),
+                                                             font=("Times", "12", "bold"), fill="white")
+        self.mushFrameCost = self.towerFrame.create_text(90, 320, text="Mush: " + str(self.modele.mushUVCost) + " (UV)",
+                                                         font=("Times", "12", "bold"), fill="white")
+        self.mowerFrameCost = self.towerFrame.create_text(220, 320,
+                                                          text="Mower: " + str(self.modele.mowerUVCost) + " (UV)",
+                                                          font=("Times", "12", "bold"), fill="white")
+
 
     def upgradeStats(self,tower):
         self.upgradeFrame.delete(ALL)
@@ -309,8 +346,6 @@ class Vue():
             buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
             buttonUpgrade_window = self.upgradeFrame.create_window(100,150,anchor=NW, window = buttonUpgrade)
         
-    
-
 
     def upgradeTower(self):  #Dans le modele?
         towerName = self.towerUpgradeChoice.__class__.__name__
@@ -351,7 +386,7 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
-        self.currentMap = 2             # si on passe au prochain niveau, self.currentMap++ todo
+        self.currentMap = 1             # si on passe au prochain niveau, self.currentMap++ todo
 
 
         # CREEP / BOSS
@@ -359,17 +394,18 @@ class Modele():
         self.creepHealth = 40
         self.bossHealth = 120
         self.checkpointList = MapCheckpoints.mapCreeps[str(self.currentMap)]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
-        self.creepStartY = self.setStartY()
-        self.bossStartY = self.setStartY() - 60
-        self.lastCheckpointX, self.lastCheckpointY = self.setLastCheckpoint()
+        self.creepStartY = self.checkpointList[0].y
+        self.bossStartY = self.checkpointList[0].y - 60
+        self.lastCheckpointX = self.checkpointList[(len(self.checkpointList)-1)].x
+        self.lastCheckpointY = self.checkpointList[(len(self.checkpointList)-1)].y
 
         self.ShowSpots = False
         self.CheckpointTowers = MapCheckpoints.mapTowers[1]     # self.CheckpointTowers = MapCheckpoints.mapTowers[self.currentMap] lorsque les maps seront faites
         self.SquareSize = 60
         self.SquareColor = "lightgreen"
         self.gameIsOver = False
-        self.gameOverX = 1400
-        self.gameOverY = 150
+        self.newLevel = False
+
 
         # TOWERS
         self.towerChoice = ""
@@ -418,7 +454,7 @@ class Modele():
             "Engrais":(75 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
             "Wave":0,
-            "Niveau":self.currentMap
+            "Niveau":1
         }
 
         self.towers = {
@@ -428,20 +464,32 @@ class Modele():
             "catapult":self.catapultCost
         }
 
-    def setStartY(self):
+    def setLevelValues(self):
 
-        firstCheckpoint = self.checkpointList
+        self.peaTowerDamage = 2 * self.currentMap
+        self.peaTowerCost = 25 * self.currentMap
 
-        return firstCheckpoint[0].y
+        # ICESHOOTER
+        self.iceTowerDamage = 3 * self.currentMap
+        self.iceTowerCost = 35 * self.currentMap
 
-    def setLastCheckpoint(self):
+        # CATAPULT
+        self.catapultDamage = 5 * self.currentMap
+        self.catapultCost = 40 * self.currentMap
 
-        map = self.checkpointList
-        index = len(map)-1
-        lastCheckpoint = map[index]
+        # SUNFLOWER
+        self.perSunflowerUV = 5 * self.currentMap
+        self.perSunflowerUpgradeUV = 10 * self.currentMap
+        self.sunflowerCost = 20 * self.currentMap
+        self.mushUVCost = 50 * self.currentMap
+        self.mowerUVCost = 100 * self.currentMap
 
-        return lastCheckpoint.x, lastCheckpoint.y
-    
+        self.towers["peaShooter"] = self.peaTowerCost
+        self.towers["sunFlower"] = self.sunflowerCost
+        self.towers["icePeaShooter"] = self.iceTowerCost
+        self.towers["catapult"] = self.catapultCost
+
+
     def costCheck (self, tower):
         return self.points["Engrais"] >= self.towers[tower]
 
@@ -518,7 +566,7 @@ class Modele():
     def creepMovement(self):
         for i in self.creepList:
 
-            if not self.mushroomInUse and not self.gameIsOver:
+            if not self.mushroomInUse and not self.gameIsOver and not self.parent.startLevelMessage:
                 i.move()
             else:
                 i.wait()
@@ -606,10 +654,25 @@ class Controleur():
     def __init__(self):
         self.modele = Modele(self)
         self.vue = Vue(self, self.modele)
+        self.startLevelMessage = True
         self.creepWave()
         self.vue.root.after(10, self.animate)
         self.vue.root.after(10000, self.addUV)
         self.vue.root.mainloop()
+
+    def setStartY(self):
+
+        firstCheckpoint = self.modele.checkpointList
+
+        return firstCheckpoint[0].y
+
+    def setLastCheckpoint(self):
+
+        map = self.modele.checkpointList
+        index = len(map)-1
+        lastCheckpoint = map[index]
+
+        return lastCheckpoint.x, lastCheckpoint.y
 
     def profil(self,name):
       
@@ -637,17 +700,28 @@ class Controleur():
         if wave == 5 and len(self.modele.creepList) == 0 and self.modele.points["Vie"] > 0:
 
             if self.modele.currentMap < 3:                  # reset de certaines valeurs pour commencer le prochain niveau
+
                 self.modele.currentMap += 1
                 self.modele.points["Wave"] = 0
                 self.modele.points["Vie"] = 10
+                self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
                 self.modele.currentFertilizer += (50 * self.modele.currentMap)      # engrais de base pour next level
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
-                self.reset()
+                self.resetLists()                                                   # listes tower/projectiles/etc cleared
+
+                self.modele.checkpointList = MapCheckpoints.mapCreeps[str(self.modele.currentMap)]      #création des nouveaux checkpoints/start positions
+                self.modele.creepStartY = self.setStartY()
+                self.modele.bossStartY = self.setStartY() - 60
+                self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
+
+                self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
+                self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
                 self.vue.update()               # update pour que showgame affiche le bon niveau/valeurs au prochain tick
+                self.startLevelMessage = True
 
             else:
                 self.userWinsGame()
@@ -659,7 +733,7 @@ class Controleur():
     def userWinsGame(self):
         pass
 
-    def reset(self):
+    def resetLists(self):
         for tower in self.modele.TowerList:  # on vide tous les arrays de leurs objets pour prochain level
 
             if tower.projectileList != 0:
@@ -670,9 +744,19 @@ class Controleur():
             self.modele.TowerList.remove(tower)
             del tower
 
+        self.modele.TowerList = []
+
         for trap in self.modele.trapList:
             self.modele.trapList.remove(trap)
             del trap
+
+        for checkpoint in self.modele.checkpointList:
+            self.modele.checkpointList.remove(checkpoint)
+            del checkpoint
+
+        self.modele.trapList = []
+        self.modele.creepList = []
+        self.modele.checkpointList = []
 
 
     def gameOver(self):
@@ -693,7 +777,7 @@ class Controleur():
 
     def animate(self):
         if self.vue.gameInProg == True:
-            #self.nextLevelCheck()
+            self.nextLevelCheck()
             self.creepWave()
             self.modele.deathCheck()
             self.modele.creepMovement()
