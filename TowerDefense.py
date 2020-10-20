@@ -383,7 +383,7 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
-        self.currentMap = 2             # si on passe au prochain niveau, self.currentMap++ todo
+        self.currentMap = 3             # si on passe au prochain niveau, self.currentMap++ todo
 
 
         # CREEP / BOSS
