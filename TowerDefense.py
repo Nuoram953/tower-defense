@@ -343,7 +343,7 @@ class Vue():
                 self.upgradeFrame.create_text(100,65, text = "UV gain: " + str(self.modele.perSunflowerUpgradeUV), font = ("Times", "14", "bold"), fill = "white")
 
         if self.towerUpgradeChoice.upgraded == False:
-            buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.modele.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
+            buttonUpgrade = Button(self.upgradeFrame, text="UPGRADE", command=self.upgradeTower, bg="green2", fg="white",font=("Times", "14", "bold"),relief="raised")
             buttonUpgrade_window = self.upgradeFrame.create_window(100,150,anchor=NW, window = buttonUpgrade)
 
     def upgradeTower(self):  
@@ -383,12 +383,16 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
+
+       
+
         self.currentMap = 1            # si on passe au prochain niveau, self.currentMap++ todo
+
 
 
         # CREEP / BOSS
         self.creepList = []
-        self.creepHealth = 30
+        self.creepHealth = 35
         self.bossHealth = 120
         self.checkpointList = MapCheckpoints.mapCreeps[str(self.currentMap)]       # self.checkpointList = MapCheckpoints.mapCreeps[self.currentMap] lorsque les maps seront faites
         self.creepStartY = self.checkpointList[0].y
