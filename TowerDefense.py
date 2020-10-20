@@ -448,7 +448,7 @@ class Modele():
         self.points = {
             "Pointage": (0 + self.currentPoints),
             "Vie":15,
-            "Engrais":(75 + self.currentFertilizer),
+            "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
             "Wave":1,
             "Niveau":1
@@ -549,14 +549,14 @@ class Modele():
 
         for i in range(nbCreep):
             distanceX = random.randint(-500, 0)
-            self.creepList.append(Creep.Creep1(self, distanceX, self.creepStartY, self.checkpointList[0],(self.creepHealth * self.currentMap), False))
+            self.creepList.append(Creep.Creep1(self, distanceX, self.creepStartY, self.checkpointList[0],self.creepHealth , False))
 
     def updateCreepList(self):
         return self.creepList
 
     def createBoss(self):
         distanceX = random.randint(-500, 0)
-        self.creepList.append(Creep.Creep1(self, distanceX, self.bossStartY, self.checkpointList[0], (self.bossHealth * self.currentMap), True))
+        self.creepList.append(Creep.Creep1(self, distanceX, self.bossStartY, self.checkpointList[0],self.bossHealth , True))
 
     def creepMovement(self):
         for i in self.creepList:
@@ -695,7 +695,7 @@ class Controleur():
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
-                self.modele.currentFertilizer += (75 * self.modele.currentMap)      # engrais de base pour next level
+                self.modele.currentFertilizer += 100      # engrais de base pour next level
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
