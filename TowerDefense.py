@@ -15,7 +15,6 @@ import Tower
 import Creep
 import Mower
 import Mode
-import Checkpoint
 import score
 
 class Vue():
@@ -98,36 +97,36 @@ class Vue():
 
         self.modeFrame = Frame(self.optionFrame, bg="spring green3")
 
-        option1 = Radiobutton(self.modeFrame, text="Normal difficulty", variable=self.mode, value="normal", bg="spring green3", command=self.parent.setNormalDifficulty, indicatoron = 0)
+        option1 = Radiobutton(self.modeFrame, text="Normal difficulty", variable=self.mode, value="normal", bg="SpringGreen2", fg="dark green", font=("system", 12), command=self.parent.setNormalDifficulty, indicatoron = 0, pady=10)
         option1.pack()
 
-        option2 = Radiobutton(self.modeFrame, text="Hard difficulty", variable=self.mode, value="hard", bg="spring green3", command=self.parent.setHardDifficulty, indicatoron = 0)
+        option2 = Radiobutton(self.modeFrame, text="Hard difficulty", variable=self.mode, value="hard", bg="red2", fg="light pink", font=("system", 12), command=self.parent.setHardDifficulty, indicatoron = 0, pady=10)
         option2.pack()
 
-        self.modeFrame.pack(expand=True, fill=BOTH)
+        self.modeFrame.pack(expand=True, fill=BOTH, pady=10)
 
         self.lifeFrame = Frame(self.optionFrame, bg="spring green3")
 
-        life1 = Radiobutton(self.lifeFrame, text="life = 10", variable=self.life, value=10, bg="spring green3", command=self.parent.setLifeTen, indicatoron = 0)
+        life1 = Radiobutton(self.lifeFrame, text="life = 10", variable=self.life, value=10, bg="spring green", fg="dark green", font=("system", 12),command=self.parent.setLifeTen, indicatoron = 0, pady=5)
         life1.pack()
 
-        life2 = Radiobutton(self.lifeFrame, text="life = 20", variable=self.life, value=20, bg="spring green3", command=self.parent.setLifeTwenty, indicatoron = 0)
+        life2 = Radiobutton(self.lifeFrame, text="life = 20", variable=self.life, value=20, bg="spring green", fg="dark green", font=("system", 12),command=self.parent.setLifeTwenty, indicatoron = 0, pady=5)
         life2.pack()
 
-        life3 = Radiobutton(self.lifeFrame, text="life = 30", variable=self.life, value=30, bg="spring green3", command=self.parent.setLifeThirty, indicatoron = 0)
+        life3 = Radiobutton(self.lifeFrame, text="life = 30", variable=self.life, value=30, bg="spring green", fg="dark green",font=("system", 12),command=self.parent.setLifeThirty, indicatoron = 0,pady=5)
         life3.pack()
 
-        self.lifeFrame.pack(expand=True, fill=BOTH)
+        self.lifeFrame.pack(expand=True, fill=BOTH, pady=10)
 
-        upgrade = Checkbutton(self.optionFrame, text="Towers Already Upgraded",variable=self.towersUpgraded, bg="spring green3", command=self.parent.setUpgraded)
-        upgrade.pack(expand=True, fill=BOTH)
+        upgrade = Checkbutton(self.optionFrame, text="Towers Upgraded",variable=self.towersUpgraded, bg="spring green3", fg="purple4", font=("system", 12), command=self.parent.setUpgraded, pady=10)
+        upgrade.pack()
 
-        buttonBack = Button(self.optionFrame, text="BACK", command=self.setOptions, bg="blue", fg="deep sky blue",
-                               font=("system", 12), relief="raised")
+        buttonBack = Button(self.optionFrame, text="BACK TO MAIN MENU", command=self.setOptions, bg="blue", fg="deep sky blue",
+                               font=("system", 12), relief="raised", pady=10)
 
         buttonBack.pack()
 
-        self.optionFrame.pack()
+        self.optionFrame.pack(expand=True, fill=BOTH)
 
 
     def setOptions(self):
@@ -248,8 +247,6 @@ class Vue():
                 self.gameCanvas.create_text(self.winX, self.winY, text="Y O U  W I N", font=("system","100", "bold"), fill="yellow")
 
 
-
-
         if self.parent.startLevelMessage == True:
             self.gameCanvas.create_text(self.messageX, self.messageY, text="LEVEL " + str(self.modele.currentMap),
                                         font=("system", "70", "bold"), fill="DarkGoldenrod1")
@@ -358,34 +355,6 @@ class Vue():
         self.ressourceFrame.itemconfigure(self.level, text = self.modele.points["Niveau"])
         self.ressourceFrame.itemconfigure(self.pointage, text = self.modele.points["Pointage"])
 
-    def updateLevelCosts(self):                         # update le ResourceFrame avec le nouveau cost des tours/traps après next level
-
-        self.towerFrame.delete(self.peaFrameCost)
-        self.towerFrame.delete(self.sunFrameCost)
-        self.towerFrame.delete(self.iceFrameCost)
-        self.towerFrame.delete(self.catapultFrameCost)
-        self.towerFrame.delete(self.mushFrameCost)
-        self.towerFrame.delete(self.mowerFrameCost)
-
-        self.peaFrameCost = self.towerFrame.create_text(90, 120, text="PeaShooter: " + str(self.modele.peaTowerCost),
-                                                        font=("Times", "12", "bold"), fill="white")
-        self.sunFrameCost = self.towerFrame.create_text(220, 120, text="Sunflower: " + str(self.modele.sunflowerCost),
-                                                        font=("Times", "12", "bold"), fill="white")
-        self.iceFrameCost = self.towerFrame.create_text(90, 220, text="IcePeaShooter: " + str(self.modele.iceTowerCost),
-                                                        font=("Times", "12", "bold"), fill="white")
-        self.catapultFrameCost = self.towerFrame.create_text(220, 220,
-                                                             text="Catapulte: " + str(self.modele.catapultCost),
-                                                             font=("Times", "12", "bold"), fill="white")
-        self.mushFrameCost = self.towerFrame.create_text(90, 320, text="Mush: " + str(self.modele.mushUVCost) + " (UV)",
-                                                         font=("Times", "12", "bold"), fill="white")
-        self.mowerFrameCost = self.towerFrame.create_text(220, 320,
-                                                          text="Mower: " + str(self.modele.mowerUVCost) + " (UV)",
-                                                          font=("Times", "12", "bold"), fill="white")
-
-        self.upgradeFrame.delete(ALL)
-        self.upgradeFrame.create_image(0, 0, image=self.upgradeBg, anchor=NW)                   # clear upgradeFrame des derniers infos
-
-
     def upgradeStats(self,tower):
         self.upgradeFrame.delete(ALL)
         self.upgradeFrame.create_image(0,0, image=self.upgradeBg, anchor=NW)
@@ -465,7 +434,7 @@ class Modele():
     def __init__(self, parent):
         self.parent = parent
         # MAP / LEVEL
-        self.currentMap = 1             # si on passe au prochain niveau, self.currentMap++ todo
+        self.currentMap = 1
         self.difficulty = "normal"      # default
 
         # CREEP / BOSS
@@ -767,12 +736,13 @@ class Controleur():
             self.modele.points["RayonUV"] = int(playerStat[2])
 
     def creepWave(self):
-        if len(self.modele.creepList) == 0:
-            self.modele.createCreep()
-            self.modele.points["Wave"] +=1
-            self.modele.points["Engrais"] += 50
-            if self.modele.points["Wave"] == 5:
-                self.modele.createBoss()
+        if not self.modele.userWon:
+            if len(self.modele.creepList) == 0:
+                self.modele.createCreep()
+                self.modele.points["Wave"] +=1
+                self.modele.points["Engrais"] += 50
+                if self.modele.points["Wave"] == 5:
+                    self.modele.createBoss()
 
 
     def nextLevelCheck(self):
@@ -786,18 +756,23 @@ class Controleur():
                 self.modele.points["Wave"] = 0
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
-                self.modele.currentFertilizer = self.modele.points["Engrais"]     # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie) 
+                self.modele.currentFertilizer = self.modele.points["Engrais"]     # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
-                self.resetLists()                                                   # listes tower/projectiles/etc cleared
+                if self.modele.difficulty == "normal":
+                    self.modele.points["Engrais"] = self.modele.currentFertilizer + Mode.normal["startFertilizer"]
+                elif self.modele.difficulty == "hard":
+                    self.modele.points["Engrais"] = self.modele.currentFertilizer + Mode.hard["startFertilizer"]
+
+
+
+                self.resetLists()                                                                       # listes tower/projectiles/etc cleared
 
                 self.modele.checkpointList = MapCheckpoints.mapCreeps[str(self.modele.currentMap)] 
                 self.modele.CheckpointTowers = MapCheckpoints.mapTowers[str(self.modele.currentMap)]     #création des nouveaux checkpoints/start positions
                 self.modele.creepStartY = self.setStartY()
                 self.modele.bossStartY = self.setStartY() - 60
                 self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
-                
-                self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
                 self.vue.update()               # update pour que showgame affiche le bon niveau/valeurs au prochain tick
                 self.startLevelMessage = True

@@ -1,6 +1,6 @@
 # BOTANIK PANIK
 
-## Bienvenue dans Botanik Panik ! Vous devez affrontrer une horde de zombies. Pour vous protéger, vous devez utiliser vos talents en jardinage afin de vous défendre ! Les plantes que vous plantez avec soin sont parfaitement conçues pour votre défendre contre les zombies !
+## Bienvenue dans Botanik Panik ! Vous devez affrontrer une horde de zombies. Pour vous protéger, vous devez utiliser vos talents en jardinage afin de vous défendre ! Les plantes que vous plantez avec soin sont parfaitement conçues pour vous défendre contre les zombies !
 
 ### Avoir un pouce vert, ça rapporte !
 
@@ -28,12 +28,12 @@ Le soleil est bénéfique pour vous, avec parcimonie. Les plantes rafolent des r
 Les tournesols permettent d'emmagasiner les rayons UV et rendent vos plantes heureuses !
 
 Après un certain temps, les plantes peuvent vous remercier en activant un des 2 pouvoirs supplémentaires qui sont accessibles pour vous:
-* Une champignon magique qui immobilise les zombies pendant un certain temps
-* Une tondeuse qui inflige des dégats immenses à la horde de zombies lorsqu'elle rentre en contact avec eux
-    * Il suffit de cliquer sur l'icône de la tondeuse et ensuite de cliquer sur la zone voulue dans l'aire de jeu
-    * La tondeuse fait un mouvement de droite à gauche, donc choissez une position plus vers la droite afin qu'elle voyage sur toute l'aide de jeu !
+* Un champignon magique qui immobilise les zombies pendant un certain temps
+* Une tondeuse qui inflige des dégats immenses à la horde de zombies lorsqu'elle entre en contact avec eux
+    * Il suffit de cliquer sur l'icône de la tondeuse et ensuite cliquer sur la zone voulue dans l'aire de jeu
+    * La tondeuse fait un mouvement de droite à gauche, donc choisissez une position plus vers la droite afin qu'elle voyage sur toute l'aire de jeu !
 
-Vous conservez vos rayons UV peut importe votre niveau et aussi si vous faites plusieurs parties ! Suffit d'entrer le même nom d'usager et vous aurez les mêmes rayons UV dans votre partie !
+Vous conservez vos rayons UV peu importe votre niveau et aussi si vous faites plusieurs parties ! Il suffit d'entrer le même nom d'usager et vous aurez les mêmes rayons UV dans votre partie !
 
 ### Des options, ça goûte bon !
 
