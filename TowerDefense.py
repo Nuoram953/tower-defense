@@ -98,23 +98,23 @@ class Vue():
 
         self.modeFrame = Frame(self.optionFrame, bg="spring green3")
 
-        option1 = Radiobutton(self.modeFrame, text="Normal difficulty", variable=self.mode, value="normal", bg="spring green3", command=self.parent.setNormalDifficulty)
+        option1 = Radiobutton(self.modeFrame, text="Normal difficulty", variable=self.mode, value="normal", bg="spring green3", command=self.parent.setNormalDifficulty, indicatoron = 0)
         option1.pack()
 
-        option2 = Radiobutton(self.modeFrame, text="Hard difficulty", variable=self.mode, value="hard", bg="spring green3", command=self.parent.setHardDifficulty)
+        option2 = Radiobutton(self.modeFrame, text="Hard difficulty", variable=self.mode, value="hard", bg="spring green3", command=self.parent.setHardDifficulty, indicatoron = 0)
         option2.pack()
 
         self.modeFrame.pack(expand=True, fill=BOTH)
 
         self.lifeFrame = Frame(self.optionFrame, bg="spring green3")
 
-        life1 = Radiobutton(self.lifeFrame, text="10", variable=self.life, value=10, bg="spring green3", command=self.parent.setLifeTen)
+        life1 = Radiobutton(self.lifeFrame, text="life = 10", variable=self.life, value=10, bg="spring green3", command=self.parent.setLifeTen, indicatoron = 0)
         life1.pack()
 
-        life2 = Radiobutton(self.lifeFrame, text="20", variable=self.life, value=20, bg="spring green3", command=self.parent.setLifeTwenty)
+        life2 = Radiobutton(self.lifeFrame, text="life = 20", variable=self.life, value=20, bg="spring green3", command=self.parent.setLifeTwenty, indicatoron = 0)
         life2.pack()
 
-        life3 = Radiobutton(self.lifeFrame, text="30", variable=self.life, value=30, bg="spring green3", command=self.parent.setLifeThirty)
+        life3 = Radiobutton(self.lifeFrame, text="life = 30", variable=self.life, value=30, bg="spring green3", command=self.parent.setLifeThirty, indicatoron = 0)
         life3.pack()
 
         self.lifeFrame.pack(expand=True, fill=BOTH)
@@ -135,11 +135,6 @@ class Vue():
         self.backFromOptions = True
         self.windowMenu()
 
-
-    def getXY(self,evt):
-        #return evt.x,evt.y
-        print(evt.x, evt.y)
-    
     def showGame(self):
 
         self.gameCanvas.delete(ALL)
@@ -348,8 +343,6 @@ class Vue():
 
         self.gameFrame.pack(expand=YES, fill=BOTH)
 
-        self.gameCanvas.bind("<Button>", self.getXY)
-
         self.gameCanvas.bind("<Button>", self.modele.upgradeChoice)
 
         self.game.pack()
@@ -540,7 +533,7 @@ class Modele():
             "Vie":15,
             "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":1,
+            "Wave":0,
             "Niveau":1
         }
 
