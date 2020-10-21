@@ -467,8 +467,6 @@ class Vue():
         
         self.upgradeStats(self.towerUpgradeChoice)
 
-
-
     
 class Modele():
     def __init__(self, parent):
@@ -502,15 +500,15 @@ class Modele():
         self.alreadyUpgraded = False
 
         #PEASHOOTER
-        self.peaTowerDamage = 2 
-        self.peaTowerCost = 25 
+        self.peaTowerDamage = 3
+        self.peaTowerCost = 20
 
         #ICESHOOTER
         self.iceTowerDamage = 3 
-        self.iceTowerCost = 35 
+        self.iceTowerCost = 30
 
         #CATAPULT
-        self.catapultDamage = 5 
+        self.catapultDamage = 6
         self.catapultCost = 40 
 
         #SUNFLOWER
@@ -526,8 +524,8 @@ class Modele():
         self.trapSelected = False
         self.mushroomInUse = False
         self.mushroomDuration = 50
-        self.mushUVCost = 50 * self.currentMap
-        self.mowerUVCost = 100 * self.currentMap
+        self.mushUVCost = 25
+        self.mowerUVCost = 50
         self.mowerSpeed = 30
 
         # USER
@@ -553,30 +551,30 @@ class Modele():
             "catapult":self.catapultCost
         }
 
-    def setLevelValues(self):
-
-        self.peaTowerDamage = 2 
-        self.peaTowerCost = 25 
-
-        # ICESHOOTER
-        self.iceTowerDamage = 3 
-        self.iceTowerCost = 35 
-
-        # CATAPULT
-        self.catapultDamage = 5 
-        self.catapultCost = 40 
-
-        # SUNFLOWER
-        self.perSunflowerUV = 5 
-        self.perSunflowerUpgradeUV = 10 
-        self.sunflowerCost = 20 
-        self.mushUVCost = 50 
-        self.mowerUVCost = 100 
-
-        self.towers["peaShooter"] = self.peaTowerCost
-        self.towers["sunFlower"] = self.sunflowerCost
-        self.towers["icePeaShooter"] = self.iceTowerCost
-        self.towers["catapult"] = self.catapultCost
+    # def setLevelValues(self):
+    #
+    #     self.peaTowerDamage = 3
+    #     self.peaTowerCost = 20
+    #
+    #     # ICESHOOTER
+    #     self.iceTowerDamage = 3
+    #     self.iceTowerCost = 30
+    #
+    #     # CATAPULT
+    #     self.catapultDamage = 6
+    #     self.catapultCost = 40
+    #
+    #     # SUNFLOWER
+    #     self.perSunflowerUV = 5
+    #     self.perSunflowerUpgradeUV = 10
+    #     self.sunflowerCost = 20
+    #     self.mushUVCost = 50
+    #     self.mowerUVCost = 100
+    #
+    #     self.towers["peaShooter"] = self.peaTowerCost
+    #     self.towers["sunFlower"] = self.sunflowerCost
+    #     self.towers["icePeaShooter"] = self.iceTowerCost
+    #     self.towers["catapult"] = self.catapultCost
 
 
     def costCheck (self, tower):
@@ -822,7 +820,7 @@ class Controleur():
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
-                self.modele.currentFertilizer += 100      # engrais de base pour next level
+                self.modele.currentFertilizer += Mode                               # engrais de base pour next level
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
@@ -833,7 +831,7 @@ class Controleur():
                 self.modele.bossStartY = self.setStartY() - 60
                 self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
                 
-                self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
+                # self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
                 self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
                 self.vue.update()               # update pour que showgame affiche le bon niveau/valeurs au prochain tick

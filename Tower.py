@@ -15,18 +15,20 @@ class PeaShooter():
         self.damage = damage
         self.creepList = creepList
         self.projectileSpeed = 20
+        self.upgraded = alreadyUpgraded
         if self.upgraded == True:
             self.image = PhotoImage(file="assets/towers/peaShooterUpgrade.png")
+            self.rateOfFire = 5
         else:
             self.image = PhotoImage(file="assets/towers/peaShooter.png")
+            self.rateOfFire = 10
         self.checkDist = None
         self.readyToFire = False
-        self.rateOfFire = 10
+
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
-        self.upgraded = alreadyUpgraded
-        self.upgradeCost = 20 * self.parent.currentMap
+        self.upgradeCost = 20
 
     def tick(self):
         self.rateOfFireCounter += 1
@@ -122,7 +124,7 @@ class SunFlower():
             self.image = PhotoImage(file="assets/towers/sunFlowerUpgrade.png")
         else:
             self.image = PhotoImage(file="assets/towers/sunFlower.png")
-        self.upgradeCost = 15 * self.parent.currentMap
+        self.upgradeCost = 15
 
     def tick(self):
         pass
@@ -136,21 +138,23 @@ class IcePeaShooter():
         self.projectileList = []
         self.speed = 20
         self.radius = 250
-        self.damage = damage
+
         self.creepList = creepList
         self.projectileSpeed = 15
         self.slow = 2
         self.upgraded = alreadyUpgraded
         if self.upgraded == True:
             self.image = PhotoImage(file="assets/towers/icePeaShooterUpgrade.png")
+            self.damage = 5
         else:
             self.image = PhotoImage(file="assets/towers/icePeaShooter.png")
+            self.damage = damage
         self.readyToFire = False
         self.rateOfFire = 20
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightblue"
-        self.upgradeCost = 25 * self.parent.currentMap
+        self.upgradeCost = 30
        
     def tick(self):
 
@@ -251,26 +255,29 @@ class Catapult():
         self.speed = 20
         self.radius = 400
         self.damage = damage
-        self.damageRadius = 75
-        self.epicenter = self.damageRadius / 2
         self.creepList = creepList
         self.projectileSpeed = 15
         self.upgraded = alreadyUpgraded
         if self.upgraded == True:
             self.image = PhotoImage(file="assets/towers/catapultUpgrade.png")
+            self.damageRadius = 150
+            self.bulletSize = 25
+            self.bulletColor = "dark green"
         else:
             self.image = PhotoImage(file="assets/towers/catapult.png")
+            self.damageRadius = 75
+            self.bulletSize = 15
+            self.bulletColor = "green3"
+        self.epicenter = self.damageRadius / 2
         self.readyToFire = False
         self.rateOfFire = 40
         self.rateOfFireCounter = self.rateOfFire
-        self.bulletSize = 15
-        self.bulletColor = "green3"
         self.impact = False
         self.impactX = None
         self.impactY = None
         self.count = 0
 
-        self.upgradeCost = 30 * self.parent.currentMap
+        self.upgradeCost = 40
        
     def tick(self):
 

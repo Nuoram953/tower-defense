@@ -1,5 +1,5 @@
 normal = {
-    "creepHealth": 40,
+    "creepHealth": 45,
     "bossHealth": 120,
     "startFertilizer": 100,
 }
