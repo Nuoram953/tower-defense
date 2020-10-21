@@ -551,32 +551,6 @@ class Modele():
             "catapult":self.catapultCost
         }
 
-    # def setLevelValues(self):
-    #
-    #     self.peaTowerDamage = 3
-    #     self.peaTowerCost = 20
-    #
-    #     # ICESHOOTER
-    #     self.iceTowerDamage = 3
-    #     self.iceTowerCost = 30
-    #
-    #     # CATAPULT
-    #     self.catapultDamage = 6
-    #     self.catapultCost = 40
-    #
-    #     # SUNFLOWER
-    #     self.perSunflowerUV = 5
-    #     self.perSunflowerUpgradeUV = 10
-    #     self.sunflowerCost = 20
-    #     self.mushUVCost = 50
-    #     self.mowerUVCost = 100
-    #
-    #     self.towers["peaShooter"] = self.peaTowerCost
-    #     self.towers["sunFlower"] = self.sunflowerCost
-    #     self.towers["icePeaShooter"] = self.iceTowerCost
-    #     self.towers["catapult"] = self.catapultCost
-
-
     def costCheck (self, tower):
         return self.points["Engrais"] >= self.towers[tower]
 
@@ -898,7 +872,6 @@ class Controleur():
             self.vue.showGame()
             self.vue.update()
             self.checkGameOver()
-            self.nextLevelCheck()
             self.vue.root.after(25, self.animate)
 
     def close_window(self):
