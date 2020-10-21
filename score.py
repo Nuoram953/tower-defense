@@ -34,6 +34,10 @@ class Score():
         return [nom,score,UV]
     #TODO: Changer le nom des variables
     def addScore(self,nom,point,level,rayonUV):
+
+        if nom is "":
+            nom = "Joueur"
+
         file = open("score.csv", "a")
         file.write(f"{nom},{str(date.today())},{str(point)},{str(level)},{str(rayonUV)}\n")
         file.close()
