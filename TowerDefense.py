@@ -467,8 +467,6 @@ class Vue():
         
         self.upgradeStats(self.towerUpgradeChoice)
 
-
-
     
 class Modele():
     def __init__(self, parent):
@@ -796,7 +794,7 @@ class Controleur():
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
                 self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
-                self.modele.currentFertilizer += 100      # engrais de base pour next level
+                self.modele.currentFertilizer += Mode                               # engrais de base pour next level
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
@@ -807,6 +805,7 @@ class Controleur():
                 self.modele.bossStartY = self.setStartY() - 60
                 self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
                 
+                # self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
                 self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
                 self.vue.update()               # update pour que showgame affiche le bon niveau/valeurs au prochain tick
@@ -873,7 +872,6 @@ class Controleur():
             self.vue.showGame()
             self.vue.update()
             self.checkGameOver()
-            self.nextLevelCheck()
             self.vue.root.after(25, self.animate)
 
     def close_window(self):

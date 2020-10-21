@@ -12,7 +12,7 @@ Rien ne se perd, rien ne se crée, tout se transforme ! Merci Antoine Lavoisier 
 
 Vous avez accès à 4 plantes de base ainsi qu'une amélioration possible par plante augmentant leur performance sur le champ de bataille:
 * Tireur de pois: tire rapidement sur les zombies. *Simple mais efficace.*
-* Tireur de pois de glace: ralenti les zombies que ses projectiles touchent. *Trouvée à l'allée 10 des produits congélés.*
+* Tireur de pois de glace: ralenti les zombies que ses projectiles touchent. *Trouvé à l'allée 10 des produits congélés.*
 * Catapulte de chou: attaque dans une zone de radius. *Parfait lorsque vous êtes 'chou' pression.*
 * Tournesol: emmagasine les rayons UV. *N'oubliez pas la crême solaire.*
 
@@ -24,16 +24,16 @@ Vous pouvez donc améliorer vos plantes avec votre engrais afin qu'elles devienn
 
 ### Une bonne dose de vitamine D 
 
-Le soleil est bénifique pour vous, avec parcimonie. Les plantes rafolent des rayons UV du soleil !
-Les tournesols permettent d'emmagasiner les rayons UV et rends vos plantes heureuses !
+Le soleil est bénéfique pour vous, avec parcimonie. Les plantes rafolent des rayons UV du soleil !
+Les tournesols permettent d'emmagasiner les rayons UV et rendent vos plantes heureuses !
 
 Après un certain temps, les plantes peuvent vous remercier en activant un des 2 pouvoirs supplémentaires qui sont accessibles pour vous:
 * Une champignon magique qui immobilise les zombies pendant un certain temps
-* Une tondeuse qui inflige des dégats immenses à la horde de zombies qu'elle rentre en contact avec 
-    * Il suffit de cliquer sur l'icone de la tondeuse et ensuite de cliquer sur la zone voulue dans l'aire de jeu
+* Une tondeuse qui inflige des dégats immenses à la horde de zombies lorsqu'elle rentre en contact avec eux
+    * Il suffit de cliquer sur l'icône de la tondeuse et ensuite de cliquer sur la zone voulue dans l'aire de jeu
     * La tondeuse fait un mouvement de droite à gauche, donc choissez une position plus vers la droite afin qu'elle voyage sur toute l'aide de jeu !
 
-Vous conservez vos rayons UV peut importe votre niveau et aussi si vous faites plusieurs parties ! Suffit d'entrer le même nom et vous aurez les mêmes rayons UV dans votre partie !
+Vous conservez vos rayons UV peut importe votre niveau et aussi si vous faites plusieurs parties ! Suffit d'entrer le même nom d'usager et vous aurez les mêmes rayons UV dans votre partie !
 
 ### Des options, ça goûte bon !
 
