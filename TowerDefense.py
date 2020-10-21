@@ -500,15 +500,15 @@ class Modele():
         self.alreadyUpgraded = False
 
         #PEASHOOTER
-        self.peaTowerDamage = 3
+        self.peaTowerDamage = 3 
         self.peaTowerCost = 20
 
         #ICESHOOTER
         self.iceTowerDamage = 3 
-        self.iceTowerCost = 30
+        self.iceTowerCost = 30 
 
         #CATAPULT
-        self.catapultDamage = 6
+        self.catapultDamage = 6 
         self.catapultCost = 40 
 
         #SUNFLOWER
@@ -524,7 +524,7 @@ class Modele():
         self.trapSelected = False
         self.mushroomInUse = False
         self.mushroomDuration = 50
-        self.mushUVCost = 25
+        self.mushUVCost = 25 
         self.mowerUVCost = 50
         self.mowerSpeed = 30
 
@@ -540,7 +540,7 @@ class Modele():
             "Vie":15,
             "Engrais":(100 + self.currentFertilizer),
             "RayonUV":(50 + self.currentUV),
-            "Wave":0,
+            "Wave":1,
             "Niveau":1
         }
 
@@ -650,9 +650,9 @@ class Modele():
         for tower in self.TowerList:
             if isinstance(tower, Tower.SunFlower):
                 if tower.upgraded:
-                    self.points["RayonUV"] += (10 * self.currentMap)
+                    self.points["RayonUV"] += (10)
                 else:
-                    self.points["RayonUV"] += (5 * self.currentMap)
+                    self.points["RayonUV"] += (5)
 
 
     def getTrapSelected(self, event):

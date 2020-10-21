@@ -367,7 +367,7 @@ class Catapult():
 
                             self.parent.creepList.remove(self.target)
                             self.parent.points["Pointage"] += 1
-                            self.parent.points["Engrais"] += 1
+                            self.parent.points["Engrais"] += 5
 
                             for creep in self.creepList:
                                 if creep != self.target:
