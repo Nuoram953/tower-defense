@@ -531,7 +531,7 @@ class Modele():
         self.points = {
             "Pointage": (0 + self.currentPoints),
             "Vie":15,
-            "Engrais":(100 + self.currentFertilizer),
+            "Engrais":100 + self.currentFertilizer,
             "RayonUV":(50 + self.currentUV),
             "Wave":0,
             "Niveau":1
@@ -786,8 +786,7 @@ class Controleur():
                 self.modele.points["Wave"] = 0
                 self.modele.points["Niveau"] = self.modele.currentMap
                 self.modele.currentPoints = self.modele.points["Pointage"]          # pointage courant transféré au prochain niveau
-                self.modele.currentFertilizer = self.modele.points["Engrais"]       # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie)
-                self.modele.currentFertilizer += Mode                               # engrais de base pour next level
+                self.modele.currentFertilizer = self.modele.points["Engrais"]     # engrais et UV courant transféré au prochain niveau (récompense pour bonne stratégie) 
                 self.modele.currentUV = self.modele.points["RayonUV"]
 
                 self.resetLists()                                                   # listes tower/projectiles/etc cleared
@@ -798,7 +797,6 @@ class Controleur():
                 self.modele.bossStartY = self.setStartY() - 60
                 self.modele.lastCheckpointX, self.modele.lastCheckpointY = self.setLastCheckpoint()
                 
-                # self.modele.setLevelValues()    # update damage/cost des tours/traps selon le changement de niveau
                 self.vue.updateLevelCosts()     # update cost des tours/traps dans le HUD
 
                 self.vue.update()               # update pour que showgame affiche le bon niveau/valeurs au prochain tick
@@ -859,6 +857,7 @@ class Controleur():
 
     def animate(self):
         if self.vue.gameInProg == True:
+            self.nextLevelCheck()
             self.creepWave()
             self.modele.deathCheck()
             self.modele.creepMovement()
