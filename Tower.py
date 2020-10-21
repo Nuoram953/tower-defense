@@ -26,7 +26,7 @@ class PeaShooter():
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightgreen"
-        self.upgradeCost = 20 * self.parent.currentMap
+        self.upgradeCost = 20
 
     def tick(self):
         self.rateOfFireCounter += 1
@@ -150,7 +150,7 @@ class IcePeaShooter():
         self.rateOfFireCounter = self.rateOfFire
         self.bulletSize = 10
         self.bulletColor = "lightblue"
-        self.upgradeCost = 25 * self.parent.currentMap
+        self.upgradeCost = 30
        
     def tick(self):
 
@@ -270,7 +270,7 @@ class Catapult():
         self.impactY = None
         self.count = 0
 
-        self.upgradeCost = 30 * self.parent.currentMap
+        self.upgradeCost = 40
        
     def tick(self):
 
@@ -360,7 +360,7 @@ class Catapult():
 
                             self.parent.creepList.remove(self.target)
                             self.parent.points["Pointage"] += 1
-                            self.parent.points["Engrais"] += 1
+                            self.parent.points["Engrais"] += 5
 
                             for creep in self.creepList:
                                 if creep != self.target:

@@ -18,7 +18,7 @@ Vous avez accès à 4 plantes de base ainsi qu'une amélioration possible par pl
 
 ### Mutation génétique
 
-Lois de Mendel oblige, les croisements génétiques en botanique créent de nouvelles plantes ayant des propriétés similaires aux anciennes générations. 
+Lois de Mendel obligent, les croisements génétiques en botanique créent de nouvelles plantes ayant des propriétés similaires aux anciennes générations. 
 À cause de votre engrais 100% naturel, votre plante évolue drastiquement !
 Vous pouvez donc améliorer vos plantes avec votre engrais afin qu'elles deviennent plus puissantes !
 
