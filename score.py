@@ -5,8 +5,7 @@ from os import path
 
 class Score():
      #Vérification si le joueur existe dans le fichier score.csv
-    #TODO: Changer le nom des variables et mettre en argument le nom du joueur
-    #TODO: Offrir au joueur la possibilité de refuser de continuer avec son profil si il veux recommencer?
+
     def getProfil(self,namePlayer):
 
     
@@ -32,10 +31,10 @@ class Score():
         file.close()
 
         return [nom,score,UV]
-    #TODO: Changer le nom des variables
+
     def addScore(self,nom,point,level,rayonUV):
 
-        if nom is "":
+        if nom == "":
             nom = "Joueur"
 
         file = open("score.csv", "a")
